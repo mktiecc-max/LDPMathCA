@@ -45,8 +45,11 @@
   .hero-sub{color:var(--grey);font-size:15px;margin-bottom:20px;}
   .hero-badge-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
   .hero-badge-row .badge { margin-bottom: 0; }
-  .hero-img{width:100%;max-width:420px;border-radius:16px;overflow:hidden;border:5px solid #fff;box-shadow:0 12px 36px rgba(0,0,0,0.15),0 4px 12px rgba(0,0,0,0.08);}
-  .hero-img img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
+  .hero-img-container { position: relative; width: 100%; max-width: 420px; border-radius: 16px; overflow: hidden; border: 5px solid #fff; box-shadow: 0 12px 36px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.08); }
+  .hero-main-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .hero-main-slider::-webkit-scrollbar { display: none; }
+  .hero-main-slider img { flex: 0 0 100%; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; scroll-snap-align: start; }
+  .slide-indicator { position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.65); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; z-index: 10; pointer-events: none; letter-spacing: 0.5px; }
   .hero-notice{background:#fff;border:1px solid #e5e7eb;border-left:4px solid var(--teal);border-radius:10px;padding:12px 14px;margin-top:14px;max-width:420px;text-align:left;}
   .hero-notice strong{display:block;font-size:13px;color:var(--navy);margin-bottom:4px;}
   .hero-notice p{font-size:12px;color:var(--grey);line-height:1.5;margin:0;}
@@ -56,10 +59,7 @@
   .hero-carousel{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin-top:14px;padding-bottom:10px;scrollbar-width:none;}
   .hero-carousel::-webkit-scrollbar{display:none;}
   .hero-carousel img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.1);scroll-snap-align:start;flex:0 0 auto;cursor:pointer;transition:border-color .2s;}
-  .hero-carousel img:hover{border-color:var(--teal);}
-  
-  .swipe-indicator { text-align: center; font-size: 11px; color: var(--grey); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
-  .swipe-indicator svg { width: 14px; height: 14px; }
+  .hero-carousel img.active, .hero-carousel img:hover{border-color:var(--teal);}
 
   .header-countdown{display:flex;align-items:center;gap:6px;flex:1;justify-content:center;}
   .header-countdown .label{color:var(--red-badge);font-weight:700;font-size:11px;display:none;}
@@ -266,6 +266,7 @@
     .hero-grid{flex-direction:row;text-align:left;align-items:flex-start;}
     .hero-text{text-align:left;flex:1;}
     .hero-badge-row{justify-content:flex-start;}
+    .hero-main-slider { overflow-x: hidden; }
     .hero-img-wrap{flex:1;display:flex;flex-direction:column;align-items:center;position:sticky;top:90px;}
     .price-row{justify-content:flex-start;}
     
@@ -349,20 +350,22 @@
       <p class="cta-note" data-cms="hero.note">Miễn phí vận chuyển toàn quốc · Không cần đăng nhập · Còn 200/200 suất</p>
     </div>
     <div class="hero-img-wrap">
-      <div class="hero-img">
-        <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
+      <div class="hero-img-container">
+        <div class="hero-main-slider" id="heroMainSlider">
+          <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu">
+        </div>
+        <div class="slide-indicator mobile-only" id="slideIndicator">1/5</div>
       </div>
-      <div class="hero-carousel" id="heroCarousel">
+      <div class="hero-carousel desktop-only" id="heroCarousel">
+        <img class="active" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu">
-      </div>
-      <div class="swipe-indicator mobile-only">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 8l4 4-4 4M7 8l-4 4 4 4M3 12h18"/>
-        </svg>
-        <span>Vuốt để xem thêm</span>
       </div>
       <div class="hero-notice mobile-only">
         <strong>Khóa MathCA Online theo Sổ Tay lớp 1–5 là một phần của Sổ</strong>
@@ -725,13 +728,29 @@ function lbNav(dir) {
 document.addEventListener('click', function(e) {
   var carouselImg = e.target.closest('.hero-carousel img');
   if (carouselImg) {
-    var mainImg = document.querySelector('.hero-img img');
-    if (mainImg) {
-      mainImg.src = carouselImg.src;
-      mainImg.alt = carouselImg.alt;
+    var carousel = document.getElementById('heroCarousel');
+    var idx = Array.from(carousel.children).indexOf(carouselImg);
+    var slider = document.getElementById('heroMainSlider');
+    
+    // highlight active
+    Array.from(carousel.children).forEach(function(img) { img.classList.remove('active'); });
+    carouselImg.classList.add('active');
+
+    if (slider && idx >= 0) {
+      slider.scrollTo({ left: idx * slider.clientWidth, behavior: 'smooth' });
     }
   }
 });
+
+var heroSlider = document.getElementById('heroMainSlider');
+if (heroSlider) {
+  heroSlider.addEventListener('scroll', function() {
+    var idx = Math.round(heroSlider.scrollLeft / heroSlider.clientWidth);
+    var total = heroSlider.children.length;
+    var ind = document.getElementById('slideIndicator');
+    if (ind) ind.textContent = (idx + 1) + '/' + total;
+  });
+}
 
 document.getElementById('galleryGrid').addEventListener('click', function(e) {
   var img = e.target.closest('img');
@@ -994,15 +1013,29 @@ function renderLists(c) {
   // Hero carousel
   if (c.hero && Array.isArray(c.hero.carouselImages)) {
     var hc = document.getElementById('heroCarousel');
-    if (hc) {
-      hc.innerHTML = '';
+    var hs = document.getElementById('heroMainSlider');
+    
+    var firstSlideHTML = '';
+    if (hs && hs.firstElementChild) {
+      firstSlideHTML = hs.firstElementChild.outerHTML;
+    }
+
+    if (hc && hs) {
+      hc.innerHTML = firstSlideHTML;
+      hs.innerHTML = firstSlideHTML;
+
+      if (hc.firstElementChild) hc.firstElementChild.classList.add('active');
+
       c.hero.carouselImages.forEach(function (img) {
         if (!img.src) return;
-        var node = new Image();
-        node.src = img.src;
-        node.alt = img.alt || '';
-        hc.appendChild(node);
+        var n1 = new Image(); n1.src = img.src; n1.alt = img.alt || '';
+        var n2 = new Image(); n2.src = img.src; n2.alt = img.alt || '';
+        hc.appendChild(n1);
+        hs.appendChild(n2);
       });
+
+      var ind = document.getElementById('slideIndicator');
+      if (ind) ind.textContent = '1/' + hs.children.length;
     }
   }
 
