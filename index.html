@@ -271,9 +271,9 @@
       <div class="hero-img">
         <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
       </div>
-      <div class="hero-notice" data-cms-html="hero.notice">
-        <strong>Khóa MathCA Online theo Sổ Tay lớp 1–5 là một phần của Sổ</strong>
-        <p>Mã cào trong Sổ mở quyền học trong 60 tháng kể từ ngày kích hoạt. Khóa học không được tách giá và không được gọi là quà tặng.</p>
+      <div class="hero-notice">
+        <strong id="heroNoticeTitle">Khóa MathCA Online theo Sổ Tay lớp 1–5 là một phần của Sổ</strong>
+        <p id="heroNoticeText">Mã cào trong Sổ mở quyền học trong 60 tháng kể từ ngày kích hoạt. Khóa học không được tách giá và không được gọi là quà tặng.</p>
       </div>
     </div>
   </div>
@@ -302,16 +302,16 @@
     <p class="section-sub" data-cms="benefits.sub">Trọn bộ công cụ tự học Toán tiểu học trong một sản phẩm duy nhất</p>
     <div class="benefit-groups">
       <div>
-        <div class="benefit-group-title"><span>📒</span> Sổ Tay Thiên Tài Toán</div>
-        <div class="benefit-list" id="benefitList">
+        <div class="benefit-group-title" id="soTayTitle"><span>📒</span> Sổ Tay Thiên Tài Toán</div>
+        <div class="benefit-list" id="soTayList">
           <div class="benefit-item"><div class="check">✓</div><p>Tra cứu công thức và mẹo Toán xuyên suốt lớp 1–5 trong một cuốn sổ</p></div>
           <div class="benefit-item"><div class="check">✓</div><p>Quét QR để xem video giáo viên MathCA giải thích đúng nội dung đang học</p></div>
           <div class="benefit-item"><div class="check">✓</div><p>Thiết kế để bàn tiện tra cứu, khổ A5 gọn nhẹ, 66 trang bền bỉ</p></div>
         </div>
       </div>
       <div>
-        <div class="benefit-group-title"><span>🎓</span> Khóa MathCA Online (tặng kèm)</div>
-        <div class="benefit-list">
+        <div class="benefit-group-title" id="onlineTitle"><span>🎓</span> Khóa MathCA Online (tặng kèm)</div>
+        <div class="benefit-list" id="onlineList">
           <div class="benefit-item"><div class="check">✓</div><p>Kích hoạt Khóa MathCA Online theo Sổ Tay lớp 1–5 trong 5 năm</p></div>
           <div class="benefit-item"><div class="check">✓</div><p>Nhận bài luyện tập cập nhật qua MathCA Online và email</p></div>
           <div class="benefit-item"><div class="check">✓</div><p>Tham gia nhóm Zalo hỗ trợ trao đổi cùng phụ huynh</p></div>
@@ -799,16 +799,36 @@ function renderLists(c) {
       grid.appendChild(box);
     });
   }
-  // Lợi ích
-  if (c.benefits && Array.isArray(c.benefits.items)) {
-    var list = document.getElementById('benefitList');
-    list.innerHTML = '';
-    c.benefits.items.forEach(function (text) {
-      var item = el('div', 'benefit-item');
-      item.appendChild(el('div', 'check', '✓'));
-      item.appendChild(el('p', null, tpl(text)));
-      list.appendChild(item);
-    });
+  // Hero notice
+  if (c.hero) {
+    var nt = document.getElementById('heroNoticeTitle');
+    var np = document.getElementById('heroNoticeText');
+    if (nt && c.hero.noticeTitle) nt.textContent = tpl(c.hero.noticeTitle);
+    if (np && c.hero.noticeText) np.textContent = tpl(c.hero.noticeText);
+  }
+  // Lợi ích - 2 nhóm
+  if (c.benefits) {
+    function renderBenefitList(listId, items) {
+      var list = document.getElementById(listId);
+      if (!list || !Array.isArray(items)) return;
+      list.innerHTML = '';
+      items.forEach(function (text) {
+        var item = el('div', 'benefit-item');
+        item.appendChild(el('div', 'check', '✓'));
+        item.appendChild(el('p', null, tpl(text)));
+        list.appendChild(item);
+      });
+    }
+    if (c.benefits.soTayTitle) {
+      var st = document.getElementById('soTayTitle');
+      if (st) st.innerHTML = safeHtml(c.benefits.soTayTitle);
+    }
+    if (c.benefits.onlineTitle) {
+      var ot = document.getElementById('onlineTitle');
+      if (ot) ot.innerHTML = safeHtml(c.benefits.onlineTitle);
+    }
+    renderBenefitList('soTayList', c.benefits.soTayItems);
+    renderBenefitList('onlineList', c.benefits.onlineItems);
   }
   // Thư viện ảnh
   if (c.gallery && Array.isArray(c.gallery.images)) {

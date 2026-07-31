@@ -182,7 +182,9 @@ var SCHEMA = [
       { path: 'hero.ctaText', label: 'Chữ trên nút CTA', type: 'text' },
       { path: 'hero.note', label: 'Ghi chú dưới nút', type: 'text' },
       { path: 'hero.image', label: 'Ảnh sản phẩm (URL)', type: 'url', preview: true },
-      { path: 'hero.imageAlt', label: 'Mô tả ảnh (alt)', type: 'text' }
+      { path: 'hero.imageAlt', label: 'Mô tả ảnh (alt)', type: 'text' },
+      { path: 'hero.noticeTitle', label: 'Tiêu đề ghi chú dưới ảnh', type: 'text' },
+      { path: 'hero.noticeText', label: 'Nội dung ghi chú dưới ảnh', type: 'textarea' }
     ]
   },
   {
@@ -200,9 +202,14 @@ var SCHEMA = [
     key: 'benefits', label: '✅ Lợi ích',
     fields: [
       { path: 'benefits.title', label: 'Tiêu đề mục', type: 'text' },
-      { path: 'benefits.sub', label: 'Mô tả mục', type: 'textarea' }
+      { path: 'benefits.sub', label: 'Mô tả mục', type: 'textarea' },
+      { path: 'benefits.soTayTitle', label: 'Tiêu đề nhóm Sổ Tay', type: 'text' },
+      { path: 'benefits.onlineTitle', label: 'Tiêu đề nhóm MathCA Online', type: 'text' }
     ],
-    list: { path: 'benefits.items', itemLabel: 'Lợi ích', itemType: 'textarea' }
+    lists: [
+      { path: 'benefits.soTayItems', itemLabel: 'Lợi ích Sổ Tay', itemType: 'textarea' },
+      { path: 'benefits.onlineItems', itemLabel: 'Lợi ích MathCA Online', itemType: 'textarea' }
+    ]
   },
   {
     key: 'gallery', label: '🖼 Thư viện ảnh',
@@ -577,6 +584,9 @@ function renderSection() {
   });
 
   if (sec.list) renderList(sec, host);
+  if (sec.lists) sec.lists.forEach(function (listCfg) {
+    renderList({ list: listCfg }, host);
+  });
 }
 
 /* ================= ĐƠN HÀNG ================= */
