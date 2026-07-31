@@ -129,34 +129,36 @@
   .modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-  .modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:22px 20px 28px;position:relative;animation:slideUp .25s ease;}
-  .modal-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:#f3f4f6;color:var(--grey);font-size:18px;font-weight:700;cursor:pointer;line-height:1;}
-  .modal h3{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px;padding-right:36px;}
-  .modal .modal-sub{font-size:13px;color:var(--grey);margin-bottom:16px;}
-  .form-group{margin-bottom:14px;}
-  .form-group label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:95vh;overflow-y:auto;padding:16px 16px 20px;position:relative;animation:slideUp .25s ease;}
+  .modal-close{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;border:none;background:#f3f4f6;color:var(--grey);font-size:16px;font-weight:700;cursor:pointer;line-height:1;}
+  .modal h3{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:2px;padding-right:34px;}
+  .modal .modal-sub{font-size:12px;color:var(--grey);margin-bottom:10px;line-height:1.4;}
+  .form-group{margin-bottom:10px;}
+  .form-group label{display:block;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px;}
   .form-group label .req{color:var(--red-badge);}
-  .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;font-family:inherit;color:var(--navy);background:#fff;outline:none;transition:border-color .15s;}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:14px;font-family:inherit;color:var(--navy);background:#fff;outline:none;transition:border-color .15s;}
   .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);}
   .form-group input.error,.form-group select.error,.form-group textarea.error{border-color:var(--red-badge);background:var(--red-bg);}
-  .field-error{font-size:12px;color:var(--red-badge);margin-top:4px;display:none;}
-  .qty-row{display:flex;align-items:center;gap:12px;}
-  .qty-btn{width:42px;height:42px;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;font-size:20px;font-weight:700;color:var(--navy);cursor:pointer;flex:0 0 auto;}
+  .field-error{font-size:11px;color:var(--red-badge);margin-top:2px;display:none;}
+  /* Grade + Qty inline row */
+  .form-row-inline{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .qty-row{display:flex;align-items:center;gap:6px;}
+  .qty-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;font-size:18px;font-weight:700;color:var(--navy);cursor:pointer;flex:0 0 auto;}
   .qty-btn:active{background:var(--teal-light);}
-  .qty-row input{text-align:center;font-weight:800;flex:1;max-width:90px;}
-  .order-summary{background:var(--teal-light);border-radius:12px;padding:14px 16px;margin:16px 0;display:flex;justify-content:space-between;align-items:baseline;}
-  .order-summary .label{font-size:13px;font-weight:700;color:var(--teal-dark);}
-  .order-summary .total{font-size:22px;font-weight:800;color:var(--orange-dark);}
-  .order-summary .old{font-size:13px;color:var(--grey);text-decoration:line-through;margin-left:6px;}
-  .btn-submit{width:100%;background:var(--orange);color:#fff;font-weight:800;font-size:16px;padding:15px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 6px 16px rgba(255,90,54,0.3);}
+  .qty-row input{text-align:center;font-weight:800;flex:1;max-width:50px;padding:9px 4px;}
+  .order-summary{background:var(--teal-light);border-radius:10px;padding:10px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:baseline;}
+  .order-summary .label{font-size:12px;font-weight:700;color:var(--teal-dark);}
+  .order-summary .total{font-size:20px;font-weight:800;color:var(--orange-dark);}
+  .order-summary .old{font-size:12px;color:var(--grey);text-decoration:line-through;margin-left:6px;}
+  .btn-submit{width:100%;background:var(--orange);color:#fff;font-weight:800;font-size:15px;padding:13px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 6px 16px rgba(255,90,54,0.3);}
   .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
-  .form-note{font-size:11.5px;color:var(--grey);text-align:center;margin-top:10px;}
-  .form-msg{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;}
+  .form-note{font-size:11px;color:var(--grey);text-align:center;margin-top:6px;}
+  .form-msg{display:none;margin-top:8px;padding:10px 12px;border-radius:8px;font-size:12px;font-weight:600;}
   .form-msg.error{display:block;background:var(--red-bg);color:var(--red-badge);}
-  .success-view{display:none;text-align:center;padding:20px 0 10px;}
-  .success-view .icon{width:64px;height:64px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid var(--teal);}
-  .success-view h3{padding:0;margin-bottom:8px;}
-  .success-view p{font-size:14px;color:var(--grey);margin-bottom:18px;}
+  .success-view{display:none;text-align:center;padding:16px 0 8px;}
+  .success-view .icon{width:56px;height:56px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);font-size:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;border:2px solid var(--teal);}
+  .success-view h3{padding:0;margin-bottom:6px;}
+  .success-view p{font-size:13px;color:var(--grey);margin-bottom:14px;}
   .success-view .btn-submit{background:var(--teal);box-shadow:0 6px 16px rgba(31,174,150,0.3);}
   .hp-field{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;}
 
@@ -179,7 +181,15 @@
     .header-cta{padding:12px 26px;}
     footer{padding-bottom:20px;}
     .modal-overlay{align-items:center;padding:20px;}
-    .modal{border-radius:20px;}
+    .modal{border-radius:20px;max-width:520px;padding:24px 24px 28px;}
+    .modal h3{font-size:19px;}
+    .modal .modal-sub{font-size:13px;margin-bottom:12px;}
+    .form-group{margin-bottom:12px;}
+    .form-group input,.form-group select,.form-group textarea{padding:10px 14px;font-size:14px;}
+    .form-row-inline{gap:14px;}
+    .order-summary{padding:12px 16px;margin:12px 0;}
+    .order-summary .total{font-size:22px;}
+    .btn-submit{padding:14px;font-size:16px;}
   }
 </style>
 </head>
@@ -368,31 +378,32 @@
           <p class="field-error">Email chưa đúng định dạng</p>
         </div>
 
-        <div class="form-group">
-          <label for="fGrade">Con đang học lớp</label>
-          <select id="fGrade" name="grade">
-            <option value="">-- Chọn lớp --</option>
-            <option value="Chuẩn bị vào lớp 1">Chuẩn bị vào lớp 1</option>
-            <option value="Lớp 1">Lớp 1</option>
-            <option value="Lớp 2">Lớp 2</option>
-            <option value="Lớp 3">Lớp 3</option>
-            <option value="Lớp 4">Lớp 4</option>
-            <option value="Lớp 5">Lớp 5</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="fQty">Số lượng (tối đa <span id="maxQtyLabel">20</span> cuốn/đơn)</label>
-          <div class="qty-row">
-            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Giảm">−</button>
-            <input type="number" id="fQty" name="qty" value="1" min="1" max="20" inputmode="numeric">
-            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Tăng">+</button>
+        <div class="form-row-inline">
+          <div class="form-group">
+            <label for="fGrade">Con đang học lớp</label>
+            <select id="fGrade" name="grade">
+              <option value="">-- Chọn lớp --</option>
+              <option value="Chuẩn bị vào lớp 1">Chuẩn bị vào lớp 1</option>
+              <option value="Lớp 1">Lớp 1</option>
+              <option value="Lớp 2">Lớp 2</option>
+              <option value="Lớp 3">Lớp 3</option>
+              <option value="Lớp 4">Lớp 4</option>
+              <option value="Lớp 5">Lớp 5</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fQty">Số lượng (max <span id="maxQtyLabel">20</span>)</label>
+            <div class="qty-row">
+              <button type="button" class="qty-btn" id="qtyMinus" aria-label="Giảm">−</button>
+              <input type="number" id="fQty" name="qty" value="1" min="1" max="20" inputmode="numeric">
+              <button type="button" class="qty-btn" id="qtyPlus" aria-label="Tăng">+</button>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="fAddress">Địa chỉ nhận hàng <span class="req">*</span></label>
-          <textarea id="fAddress" name="address" rows="2" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required></textarea>
+          <input type="text" id="fAddress" name="address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required>
           <p class="field-error">Vui lòng nhập địa chỉ nhận hàng</p>
         </div>
 
