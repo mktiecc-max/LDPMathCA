@@ -195,6 +195,7 @@
   .pricing-price{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;border-bottom:1px solid #eee;padding-bottom:12px;}
   .pricing-price .new{font-size:24px;font-weight:800;color:var(--orange-dark);}
   .pricing-price .old{font-size:14px;color:var(--grey);text-decoration:line-through;}
+  .pricing-price .save-text{font-size:13px;color:#c62828;font-weight:700;white-space:nowrap;}
   .pricing-features{list-style:none;margin-bottom:16px;font-size:13px;color:#4b5563;line-height:1.5;}
   .pricing-features li{display:flex;gap:8px;margin-bottom:6px;}
   .pricing-features li::before{content:'✓';color:var(--teal);font-weight:800;font-size:14px;}
@@ -1209,7 +1210,7 @@ function renderLists(c) {
           pRow.appendChild(el('span', 'old', formatVnd(pkg.old)));
           var saveAmount = pkg.old - pkg.new;
           if (saveAmount > 0) {
-            pRow.appendChild(el('span', 'save-tag', 'Tiết kiệm ' + formatVnd(saveAmount)));
+            pRow.appendChild(el('span', 'save-text', '(Tiết kiệm ' + formatVnd(saveAmount) + ')'));
           }
         }
         card.appendChild(pRow);
