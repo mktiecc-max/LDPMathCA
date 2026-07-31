@@ -77,9 +77,21 @@
   /* GALLERY */
   .gallery{background:#fff;}
   .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-  .gallery-grid img{border-radius:12px;border:1px solid #eee;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;}
+  .gallery-grid img{border-radius:12px;border:1px solid #eee;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;cursor:pointer;transition:transform .15s ease;}
+  .gallery-grid img:hover{transform:scale(1.02);}
   .gallery-grid .full{grid-column:1/-1;aspect-ratio:16/9;}
 
+  /* LIGHTBOX */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:600;display:none;align-items:center;justify-content:center;padding:16px;cursor:pointer;}
+  .lightbox.open{display:flex;animation:fadeIn .2s ease;}
+  .lightbox img{max-width:95%;max-height:90vh;border-radius:10px;object-fit:contain;animation:lbZoom .25s ease;box-shadow:0 8px 40px rgba(0,0,0,0.5);}
+  @keyframes lbZoom{from{transform:scale(0.85);opacity:0}to{transform:scale(1);opacity:1}}
+  .lightbox-close{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:20px;font-weight:700;cursor:pointer;backdrop-filter:blur(4px);transition:background .15s;}
+  .lightbox-close:hover{background:rgba(255,255,255,0.3);}
+  .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;font-size:22px;font-weight:700;cursor:pointer;backdrop-filter:blur(4px);transition:background .15s;}
+  .lightbox-nav:hover{background:rgba(255,255,255,0.3);}
+  .lightbox-nav.prev{left:12px;}
+  .lightbox-nav.next{right:12px;}
   /* HOW IT WORKS */
   .how{background:var(--bg);}
   .steps{display:grid;grid-template-columns:1fr;gap:20px;}
@@ -343,6 +355,14 @@
   © 2026 MathCA. Sổ Tay Thiên Tài Toán Lớp 1–5.
 </footer>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose" aria-label="Đóng">✕</button>
+  <button class="lightbox-nav prev" id="lbPrev" aria-label="Ảnh trước">‹</button>
+  <button class="lightbox-nav next" id="lbNext" aria-label="Ảnh sau">›</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
 <div class="sticky-cta">
   <div><span class="price-now" data-price="unit" style="color:var(--orange-dark);">239.000đ</span> <span class="price-old" data-price="old" style="font-size:12px;">320.000đ</span></div>
   <button class="js-open-form" data-cms="header.ctaText">Đặt Trước Ngay</button>
@@ -481,6 +501,58 @@ function startCountdown() {
   })();
 }
 startCountdown();
+/* ================= LIGHTBOX ================= */
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lbImg');
+var lbIndex = 0;
+
+function getLbImages() {
+  return Array.from(document.querySelectorAll('#galleryGrid img'));
+}
+
+function openLightbox(index) {
+  var imgs = getLbImages();
+  if (!imgs.length) return;
+  lbIndex = index;
+  lbImg.src = imgs[lbIndex].src;
+  lbImg.alt = imgs[lbIndex].alt || '';
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lb.classList.remove('open');
+  lbImg.src = '';
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  var imgs = getLbImages();
+  if (!imgs.length) return;
+  lbIndex = (lbIndex + dir + imgs.length) % imgs.length;
+  lbImg.src = imgs[lbIndex].src;
+  lbImg.alt = imgs[lbIndex].alt || '';
+}
+
+document.getElementById('galleryGrid').addEventListener('click', function(e) {
+  var img = e.target.closest('img');
+  if (!img) return;
+  var imgs = getLbImages();
+  var idx = imgs.indexOf(img);
+  if (idx >= 0) openLightbox(idx);
+});
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', function(e) { e.stopPropagation(); lbNav(-1); });
+document.getElementById('lbNext').addEventListener('click', function(e) { e.stopPropagation(); lbNav(1); });
+lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
+lbImg.addEventListener('click', function(e) { e.stopPropagation(); });
+document.addEventListener('keydown', function(e) {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
 
 /* ================= POPUP ================= */
 var overlay = document.getElementById('orderModal');
