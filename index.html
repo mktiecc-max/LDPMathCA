@@ -1207,6 +1207,10 @@ function renderLists(c) {
         pRow.appendChild(el('span', 'new', formatVnd(pkg.new)));
         if (pkg.old) {
           pRow.appendChild(el('span', 'old', formatVnd(pkg.old)));
+          var saveAmount = pkg.old - pkg.new;
+          if (saveAmount > 0) {
+            pRow.appendChild(el('span', 'save-tag', 'Tiết kiệm ' + formatVnd(saveAmount)));
+          }
         }
         card.appendChild(pRow);
         
@@ -1409,7 +1413,7 @@ function startFakeOrders() {
             toast.classList.remove('show');
           }, 4000);
         }
-      }, 10000);
+      }, 20000);
     })
     .catch(function(err) { console.error('Orders error', err); });
 }
