@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
-  const { name, phone, email, grade, qty, address, note, source, userAgent } = req.body || {};
+  const { name, phone, email, grade, qty, address, note, source, userAgent, total: reqTotal, package: pkgName } = req.body || {};
 
   // Validate phía server
   if (!name || typeof name !== 'string' || !name.trim()) {
@@ -43,9 +43,9 @@ export default async function handler(req, res) {
     email: String(email || '').trim().slice(0, 200),
     grade: String(grade || '').slice(0, 50),
     qty: cleanQty,
-    total: cleanQty * unitPrice,
+    total: reqTotal ? parseInt(reqTotal, 10) : (cleanQty * unitPrice),
     address: String(address).trim().slice(0, 500),
-    note: String(note || '').trim().slice(0, 500),
+    note: String((pkgName ? `[Gói: ${pkgName}] ` : '') + (note || '')).trim().slice(0, 500),
     source: String(source || '').slice(0, 300),
     userAgent: String(userAgent || '').slice(0, 300)
   };
