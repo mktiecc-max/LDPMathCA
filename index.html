@@ -121,20 +121,24 @@
   .step h4{font-size:15px;margin-bottom:6px;color:var(--navy);}
   .step p{font-size:13px;color:var(--grey);}
 
-  /* SPECS */
-  .specs{background:#fff;}
-  .spec-table{width:100%;border-collapse:collapse;font-size:14px;}
-  .spec-table tr{border-bottom:1px solid #eee;}
-  .spec-table td{padding:12px 8px;vertical-align:top;}
-  .spec-table td:first-child{color:var(--grey);font-weight:700;width:40%;}
-  .spec-table td:last-child{color:var(--navy);}
-
-  /* OFFER REPEAT */
-  .offer{background:var(--navy);color:#fff;text-align:center;}
-  .offer h2{font-size:22px;margin-bottom:10px;color:#fff;}
-  .offer .price-now{color:var(--yellow);}
-  .offer .price-old{color:#c9c2dd;}
-  .offer .cta-primary{margin-top:16px;}
+  /* PRICING */
+  .pricing{background:var(--navy);color:#fff;text-align:center;}
+  .pricing h2{font-size:24px;margin-bottom:10px;color:#fff;}
+  .pricing-grid{display:flex;flex-direction:column;gap:20px;text-align:left;}
+  .pricing-card{background:#fff;color:var(--navy);border-radius:20px;padding:24px;position:relative;box-shadow:0 12px 24px rgba(0,0,0,0.15);transition:transform .2s;}
+  .pricing-card.highlight{border:3px solid var(--orange);}
+  .pricing-card .badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:12px;font-weight:800;padding:4px 16px;border-radius:12px;white-space:nowrap;box-shadow:0 4px 10px rgba(255,90,54,0.3);}
+  .pricing-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;margin-bottom:16px;border:1px solid #eee;background:#f9fafb;}
+  .pricing-name{font-size:18px;font-weight:800;margin-bottom:12px;line-height:1.4;color:var(--navy);}
+  .pricing-price{display:flex;align-items:baseline;gap:8px;margin-bottom:16px;border-bottom:1px solid #eee;padding-bottom:16px;}
+  .pricing-price .new{font-size:24px;font-weight:800;color:var(--orange-dark);}
+  .pricing-price .old{font-size:14px;color:var(--grey);text-decoration:line-through;}
+  .pricing-features{list-style:none;margin-bottom:24px;font-size:13px;color:#4b5563;line-height:1.5;}
+  .pricing-features li{display:flex;gap:8px;margin-bottom:10px;}
+  .pricing-features li::before{content:'✓';color:var(--teal);font-weight:800;font-size:14px;}
+  .pricing-btn{width:100%;background:var(--teal);color:#fff;font-weight:800;font-size:15px;padding:14px;border-radius:12px;border:none;cursor:pointer;transition:transform .15s;}
+  .pricing-card.highlight .pricing-btn{background:var(--orange);}
+  .pricing-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.15);}
   .stock-bar{background:rgba(255,255,255,0.15);border-radius:20px;height:10px;max-width:400px;margin:14px auto;overflow:hidden;}
   .stock-fill{background:var(--yellow);height:100%;width:100%;}
   .stock-text{font-size:12px;color:#e5dff5;margin-bottom:6px;}
@@ -243,6 +247,10 @@
     .gallery-grid .full{grid-column:1/3;grid-row:1/3;aspect-ratio:auto;height:100%;}
     .gallery-grid img:not(.full){aspect-ratio:1;}
     .steps{grid-template-columns:repeat(3,1fr);}
+    .pricing-grid{flex-direction:row;align-items:stretch;gap:24px;}
+    .pricing-card{flex:1;display:flex;flex-direction:column;}
+    .pricing-card.highlight{transform:scale(1.05);z-index:2;}
+    .pricing-btn{margin-top:auto;}
     .sticky-cta{display:none;}
     .header-cta{padding:12px 26px;}
     .footer-grid{grid-template-columns:1.5fr 1fr 1fr 1fr;}
@@ -372,29 +380,15 @@
   </div>
 </section>
 
-<section class="specs" id="specsSection">
-  <div class="container" style="max-width:700px;">
-    <h2 class="section-title" data-cms="specs.title">Thông Số Sản Phẩm</h2>
-    <table class="spec-table"><tbody id="specBody">
-      <tr><td>Nội dung</td><td>Công thức và mẹo Toán lớp 1–5</td></tr>
-      <tr><td>Quy cách</td><td>Khổ A5, 66 trang, dạng để bàn</td></tr>
-      <tr><td>Học trực tuyến</td><td>Khóa MathCA Online theo Sổ Tay lớp 1–5</td></tr>
-      <tr><td>Thời hạn</td><td>60 tháng (5 năm) từ ngày kích hoạt</td></tr>
-      <tr><td>Chính sách</td><td>Được kiểm tra trước khi nhận; không đổi trả, đơn trên sàn theo chính sách của sàn</td></tr>
-    </tbody></table>
-  </div>
-</section>
-
-<section class="offer">
-  <div class="container" style="max-width:600px;">
-    <h2 data-cms="offer.title">Ưu Đãi Pre-order Có Hạn</h2>
-    <p class="stock-text" data-cms="offer.stockText">Còn lại 200/200 suất — Tối đa 20 cuốn/đơn</p>
-    <div class="stock-bar"><div class="stock-fill" id="stockFill"></div></div>
-    <div class="price-row" style="justify-content:center;">
-      <span class="price-now" data-price="unit">239.000đ</span>
-      <span class="price-old" data-price="old">320.000đ</span>
+<section class="pricing" id="pricingSection">
+  <div class="container">
+    <h2 class="section-title" data-cms="pricing.title">Bảng Giá & Ưu Đãi Pre-order Có Hạn</h2>
+    <p class="section-sub stock-text" data-cms="pricing.stockText">Còn lại <span id="stockLeftLabel">200</span>/<span id="stockTotalLabel">200</span> suất — Tối đa <span id="maxQtyLabel2">20</span> cuốn/đơn</p>
+    <div class="stock-bar" style="margin: 0 auto 40px; max-width: 600px;"><div class="stock-fill" id="stockFill"></div></div>
+    
+    <div class="pricing-grid" id="pricingGrid">
+      <!-- Sẽ được render tự động từ CMS packages -->
     </div>
-    <button class="cta-primary js-open-form" data-cms="offer.ctaText">⚡ Đặt Trước Ngay</button>
   </div>
 </section>
 
@@ -964,17 +958,6 @@ function renderLists(c) {
       steps.appendChild(box);
     });
   }
-  // Thông số
-  if (c.specs && Array.isArray(c.specs.rows)) {
-    var body = document.getElementById('specBody');
-    body.innerHTML = '';
-    c.specs.rows.forEach(function (row) {
-      var tr = document.createElement('tr');
-      tr.appendChild(el('td', null, tpl(row.label || '')));
-      tr.appendChild(el('td', null, tpl(row.value || '')));
-      body.appendChild(tr);
-    });
-  }
   // FAQ
   if (c.faq && Array.isArray(c.faq.items)) {
     var faq = document.getElementById('faqList');
@@ -986,11 +969,15 @@ function renderLists(c) {
       faq.appendChild(box);
     });
   }
-  // Form - Packages từ CMS
+
+  // Bảng Giá & Ưu Đãi (Pricing Grid) + Dropdown Form Packages
   if (c.form && Array.isArray(c.form.packages) && c.form.packages.length > 0) {
     var sel = document.getElementById('fPackage');
-    sel.innerHTML = '';
+    var pGrid = document.getElementById('pricingGrid');
+    if (sel) sel.innerHTML = '';
+    if (pGrid) pGrid.innerHTML = '';
     PACKAGES = {};
+
     c.form.packages.forEach(function (pkg) {
       if (!pkg.id) return;
       PACKAGES[pkg.id] = {
@@ -999,12 +986,61 @@ function renderLists(c) {
         old: Number(pkg.old) || 0,
         new: Number(pkg.new) || 0,
         qty: Number(pkg.qty) || 1,
-        image: pkg.image || ''
+        image: pkg.image || '',
+        features: pkg.features || ''
       };
-      var opt = document.createElement('option');
-      opt.value = pkg.id;
-      opt.textContent = pkg.name || pkg.id;
-      sel.appendChild(opt);
+
+      // 1. Dropdown Form
+      if (sel) {
+        var opt = document.createElement('option');
+        opt.value = pkg.id;
+        opt.textContent = pkg.name || pkg.id;
+        sel.appendChild(opt);
+      }
+
+      // 2. Pricing Grid
+      if (pGrid) {
+        var isCombo = pkg.id === 'combo';
+        var card = el('div', 'pricing-card' + (isCombo ? ' highlight' : ''));
+        
+        if (isCombo) {
+          card.appendChild(el('div', 'badge', '⭐ Đề Xuất'));
+        }
+        
+        if (pkg.image) {
+          var img = el('img', 'pricing-img');
+          img.src = pkg.image;
+          img.loading = 'lazy';
+          card.appendChild(img);
+        }
+        
+        card.appendChild(el('h3', 'pricing-name', pkg.name || pkg.id));
+        
+        var pRow = el('div', 'pricing-price');
+        pRow.appendChild(el('span', 'new', formatVnd(pkg.new)));
+        if (pkg.old) {
+          pRow.appendChild(el('span', 'old', formatVnd(pkg.old)));
+        }
+        card.appendChild(pRow);
+        
+        if (pkg.features) {
+          var ul = el('ul', 'pricing-features');
+          pkg.features.split('\n').forEach(function(line) {
+            if (line.trim()) ul.appendChild(el('li', null, tpl(line.trim())));
+          });
+          card.appendChild(ul);
+        }
+        
+        var btn = el('button', 'pricing-btn', '⚡ Đặt Trước Ngay');
+        btn.onclick = function() {
+          if (sel) sel.value = pkg.id;
+          updateTotal();
+          openModal();
+        };
+        card.appendChild(btn);
+        
+        pGrid.appendChild(card);
+      }
     });
     updateTotal();
   }
