@@ -754,6 +754,11 @@ function renderLists(c) {
   }
 }
 
+// Escape HTML nhưng giữ xuống dòng thành <br>
+function safeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+}
+
 function applyContent(c) {
   var s = c.settings || {};
   if (s.deadline) CONFIG.DEADLINE = s.deadline;
@@ -764,10 +769,10 @@ function applyContent(c) {
   if (s.stockTotal != null) CONFIG.STOCK_TOTAL = Number(s.stockTotal);
   if (c.form && c.form.errorText) CONFIG.ERROR_TEXT = c.form.errorText;
 
-  // Chuỗi văn bản
+  // Chuỗi văn bản (hỗ trợ xuống dòng từ CMS)
   document.querySelectorAll('[data-cms]').forEach(function (node) {
     var val = getPath(c, node.getAttribute('data-cms'));
-    if (val != null && val !== '') node.textContent = tpl(val);
+    if (val != null && val !== '') node.innerHTML = safeHtml(tpl(val));
   });
   // Thuộc tính (src, alt...)
   document.querySelectorAll('[data-cms-attr]').forEach(function (node) {
