@@ -7,12 +7,34 @@
 
 import { getContent } from '../lib/store.js';
 
+const ipMap = new Map();
+
+function checkRateLimit(ip) {
+  if (!ip) return true;
+  const now = Date.now();
+  const last = ipMap.get(ip) || 0;
+  if (now - last < 30000) return false;
+  ipMap.set(ip, now);
+  if (ipMap.size > 1000) ipMap.clear();
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ ok: false, error: 'Method not allowed' });
   }
 
-  const { name, phone, email, grade, qty, address, note, source, userAgent, total: reqTotal, package: pkgName } = req.body || {};
+  const ip = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.socket?.remoteAddress;
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ ok: false, error: 'Bạn đang thao tác quá nhanh, vui lòng chờ một lát.' });
+  }
+
+  const { name, phone, email, grade, qty, address, note, source, userAgent, total: reqTotal, package: pkgName, website } = req.body || {};
+
+  // P0-2: Honeypot check
+  if (website) {
+    return res.status(200).json({ ok: true, total: reqTotal }); // Fake success for bots
+  }
 
   // Validate phía server
   if (!name || typeof name !== 'string' || !name.trim()) {
@@ -36,6 +58,11 @@ export default async function handler(req, res) {
 
   const cleanQty = Math.min(Math.max(parseInt(qty, 10) || 1, 1), maxQty);
 
+  // P0-1: Tính giá server-side từ content
+  const packages = (content.form && content.form.packages) || [];
+  const chosen = packages.find(p => p.name === pkgName) || packages[0];
+  const serverTotal = chosen ? (Number(chosen.new) || 0) : cleanQty * unitPrice;
+
   const record = {
     createdAt: new Date().toISOString(),
     name: String(name).trim().slice(0, 200),
@@ -43,7 +70,7 @@ export default async function handler(req, res) {
     email: String(email || '').trim().slice(0, 200),
     grade: String(grade || '').slice(0, 50),
     qty: cleanQty,
-    total: reqTotal ? parseInt(reqTotal, 10) : (cleanQty * unitPrice),
+    total: serverTotal,
     address: String(address).trim().slice(0, 500),
     note: String((pkgName ? `[Gói: ${pkgName}] ` : '') + (note || '')).trim().slice(0, 500),
     source: String(source || '').slice(0, 300),

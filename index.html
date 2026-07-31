@@ -3,12 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://rwtpwdyoxirfpposmdcg.supabase.co" crossorigin>
+<link rel="canonical" href="https://ldp-mathca.vercel.app/">
 <title>Sổ Tay Thiên Tài Toán Lớp 1-5 | MathCA – Pre-order Ưu Đãi 25%</title>
 <meta name="description" content="Sổ công thức & mẹo Toán lớp 1–5 tích hợp video QR và trọn bộ khóa học MathCA Online 5 năm. Pre-order 200 cuốn đầu tiên – giảm 25%, miễn phí vận chuyển toàn quốc.">
 <meta property="og:title" content="Sổ Tay Thiên Tài Toán Lớp 1-5 | MathCA">
 <meta property="og:description" content="Mỗi cuốn sổ tay – mở ra một thiên tài Toán học. Pre-order giảm 25%, tặng kèm khóa MathCA Online 5 năm.">
 <meta property="og:image" content="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp">
 <meta property="og:type" content="website">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Sổ Tay Thiên Tài Toán Lớp 1-5",
+  "image": "https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp",
+  "description": "Sổ công thức & mẹo Toán lớp 1-5 tích hợp video QR và trọn bộ khóa học MathCA Online 5 năm.",
+  "sku": "MCA-ST-15",
+  "brand": {
+    "@type": "Brand",
+    "name": "MathCA"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://ldp-mathca.vercel.app/",
+    "priceCurrency": "VND",
+    "price": "239000",
+    "availability": "https://schema.org/PreOrder",
+    "itemCondition": "https://schema.org/NewCondition"
+  }
+}
+</script>
 <style>
   :root{
     --navy:#2A1B4D;
@@ -34,9 +58,10 @@
   header{position:sticky;top:0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);z-index:100;}
   .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1100px;margin:0 auto;}
   .logo img{height:36px;}
-  .header-cta{background:var(--orange);color:#fff;padding:10px 20px;border-radius:30px;font-weight:700;font-size:14px;border:none;cursor:pointer;white-space:nowrap;position:relative;overflow:hidden;animation:ctaPulse 2s ease-in-out infinite;transition:transform .2s ease;}
+  .header-cta{background:var(--orange);color:#fff;padding:10px 20px;border-radius:30px;font-weight:700;font-size:14px;border:none;cursor:pointer;white-space:nowrap;position:relative;overflow:hidden;transition:transform .2s ease;}
   .header-cta:hover{transform:scale(1.05);}
-  .header-cta::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);animation:ctaShine 3s ease-in-out infinite;}
+  .header-cta::before{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 8px 20px rgba(255,90,54,0.35);opacity:0;animation:ctaGlow 2s ease-in-out infinite;}
+  .header-cta::after{content:'';position:absolute;top:-50%;left:0;width:40%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);transform:translateX(-200%);animation:ctaShine 3s ease-in-out infinite;}
 
   /* HERO */
   .hero{background:linear-gradient(135deg,var(--teal-light) 0%,#fff 70%);padding:36px 0 20px;}
@@ -71,11 +96,13 @@
   .price-now{font-size:32px;font-weight:800;color:var(--orange-dark);}
   .price-old{font-size:18px;color:var(--grey);text-decoration:line-through;}
   .save-tag{background:var(--red-bg);color:var(--red-badge);font-weight:700;font-size:13px;padding:4px 10px;border-radius:8px;}
-  .cta-primary{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:16px;padding:16px 32px;border-radius:14px;border:none;cursor:pointer;box-shadow:0 8px 20px rgba(255,90,54,0.35);width:100%;max-width:340px;text-align:center;position:relative;overflow:hidden;animation:ctaPulse 2s ease-in-out infinite;transition:transform .2s ease,box-shadow .2s ease;}
+  .cta-primary{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:16px;padding:16px 32px;border-radius:14px;border:none;cursor:pointer;box-shadow:0 8px 20px rgba(255,90,54,0.35);width:100%;max-width:340px;text-align:center;position:relative;overflow:hidden;transition:transform .2s ease;}
   .cta-primary:hover{transform:scale(1.05);box-shadow:0 12px 28px rgba(255,90,54,0.45);}
-  .cta-primary::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);animation:ctaShine 3s ease-in-out infinite;}
-  @keyframes ctaPulse{0%,100%{box-shadow:0 8px 20px rgba(255,90,54,0.35);}50%{box-shadow:0 8px 30px rgba(255,90,54,0.55),0 0 20px rgba(255,90,54,0.2);}}
-  @keyframes ctaShine{0%{left:-60%;}100%{left:120%;}}
+  .cta-primary::before{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 8px 30px rgba(255,90,54,0.55);opacity:0;animation:ctaGlow 2s ease-in-out infinite;}
+  .cta-primary::after{content:'';position:absolute;top:-50%;left:0;width:40%;height:200%;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);transform:translateX(-200%);animation:ctaShine 3s ease-in-out infinite;}
+  @keyframes ctaGlow{0%,100%{opacity:0}50%{opacity:1}}
+  @keyframes ctaShine{to{transform:translateX(300%)}}
+  @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important;animation-iteration-count:1 !important;} }
   .cta-note{color:var(--grey);font-size:12px;margin-top:10px;text-align:center;}
   .hero-cta-wrap{width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;}
 
@@ -97,7 +124,8 @@
   .toast-content p { font-size: 13px; color: var(--grey); margin: 0 0 2px; line-height: 1.3; }
   .toast-content small { font-size: 11px; color: var(--teal); font-weight: 700; }
   @media(max-width: 600px) {
-    .toast-notification { left: 16px; right: 16px; bottom: 16px; max-width: none; transform: translateY(150%); }
+    body { padding-bottom: 70px; }
+    .toast-notification { left: 16px; right: 16px; bottom: 80px; max-width: none; transform: translateY(150%); }
     .toast-notification.show { transform: translateY(0); }
   }
 
@@ -364,20 +392,15 @@
     <div class="hero-img-wrap">
       <div class="hero-img-container">
         <div class="hero-main-slider" id="heroMainSlider">
-          <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
-          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
-          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong">
-          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động">
-          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu">
+          <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5" fetchpriority="high" width="800" height="600">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn" loading="lazy" decoding="async" width="800" height="600">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong" loading="lazy" decoding="async" width="800" height="600">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động" loading="lazy" decoding="async" width="800" height="600">
+          <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu" loading="lazy" decoding="async" width="800" height="600">
         </div>
         <div class="slide-indicator mobile-only" id="slideIndicator">1/5</div>
       </div>
       <div class="hero-carousel desktop-only" id="heroCarousel">
-        <img class="active" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
-        <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
-        <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong">
-        <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động">
-        <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu">
       </div>
       <div class="hero-notice mobile-only">
         <strong>Khóa MathCA Online theo Sổ Tay lớp 1–5 là một phần của Sổ</strong>
@@ -451,17 +474,6 @@
   </div>
 </section>
 
-<section class="how">
-  <div class="container">
-    <h2 class="section-title" data-cms="how.title">Chỉ 3 Bước Để Con Bắt Đầu Học</h2>
-    <div class="steps" id="stepList">
-      <div class="step"><div class="step-num">1</div><h4>Nhận Sổ Tay Tận Nhà</h4><p>Đặt trước hôm nay, nhận sổ nhanh chóng với miễn phí vận chuyển toàn quốc.</p></div>
-      <div class="step"><div class="step-num">2</div><h4>Kích Hoạt Mã Trong Sổ</h4><p>Đăng nhập và nhập mã cào để mở khóa MathCA Online theo đúng lớp của con.</p></div>
-      <div class="step"><div class="step-num">3</div><h4>Học Cùng Video Mỗi Ngày</h4><p>Quét QR đúng bài, xem video, luyện tập và theo dõi tiến độ ngay trên điện thoại.</p></div>
-    </div>
-  </div>
-</section>
-
 <section class="pricing" id="pricingSection">
   <div class="container">
     <h2 class="section-title" data-cms="pricing.title">Bảng Giá & Ưu Đãi Pre-order Có Hạn</h2>
@@ -470,6 +482,17 @@
     
     <div class="pricing-grid" id="pricingGrid">
       <!-- Sẽ được render tự động từ CMS packages -->
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="container">
+    <h2 class="section-title" data-cms="how.title">Chỉ 3 Bước Để Con Bắt Đầu Học</h2>
+    <div class="steps" id="stepList">
+      <div class="step"><div class="step-num">1</div><h4>Nhận Sổ Tay Tận Nhà</h4><p>Đặt trước hôm nay, nhận sổ nhanh chóng với miễn phí vận chuyển toàn quốc.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Kích Hoạt Mã Trong Sổ</h4><p>Đăng nhập và nhập mã cào để mở khóa MathCA Online theo đúng lớp của con.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Học Cùng Video Mỗi Ngày</h4><p>Quét QR đúng bài, xem video, luyện tập và theo dõi tiến độ ngay trên điện thoại.</p></div>
     </div>
   </div>
 </section>
@@ -656,6 +679,11 @@
 </div>
 
 <script>
+// Điền ID Pixel và GA4 của bạn vào đây để hệ thống tracking tải ngay lập tức (tránh mất dữ liệu).
+// Nếu để trống, hệ thống sẽ tải từ CMS (có thể bị trễ một chút).
+var MATHCA_FB_PIXEL = '';
+var MATHCA_GA4_ID = '';
+
 /* =========================================================
    CẤU HÌNH MẶC ĐỊNH
    Các giá trị này được ghi đè bằng dữ liệu từ /api/content
@@ -799,10 +827,15 @@ document.getElementById('lbNext').addEventListener('click', function(e) { e.stop
 lb.addEventListener('click', function(e) { if (e.target === lb) closeLightbox(); });
 lbImg.addEventListener('click', function(e) { e.stopPropagation(); });
 document.addEventListener('keydown', function(e) {
-  if (!lb.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lbNav(-1);
-  if (e.key === 'ArrowRight') lbNav(1);
+  if (lb.classList.contains('open')) {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+    return;
+  }
+  if (overlay && overlay.classList.contains('open') && e.key === 'Escape') {
+    closeModal();
+  }
 });
 
 /* ================= POPUP ================= */
@@ -837,7 +870,7 @@ document.addEventListener('click', function (e) {
 document.getElementById('modalClose').addEventListener('click', closeModal);
 document.getElementById('successClose').addEventListener('click', closeModal);
 overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
-document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
 
 /* ================= SỐ LƯỢNG & TẠM TÍNH ================= */
 var packageSelect = document.getElementById('fPackage');
@@ -910,16 +943,17 @@ form.addEventListener('submit', function (e) {
 
   var val = packageSelect.value || "1";
   var pkg = PACKAGES[val] || PACKAGES["1"];
-  var pkgText = packageSelect.options[packageSelect.selectedIndex].text;
-  var total = pkg.new;
+  var selIdx = packageSelect.selectedIndex;
+  var pkgText = selIdx >= 0 ? packageSelect.options[selIdx].text : (pkg ? pkg.name : "Gói mặc định");
+  var total = pkg ? pkg.new : 239000;
 
   var payload = {
     name: document.getElementById('fName').value.trim(),
     phone: document.getElementById('fPhone').value.replace(/[\s.\-]/g, ''),
     email: document.getElementById('fEmail').value.trim(),
-    grade: pkgText,
+    grade: '',
     package: pkgText,
-    qty: pkg.qty,
+    qty: pkg ? pkg.qty : 1,
     total: total,
     address: document.getElementById('fAddress').value.trim(),
     note: document.getElementById('fNote').value.trim(),
@@ -959,6 +993,8 @@ form.addEventListener('submit', function (e) {
 });
 
 /* ================= TRACKING (Pixel + GA4) ================= */
+loadAnalytics({ fbPixelId: MATHCA_FB_PIXEL, ga4Id: MATHCA_GA4_ID });
+
 function loadAnalytics(s) {
   if (s.ga4Id && !window.__gaLoaded) {
     window.__gaLoaded = true;
@@ -1328,39 +1364,54 @@ function applyContent(c) {
   updateTotal();
   startCountdown();
   loadAnalytics(s);
-  startFakeOrders(c);
+  startFakeOrders();
 }
 
-function startFakeOrders(c) {
-  var notify = c.notify || {};
-  var currentStock = Number(notify.initialStock) || 142;
-  var customers = notify.customers || [];
+function startFakeOrders() {
   var stockEl = document.getElementById('stockRemainingCount');
-  
-  if (stockEl) stockEl.innerText = currentStock;
+  var fillEl = document.getElementById('stockFill');
 
-  if (customers.length > 0) {
-    var cIndex = 0;
-    setInterval(function() {
-      if (currentStock <= 5) return; // limit
-      var cus = customers[cIndex];
-      cIndex = (cIndex + 1) % customers.length;
-      
-      var toast = document.getElementById('orderToast');
-      if (toast) {
-        document.getElementById('toastName').innerText = cus.name || 'Khách hàng';
-        document.getElementById('toastTime').innerText = cus.time || 'vừa xong';
-        toast.classList.add('show');
-        
-        currentStock--;
-        if (stockEl) stockEl.innerText = currentStock;
-
-        setTimeout(function() {
-          toast.classList.remove('show');
-        }, 4000);
-      }
-    }, 10000);
+  function updateStock(newVal) {
+    if (newVal < 1) newVal = 1; // Minimum stock
+    CONFIG.STOCK_LEFT = newVal;
+    if (stockEl) stockEl.innerText = newVal;
+    if (fillEl && CONFIG.STOCK_TOTAL > 0) {
+      var pct = Math.max(0, Math.min(100, (CONFIG.STOCK_LEFT / CONFIG.STOCK_TOTAL) * 100));
+      fillEl.style.width = pct + '%';
+    }
   }
+  
+  if (stockEl) stockEl.innerText = CONFIG.STOCK_LEFT;
+
+  fetch('/api/recent-orders')
+    .then(function(r) { return r.json(); })
+    .then(function(res) {
+      if (!res.ok || !res.data || res.data.length === 0) return;
+      var customers = res.data;
+      var cIndex = 0;
+      
+      setInterval(function() {
+        if (document.hidden) return; // P4.4
+        if (CONFIG.STOCK_LEFT <= 5) return; // limit
+        
+        var cus = customers[cIndex];
+        cIndex = (cIndex + 1) % customers.length;
+        
+        var toast = document.getElementById('orderToast');
+        if (toast) {
+          document.getElementById('toastName').innerText = cus.name || 'Khách hàng';
+          document.getElementById('toastTime').innerText = cus.time || 'vừa xong';
+          toast.classList.add('show');
+          
+          updateStock(CONFIG.STOCK_LEFT - 1); // P0-4: unify stock decrease
+
+          setTimeout(function() {
+            toast.classList.remove('show');
+          }, 4000);
+        }
+      }, 10000);
+    })
+    .catch(function(err) { console.error('Orders error', err); });
 }
 
 fetch('/api/content')
