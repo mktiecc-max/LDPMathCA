@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>MathCA CMS – Quản trị Landing Page</title>
+<style>
+  :root{
+    --navy:#2A1B4D; --teal:#1FAE96; --teal-dark:#158C79; --teal-light:#EAF7F5;
+    --orange:#FF5A36; --red:#F04438; --red-bg:#FDEDEB; --grey:#6B7280;
+    --line:#E5E7EB; --bg:#F6F8FA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg);line-height:1.5;font-size:14px;}
+  button{font-family:inherit;cursor:pointer;}
+  input,textarea,select{font-family:inherit;font-size:14px;}
+
+  /* ===== LOGIN ===== */
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .login-card{background:#fff;border-radius:18px;padding:32px 28px;width:100%;max-width:380px;box-shadow:0 10px 40px rgba(42,27,77,0.12);text-align:center;}
+  .login-card h1{font-size:20px;margin-bottom:6px;}
+  .login-card p{color:var(--grey);font-size:13px;margin-bottom:20px;}
+  .login-card input{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:12px;outline:none;}
+  .login-card input:focus{border-color:var(--teal);}
+  .login-card button{width:100%;background:var(--orange);color:#fff;border:none;padding:13px;border-radius:10px;font-weight:800;font-size:15px;}
+  .login-err{color:var(--red);font-size:13px;margin-top:10px;min-height:18px;font-weight:600;}
+
+  /* ===== LAYOUT ===== */
+  .app{display:none;min-height:100vh;}
+  .topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;flex-wrap:wrap;}
+  .topbar .brand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;}
+  .topbar .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--teal);}
+  .topbar .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .btn{border:1.5px solid var(--line);background:#fff;color:var(--navy);padding:9px 16px;border-radius:9px;font-weight:700;font-size:13px;text-decoration:none;display:inline-block;}
+  .btn-primary{background:var(--orange);border-color:var(--orange);color:#fff;}
+  .btn-primary:disabled{opacity:.55;cursor:not-allowed;}
+  .btn-ghost{background:transparent;}
+  .save-state{font-size:12.5px;color:var(--grey);font-weight:600;}
+  .save-state.dirty{color:var(--orange);}
+  .save-state.saved{color:var(--teal-dark);}
+  .save-state.err{color:var(--red);}
+
+  .main{display:grid;grid-template-columns:230px 1fr;align-items:start;}
+  .sidebar{background:#fff;border-right:1px solid var(--line);padding:12px 8px;position:sticky;top:53px;max-height:calc(100vh - 53px);overflow-y:auto;}
+  .nav-item{display:block;width:100%;text-align:left;border:none;background:transparent;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--navy);margin-bottom:2px;}
+  .nav-item:hover{background:var(--bg);}
+  .nav-item.active{background:var(--teal-light);color:var(--teal-dark);font-weight:800;}
+  .content{padding:22px 24px 60px;max-width:820px;}
+  .content h2{font-size:19px;margin-bottom:4px;}
+  .content .sec-desc{color:var(--grey);font-size:13px;margin-bottom:20px;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-weight:700;font-size:13px;margin-bottom:5px;}
+  .field input[type=text],.field input[type=url],.field input[type=number],.field input[type=datetime-local],.field textarea,.field select{
+    width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:9px;background:#fff;color:var(--navy);outline:none;}
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--teal);}
+  .field textarea{resize:vertical;min-height:70px;}
+  .field .help{font-size:12px;color:var(--grey);margin-top:5px;}
+  .field .help code{background:var(--teal-light);color:var(--teal-dark);padding:1px 5px;border-radius:4px;font-size:11.5px;}
+  .field-inline{display:flex;align-items:center;gap:8px;}
+  .field-inline label{margin:0;}
+
+  .list-block{margin-top:8px;}
+  .list-item{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;}
+  .list-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .list-item-head .idx{font-weight:800;font-size:12px;color:var(--grey);text-transform:uppercase;letter-spacing:.4px;}
+  .list-item-head .tools{display:flex;gap:6px;}
+  .icon-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line);background:#fff;font-size:13px;line-height:1;color:var(--navy);}
+  .icon-btn.danger{color:var(--red);border-color:#f8c9c4;background:var(--red-bg);}
+  .icon-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-add{background:var(--teal-light);border:1.5px dashed var(--teal);color:var(--teal-dark);width:100%;padding:11px;border-radius:10px;font-weight:800;font-size:13px;}
+  .thumb{width:100%;max-height:120px;object-fit:contain;border:1px solid var(--line);border-radius:8px;margin-top:8px;background:var(--bg);}
+
+  .callout{background:var(--teal-light);border-left:4px solid var(--teal);border-radius:8px;padding:12px 14px;font-size:13px;margin-bottom:20px;color:var(--teal-dark);}
+  .callout.warn{background:#FFF7E6;border-color:#FFC531;color:#8a6100;}
+  .callout a{color:inherit;font-weight:700;}
+
+  /* ĐƠN HÀNG */
+  .table-wrap{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:12px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap;}
+  th{background:var(--bg);text-align:left;padding:10px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.3px;color:var(--grey);border-bottom:1px solid var(--line);}
+  td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  td.wrap{white-space:normal;min-width:200px;}
+  tr:last-child td{border-bottom:none;}
+  .empty{padding:28px;text-align:center;color:var(--grey);font-size:13px;}
+
+  @media(max-width:860px){
+    .main{grid-template-columns:1fr;}
+    .sidebar{position:static;max-height:none;display:flex;gap:6px;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);}
+    .nav-item{white-space:nowrap;width:auto;}
+    .content{padding:18px 16px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ĐĂNG NHẬP ===== -->
+<div class="login-wrap" id="loginWrap">
+  <form class="login-card" id="loginForm">
+    <h1>🔐 MathCA CMS</h1>
+    <p>Đăng nhập để chỉnh sửa landing page</p>
+    <input type="password" id="pwd" placeholder="Mật khẩu quản trị" autocomplete="current-password" required>
+    <button type="submit" id="loginBtn">Đăng nhập</button>
+    <p class="login-err" id="loginErr"></p>
+  </form>
+</div>
+
+<!-- ===== ỨNG DỤNG ===== -->
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> MathCA CMS</div>
+    <div class="actions">
+      <span class="save-state" id="saveState"></span>
+      <a class="btn btn-ghost" href="/" target="_blank" rel="noopener">👁 Xem trang</a>
+      <button class="btn btn-ghost" id="logoutBtn">Đăng xuất</button>
+      <button class="btn btn-primary" id="saveBtn">💾 Lưu thay đổi</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <nav class="sidebar" id="sidebar"></nav>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SCHEMA: mô tả toàn bộ field có thể sửa.
+   Thêm 1 dòng ở đây là trang admin tự sinh thêm ô nhập liệu.
+   ========================================================= */
+var SCHEMA = [
+  {
+    key: 'settings', label: '⚙️ Cài đặt & Tracking',
+    desc: 'Pixel, Analytics, kết nối Google Sheet, giá bán và thời hạn ưu đãi.',
+    callout: 'Các mã tracking dán ở đây sẽ được nạp tự động trên landing page. Để trống nghĩa là không chạy tracking đó.',
+    fields: [
+      { path: 'settings.fbPixelId', label: 'Facebook Pixel ID', type: 'text', placeholder: '1234567890123456',
+        help: 'Lấy ở Meta Events Manager → Data Sources. Chỉ nhập dãy số ID, không dán cả đoạn script.' },
+      { path: 'settings.ga4Id', label: 'Google Analytics 4 – Measurement ID', type: 'text', placeholder: 'G-XXXXXXXXXX',
+        help: 'Dạng <code>G-XXXXXXXXXX</code>, lấy ở GA4 → Admin → Data Streams.' },
+      { path: 'settings.googleScriptUrl', label: 'Google Apps Script Web App URL (nhận đơn về Sheet)', type: 'url', placeholder: 'https://script.google.com/macros/s/.../exec',
+        help: 'URL Web App sau khi Deploy file <code>google-apps-script.gs</code>. Mỗi đơn đặt trước sẽ được ghi thành 1 dòng trong Sheet.' },
+      { path: 'settings.googleSheetUrl', label: 'Link Google Sheet (để mở nhanh)', type: 'url', placeholder: 'https://docs.google.com/spreadsheets/d/.../edit',
+        help: 'Chỉ dùng để tạo nút mở bảng tính trong mục Đơn hàng.' },
+      { path: 'settings.deadline', label: 'Hạn chót đếm ngược', type: 'datetime',
+        help: 'Đồng hồ đếm ngược trên trang chạy tới mốc này (giờ Việt Nam GMT+7).' },
+      { path: 'settings.unitPrice', label: 'Giá bán (đ)', type: 'number',
+        help: 'Áp dụng cho toàn trang: giá hero, giá ưu đãi, thanh CTA và tạm tính trong form.' },
+      { path: 'settings.oldPrice', label: 'Giá gạch ngang (đ)', type: 'number' },
+      { path: 'settings.maxQty', label: 'Số lượng tối đa mỗi đơn', type: 'number' },
+      { path: 'settings.stockTotal', label: 'Tổng số suất pre-order', type: 'number' },
+      { path: 'settings.stockLeft', label: 'Số suất còn lại', type: 'number',
+        help: 'Điều khiển thanh tiến trình tồn kho và biến <code>{stockLeft}</code> trong nội dung.' }
+    ]
+  },
+  {
+    key: 'seo', label: '🔎 SEO & Chia sẻ',
+    desc: 'Tiêu đề, mô tả và ảnh hiển thị khi chia sẻ link.',
+    fields: [
+      { path: 'seo.title', label: 'Tiêu đề trang (title)', type: 'text' },
+      { path: 'seo.description', label: 'Mô tả (meta description)', type: 'textarea' },
+      { path: 'seo.ogImage', label: 'Ảnh chia sẻ (og:image)', type: 'url', preview: true }
+    ]
+  },
+  {
+    key: 'header', label: '📌 Header',
+    fields: [
+      { path: 'header.logo', label: 'Logo (URL ảnh)', type: 'url', preview: true },
+      { path: 'header.ctaText', label: 'Chữ trên nút CTA', type: 'text' }
+    ]
+  },
+  {
+    key: 'hero', label: '🚀 Hero',
+    desc: 'Khu vực đầu trang — phần quyết định phần lớn tỷ lệ chuyển đổi.',
+    fields: [
+      { path: 'hero.badge', label: 'Nhãn nhỏ phía trên', type: 'text' },
+      { path: 'hero.title', label: 'Tiêu đề chính (H1)', type: 'textarea' },
+      { path: 'hero.sub', label: 'Mô tả ngắn', type: 'textarea' },
+      { path: 'hero.countdownLabel', label: 'Nhãn đồng hồ đếm ngược', type: 'text' },
+      { path: 'hero.saveTag', label: 'Nhãn tiết kiệm', type: 'text' },
+      { path: 'hero.ctaText', label: 'Chữ trên nút CTA', type: 'text' },
+      { path: 'hero.note', label: 'Ghi chú dưới nút', type: 'text' },
+      { path: 'hero.image', label: 'Ảnh sản phẩm (URL)', type: 'url', preview: true },
+      { path: 'hero.imageAlt', label: 'Mô tả ảnh (alt)', type: 'text' }
+    ]
+  },
+  {
+    key: 'problem', label: '💡 Vấn đề / Giải pháp',
+    fields: [
+      { path: 'problem.title', label: 'Tiêu đề mục', type: 'text' },
+      { path: 'problem.sub', label: 'Mô tả mục', type: 'textarea' }
+    ],
+    list: { path: 'problem.cards', itemLabel: 'Thẻ', itemFields: [
+      { key: 'title', label: 'Tiêu đề thẻ', type: 'text' },
+      { key: 'text', label: 'Nội dung', type: 'textarea' }
+    ]}
+  },
+  {
+    key: 'benefits', label: '✅ Lợi ích',
+    fields: [
+      { path: 'benefits.title', label: 'Tiêu đề mục', type: 'text' },
+      { path: 'benefits.sub', label: 'Mô tả mục', type: 'textarea' }
+    ],
+    list: { path: 'benefits.items', itemLabel: 'Lợi ích', itemType: 'textarea' }
+  },
+  {
+    key: 'gallery', label: '🖼 Thư viện ảnh',
+    fields: [
+      { path: 'gallery.title', label: 'Tiêu đề mục', type: 'text' },
+      { path: 'gallery.sub', label: 'Mô tả mục', type: 'textarea' }
+    ],
+    list: { path: 'gallery.images', itemLabel: 'Ảnh', itemFields: [
+      { key: 'src', label: 'URL ảnh', type: 'url', preview: true },
+      { key: 'alt', label: 'Mô tả ảnh (alt)', type: 'text' },
+      { key: 'wide', label: 'Hiển thị ảnh rộng gấp đôi', type: 'checkbox' }
+    ]}
+  },
+  {
+    key: 'how', label: '🪜 3 Bước bắt đầu',
+    fields: [ { path: 'how.title', label: 'Tiêu đề mục', type: 'text' } ],
+    list: { path: 'how.steps', itemLabel: 'Bước', itemFields: [
+      { key: 'title', label: 'Tên bước', type: 'text' },
+      { key: 'text', label: 'Mô tả', type: 'textarea' }
+    ]}
+  },
+  {
+    key: 'specs', label: '📋 Thông số',
+    fields: [ { path: 'specs.title', label: 'Tiêu đề mục', type: 'text' } ],
+    list: { path: 'specs.rows', itemLabel: 'Dòng', itemFields: [
+      { key: 'label', label: 'Tên thông số', type: 'text' },
+      { key: 'value', label: 'Giá trị', type: 'textarea' }
+    ]}
+  },
+  {
+    key: 'offer', label: '🔥 Ưu đãi nhắc lại',
+    fields: [
+      { path: 'offer.title', label: 'Tiêu đề', type: 'text' },
+      { path: 'offer.stockText', label: 'Dòng tồn kho', type: 'text' },
+      { path: 'offer.ctaText', label: 'Chữ trên nút CTA', type: 'text' }
+    ]
+  },
+  {
+    key: 'faq', label: '❓ Câu hỏi thường gặp',
+    fields: [ { path: 'faq.title', label: 'Tiêu đề mục', type: 'text' } ],
+    list: { path: 'faq.items', itemLabel: 'Câu hỏi', itemFields: [
+      { key: 'q', label: 'Câu hỏi', type: 'text' },
+      { key: 'a', label: 'Trả lời', type: 'textarea' }
+    ]}
+  },
+  {
+    key: 'finalCta', label: '🎯 CTA cuối trang',
+    fields: [
+      { path: 'finalCta.title', label: 'Tiêu đề', type: 'text' },
+      { path: 'finalCta.sub', label: 'Mô tả', type: 'textarea' },
+      { path: 'finalCta.ctaText', label: 'Chữ trên nút CTA', type: 'text' }
+    ]
+  },
+  {
+    key: 'footer', label: '🔻 Footer',
+    fields: [ { path: 'footer.text', label: 'Nội dung footer', type: 'textarea' } ]
+  },
+  {
+    key: 'form', label: '📝 Form đặt hàng',
+    desc: 'Nội dung hiển thị trong popup đặt trước.',
+    fields: [
+      { path: 'form.title', label: 'Tiêu đề popup', type: 'text' },
+      { path: 'form.sub', label: 'Mô tả popup', type: 'textarea' },
+      { path: 'form.submitText', label: 'Chữ trên nút gửi', type: 'text' },
+      { path: 'form.note', label: 'Ghi chú bảo mật', type: 'text' },
+      { path: 'form.errorText', label: 'Thông báo khi gửi lỗi', type: 'textarea' },
+      { path: 'form.successTitle', label: 'Tiêu đề màn hình cảm ơn', type: 'text' },
+      { path: 'form.successText', label: 'Nội dung màn hình cảm ơn', type: 'textarea' }
+    ],
+    list: { path: 'form.grades', itemLabel: 'Lựa chọn lớp', itemType: 'text' }
+  },
+  { key: 'orders', label: '📦 Đơn hàng', custom: 'orders' }
+];
+
+// Biến động dùng được trong mọi ô nội dung
+var PLACEHOLDER_HELP = 'Có thể chèn biến động: <code>{price}</code> <code>{oldPrice}</code> <code>{stockLeft}</code> <code>{stockTotal}</code> <code>{maxQty}</code>';
+
+/* ================= TRẠNG THÁI ================= */
+var TOKEN_KEY = 'mathca_admin_token';
+var state = { token: sessionStorage.getItem(TOKEN_KEY) || '', content: null, active: 'settings', dirty: false };
+
+var $ = function (id) { return document.getElementById(id); };
+
+/* ================= API ================= */
+function api(path, options) {
+  options = options || {};
+  var headers = options.headers || {};
+  headers['Content-Type'] = 'application/json';
+  if (state.token) headers.Authorization = 'Bearer ' + state.token;
+  return fetch(path, Object.assign({}, options, { headers: headers })).then(function (res) {
+    if (res.status === 401) { logout(); throw new Error('Phiên đăng nhập đã hết hạn'); }
+    return res.json().then(function (data) {
+      if (!res.ok || data.ok === false) throw new Error(data.error || ('HTTP ' + res.status));
+      return data;
+    });
+  });
+}
+
+/* ================= ĐĂNG NHẬP ================= */
+$('loginForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var btn = $('loginBtn');
+  $('loginErr').textContent = '';
+  btn.disabled = true;
+  btn.textContent = 'Đang kiểm tra...';
+  fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: $('pwd').value })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data.ok) throw new Error(data.error || 'Đăng nhập thất bại');
+      state.token = data.token;
+      sessionStorage.setItem(TOKEN_KEY, data.token);
+      boot();
+    })
+    .catch(function (err) { $('loginErr').textContent = err.message; })
+    .finally(function () { btn.disabled = false; btn.textContent = 'Đăng nhập'; });
+});
+
+function logout() {
+  sessionStorage.removeItem(TOKEN_KEY);
+  state.token = '';
+  state.dirty = false;
+  $('app').style.display = 'none';
+  $('loginWrap').style.display = 'flex';
+}
+$('logoutBtn').addEventListener('click', function () {
+  if (state.dirty && !confirm('Còn thay đổi chưa lưu. Vẫn đăng xuất?')) return;
+  logout();
+});
+
+/* ================= KHỞI ĐỘNG ================= */
+function boot() {
+  fetch('/api/content')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      state.content = data.content;
+      state.dirty = false;
+      $('loginWrap').style.display = 'none';
+      $('app').style.display = 'block';
+      renderNav();
+      renderSection();
+      setSaveState('');
+    })
+    .catch(function (err) { $('loginErr').textContent = 'Không tải được nội dung: ' + err.message; });
+}
+
+if (state.token) boot();
+
+/* ================= TIỆN ÍCH GET/SET ================= */
+function getPath(obj, path) {
+  return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj);
+}
+function setPath(obj, path, value) {
+  var keys = path.split('.');
+  var last = keys.pop();
+  var target = keys.reduce(function (o, k) { if (o[k] == null) o[k] = {}; return o[k]; }, obj);
+  target[last] = value;
+}
+function markDirty() {
+  state.dirty = true;
+  setSaveState('dirty');
+}
+function setSaveState(kind, msg) {
+  var elx = $('saveState');
+  elx.className = 'save-state' + (kind ? ' ' + kind : '');
+  elx.textContent = msg || (kind === 'dirty' ? '● Có thay đổi chưa lưu' : kind === 'saved' ? '✓ Đã lưu' : '');
+}
+
+/* ================= ĐIỀU HƯỚNG ================= */
+function renderNav() {
+  var nav = $('sidebar');
+  nav.innerHTML = '';
+  SCHEMA.forEach(function (sec) {
+    var btn = document.createElement('button');
+    btn.className = 'nav-item' + (sec.key === state.active ? ' active' : '');
+    btn.textContent = sec.label;
+    btn.addEventListener('click', function () {
+      state.active = sec.key;
+      renderNav();
+      renderSection();
+      window.scrollTo(0, 0);
+    });
+    nav.appendChild(btn);
+  });
+}
+
+/* ================= SINH FORM ================= */
+function makeInput(type, value, onChange) {
+  var input;
+  if (type === 'textarea') {
+    input = document.createElement('textarea');
+    input.value = value == null ? '' : value;
+  } else if (type === 'checkbox') {
+    input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = Boolean(value);
+  } else if (type === 'datetime') {
+    input = document.createElement('input');
+    input.type = 'datetime-local';
+    input.value = String(value || '').slice(0, 16);
+  } else {
+    input = document.createElement('input');
+    input.type = type === 'number' ? 'number' : type === 'url' ? 'url' : 'text';
+    input.value = value == null ? '' : value;
+  }
+  input.addEventListener('input', function () {
+    var v;
+    if (type === 'checkbox') v = input.checked;
+    else if (type === 'number') v = input.value === '' ? '' : Number(input.value);
+    else if (type === 'datetime') v = input.value ? input.value + ':00+07:00' : '';
+    else v = input.value;
+    onChange(v);
+    markDirty();
+  });
+  return input;
+}
+
+function makeField(def, value, onChange) {
+  var wrap = document.createElement('div');
+  wrap.className = 'field';
+  var label = document.createElement('label');
+  label.textContent = def.label;
+  var input = makeInput(def.type, value, function (v) {
+    onChange(v);
+    if (def.preview) updatePreview(wrap, v);
+  });
+  if (def.placeholder) input.placeholder = def.placeholder;
+
+  if (def.type === 'checkbox') {
+    wrap.className = 'field field-inline';
+    wrap.appendChild(input);
+    wrap.appendChild(label);
+  } else {
+    wrap.appendChild(label);
+    wrap.appendChild(input);
+  }
+
+  if (def.help) {
+    var help = document.createElement('p');
+    help.className = 'help';
+    help.innerHTML = def.help;
+    wrap.appendChild(help);
+  }
+  if (def.preview) {
+    var img = document.createElement('img');
+    img.className = 'thumb';
+    img.alt = 'Xem trước';
+    wrap.appendChild(img);
+    updatePreview(wrap, value);
+  }
+  return wrap;
+}
+
+function updatePreview(wrap, url) {
+  var img = wrap.querySelector('.thumb');
+  if (!img) return;
+  if (url) { img.src = url; img.style.display = 'block'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; }
+}
+
+function renderList(sec, host) {
+  var cfg = sec.list;
+  var arr = getPath(state.content, cfg.path);
+  if (!Array.isArray(arr)) { arr = []; setPath(state.content, cfg.path, arr); }
+
+  var block = document.createElement('div');
+  block.className = 'list-block';
+
+  arr.forEach(function (item, i) {
+    var card = document.createElement('div');
+    card.className = 'list-item';
+
+    var head = document.createElement('div');
+    head.className = 'list-item-head';
+    var idx = document.createElement('span');
+    idx.className = 'idx';
+    idx.textContent = cfg.itemLabel + ' ' + (i + 1);
+    var tools = document.createElement('div');
+    tools.className = 'tools';
+
+    [['↑', i === 0, function () { arr.splice(i - 1, 0, arr.splice(i, 1)[0]); }],
+     ['↓', i === arr.length - 1, function () { arr.splice(i + 1, 0, arr.splice(i, 1)[0]); }]
+    ].forEach(function (spec) {
+      var b = document.createElement('button');
+      b.className = 'icon-btn';
+      b.type = 'button';
+      b.textContent = spec[0];
+      b.disabled = spec[1];
+      b.addEventListener('click', function () { spec[2](); markDirty(); renderSection(); });
+      tools.appendChild(b);
+    });
+
+    var del = document.createElement('button');
+    del.className = 'icon-btn danger';
+    del.type = 'button';
+    del.textContent = '✕';
+    del.addEventListener('click', function () {
+      if (!confirm('Xóa ' + cfg.itemLabel.toLowerCase() + ' ' + (i + 1) + '?')) return;
+      arr.splice(i, 1);
+      markDirty();
+      renderSection();
+    });
+    tools.appendChild(del);
+
+    head.appendChild(idx);
+    head.appendChild(tools);
+    card.appendChild(head);
+
+    if (cfg.itemFields) {
+      cfg.itemFields.forEach(function (fdef) {
+        card.appendChild(makeField(fdef, item[fdef.key], function (v) { item[fdef.key] = v; }));
+      });
+    } else {
+      card.appendChild(makeField(
+        { label: cfg.itemLabel, type: cfg.itemType || 'text' },
+        item,
+        function (v) { arr[i] = v; }
+      ));
+    }
+    block.appendChild(card);
+  });
+
+  var add = document.createElement('button');
+  add.className = 'btn-add';
+  add.type = 'button';
+  add.textContent = '+ Thêm ' + cfg.itemLabel.toLowerCase();
+  add.addEventListener('click', function () {
+    if (cfg.itemFields) {
+      var blank = {};
+      cfg.itemFields.forEach(function (f) { blank[f.key] = f.type === 'checkbox' ? false : ''; });
+      arr.push(blank);
+    } else {
+      arr.push('');
+    }
+    markDirty();
+    renderSection();
+  });
+  block.appendChild(add);
+  host.appendChild(block);
+}
+
+function renderSection() {
+  var sec = SCHEMA.find(function (s) { return s.key === state.active; });
+  var host = $('content');
+  host.innerHTML = '';
+
+  var h2 = document.createElement('h2');
+  h2.textContent = sec.label;
+  host.appendChild(h2);
+
+  var desc = document.createElement('p');
+  desc.className = 'sec-desc';
+  desc.innerHTML = sec.desc || PLACEHOLDER_HELP;
+  host.appendChild(desc);
+
+  if (sec.callout) {
+    var box = document.createElement('div');
+    box.className = 'callout';
+    box.innerHTML = sec.callout;
+    host.appendChild(box);
+  }
+
+  if (sec.custom === 'orders') { renderOrders(host); return; }
+
+  (sec.fields || []).forEach(function (fdef) {
+    host.appendChild(makeField(fdef, getPath(state.content, fdef.path), function (v) {
+      setPath(state.content, fdef.path, v);
+    }));
+  });
+
+  if (sec.list) renderList(sec, host);
+}
+
+/* ================= ĐƠN HÀNG ================= */
+function renderOrders(host) {
+  var sheetUrl = getPath(state.content, 'settings.googleSheetUrl');
+  var bar = document.createElement('div');
+  bar.style.cssText = 'display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;';
+
+  var reload = document.createElement('button');
+  reload.className = 'btn';
+  reload.textContent = '🔄 Tải lại';
+  bar.appendChild(reload);
+
+  if (sheetUrl) {
+    var link = document.createElement('a');
+    link.className = 'btn';
+    link.href = sheetUrl;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = '📊 Mở Google Sheet';
+    bar.appendChild(link);
+  } else {
+    var warn = document.createElement('div');
+    warn.className = 'callout warn';
+    warn.innerHTML = 'Chưa nhập <b>Link Google Sheet</b> trong mục Cài đặt nên không có nút mở bảng tính.';
+    host.appendChild(warn);
+  }
+  host.appendChild(bar);
+
+  var wrap = document.createElement('div');
+  wrap.className = 'table-wrap';
+  wrap.innerHTML = '<div class="empty">Đang tải đơn hàng...</div>';
+  host.appendChild(wrap);
+
+  function load() {
+    wrap.innerHTML = '<div class="empty">Đang tải đơn hàng...</div>';
+    api('/api/orders')
+      .then(function (data) {
+        var orders = data.orders || [];
+        if (!orders.length) {
+          wrap.innerHTML = '<div class="empty">Chưa có đơn nào trong Supabase.' +
+            (data.note ? ' (' + data.note + ')' : '') + '</div>';
+          return;
+        }
+        var cols = [
+          ['Thời gian', function (o) { return new Date(o.created_at).toLocaleString('vi-VN'); }],
+          ['Họ tên', function (o) { return o.name; }],
+          ['SĐT', function (o) { return o.phone; }],
+          ['Email', function (o) { return o.email || ''; }],
+          ['Lớp', function (o) { return o.grade || ''; }],
+          ['SL', function (o) { return o.qty; }],
+          ['Tổng', function (o) { return Number(o.total || 0).toLocaleString('vi-VN') + 'đ'; }],
+          ['Địa chỉ', function (o) { return o.address; }, true],
+          ['Ghi chú', function (o) { return o.note || ''; }, true]
+        ];
+        var table = document.createElement('table');
+        var thead = document.createElement('thead');
+        var trh = document.createElement('tr');
+        cols.forEach(function (c) {
+          var th = document.createElement('th');
+          th.textContent = c[0];
+          trh.appendChild(th);
+        });
+        thead.appendChild(trh);
+        table.appendChild(thead);
+        var tbody = document.createElement('tbody');
+        orders.forEach(function (o) {
+          var tr = document.createElement('tr');
+          cols.forEach(function (c) {
+            var td = document.createElement('td');
+            if (c[2]) td.className = 'wrap';
+            td.textContent = c[1](o);
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        wrap.innerHTML = '';
+        wrap.appendChild(table);
+
+        var count = document.createElement('p');
+        count.className = 'help';
+        count.style.cssText = 'margin-top:10px;color:#6B7280;font-size:12.5px;';
+        count.textContent = 'Hiển thị ' + orders.length + ' đơn gần nhất.';
+        host.appendChild(count);
+      })
+      .catch(function (err) {
+        wrap.innerHTML = '<div class="empty">Lỗi tải đơn hàng: ' + err.message + '</div>';
+      });
+  }
+  reload.addEventListener('click', load);
+  load();
+}
+
+/* ================= LƯU ================= */
+$('saveBtn').addEventListener('click', function () {
+  var btn = $('saveBtn');
+  btn.disabled = true;
+  setSaveState('', 'Đang lưu...');
+  api('/api/content', { method: 'POST', body: JSON.stringify({ content: state.content }) })
+    .then(function () {
+      state.dirty = false;
+      setSaveState('saved');
+    })
+    .catch(function (err) { setSaveState('err', '✕ ' + err.message); })
+    .finally(function () { btn.disabled = false; });
+});
+
+window.addEventListener('beforeunload', function (e) {
+  if (state.dirty) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+
+</body>
+</html>

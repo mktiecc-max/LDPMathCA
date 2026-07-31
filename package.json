@@ -1,0 +1,10 @@
+{
+  "name": "mathca-landing-preorder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page pre-order So Tay Thien Tai Toan lop 1-5 (MathCA) - static HTML + Vercel serverless API",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  }
+}

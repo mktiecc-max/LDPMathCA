@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sổ Tay Thiên Tài Toán Lớp 1-5 | MathCA – Pre-order Ưu Đãi 25%</title>
+<meta name="description" content="Sổ công thức & mẹo Toán lớp 1–5 tích hợp video QR và trọn bộ khóa học MathCA Online 5 năm. Pre-order 200 cuốn đầu tiên – giảm 25%, miễn phí vận chuyển toàn quốc.">
+<meta property="og:title" content="Sổ Tay Thiên Tài Toán Lớp 1-5 | MathCA">
+<meta property="og:description" content="Mỗi cuốn sổ tay – mở ra một thiên tài Toán học. Pre-order giảm 25%, tặng kèm khóa MathCA Online 5 năm.">
+<meta property="og:image" content="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --navy:#2A1B4D;
+    --teal:#1FAE96;
+    --teal-dark:#158C79;
+    --teal-light:#EAF7F5;
+    --orange:#FF5A36;
+    --orange-dark:#E8481F;
+    --yellow:#FFC531;
+    --red-badge:#F04438;
+    --red-bg:#FDEDEB;
+    --grey:#6B7280;
+    --bg:#FCFDFE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg);line-height:1.5;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1100px;margin:0 auto;padding:0 20px;}
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;}
+
+  /* HEADER */
+  header{position:sticky;top:0;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06);z-index:100;}
+  .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;max-width:1100px;margin:0 auto;}
+  .logo img{height:36px;}
+  .header-cta{background:var(--orange);color:#fff;padding:10px 20px;border-radius:30px;font-weight:700;font-size:14px;border:none;cursor:pointer;white-space:nowrap;}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--teal-light) 0%,#fff 70%);padding:36px 0 20px;}
+  .hero-grid{display:flex;flex-direction:column;gap:24px;align-items:center;}
+  .badge{display:inline-block;background:var(--teal-light);color:var(--teal-dark);font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 14px;border-radius:20px;margin-bottom:14px;}
+  .hero-text{text-align:center;}
+  h1{font-size:28px;line-height:1.25;color:var(--navy);margin-bottom:14px;font-weight:800;}
+  .hero-sub{color:var(--grey);font-size:15px;margin-bottom:20px;}
+  .hero-img{width:100%;max-width:420px;border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,0.12);}
+  .countdown-box{background:var(--red-bg);border:1px solid #f8c9c4;border-radius:14px;padding:14px 18px;margin:16px 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;}
+  .countdown-box .label{color:var(--red-badge);font-weight:700;font-size:13px;}
+  .timer{display:flex;gap:8px;}
+  .timer div{background:var(--navy);color:#fff;border-radius:8px;padding:6px 9px;font-weight:700;font-size:14px;min-width:38px;text-align:center;}
+  .timer small{font-weight:400;font-size:9px;display:block;}
+  .price-row{display:flex;align-items:baseline;gap:10px;justify-content:center;margin:10px 0;flex-wrap:wrap;}
+  .price-now{font-size:32px;font-weight:800;color:var(--orange-dark);}
+  .price-old{font-size:18px;color:var(--grey);text-decoration:line-through;}
+  .save-tag{background:var(--red-bg);color:var(--red-badge);font-weight:700;font-size:13px;padding:4px 10px;border-radius:8px;}
+  .cta-primary{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:16px;padding:16px 32px;border-radius:14px;border:none;cursor:pointer;box-shadow:0 8px 20px rgba(255,90,54,0.35);width:100%;max-width:340px;text-align:center;}
+  .cta-note{color:var(--grey);font-size:12px;margin-top:10px;text-align:center;}
+
+  section{padding:40px 0;}
+  .section-title{text-align:center;font-size:24px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+  .section-sub{text-align:center;color:var(--grey);font-size:14px;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto;}
+
+  /* PROBLEM/SOLUTION */
+  .problem{background:#fff;}
+  .ps-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+  .ps-card{background:var(--teal-light);border-radius:16px;padding:20px;}
+  .ps-card h3{color:var(--teal-dark);font-size:16px;margin-bottom:8px;}
+  .ps-card p{font-size:14px;color:var(--navy);}
+
+  /* BENEFITS */
+  .benefits{background:var(--teal-light);}
+  .benefit-list{display:grid;grid-template-columns:1fr;gap:16px;}
+  .benefit-item{background:#fff;border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 4px 14px rgba(0,0,0,0.04);}
+  .check{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
+  .benefit-item p{font-size:14px;color:var(--navy);font-weight:600;}
+
+  /* GALLERY */
+  .gallery{background:#fff;}
+  .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .gallery-grid img{border-radius:12px;border:1px solid #eee;}
+  .gallery-grid .full{grid-column:1/-1;}
+
+  /* HOW IT WORKS */
+  .how{background:var(--bg);}
+  .steps{display:grid;grid-template-columns:1fr;gap:20px;}
+  .step{text-align:center;background:#fff;border-radius:16px;padding:24px 18px;box-shadow:0 4px 14px rgba(0,0,0,0.05);}
+  .step-num{width:40px;height:40px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:16px;}
+  .step h4{font-size:15px;margin-bottom:6px;color:var(--navy);}
+  .step p{font-size:13px;color:var(--grey);}
+
+  /* SPECS */
+  .specs{background:#fff;}
+  .spec-table{width:100%;border-collapse:collapse;font-size:14px;}
+  .spec-table tr{border-bottom:1px solid #eee;}
+  .spec-table td{padding:12px 8px;vertical-align:top;}
+  .spec-table td:first-child{color:var(--grey);font-weight:700;width:40%;}
+  .spec-table td:last-child{color:var(--navy);}
+
+  /* OFFER REPEAT */
+  .offer{background:var(--navy);color:#fff;text-align:center;}
+  .offer h2{font-size:22px;margin-bottom:10px;color:#fff;}
+  .offer .price-now{color:var(--yellow);}
+  .offer .price-old{color:#c9c2dd;}
+  .offer .cta-primary{margin-top:16px;}
+  .stock-bar{background:rgba(255,255,255,0.15);border-radius:20px;height:10px;max-width:400px;margin:14px auto;overflow:hidden;}
+  .stock-fill{background:var(--yellow);height:100%;width:100%;}
+  .stock-text{font-size:12px;color:#e5dff5;margin-bottom:6px;}
+
+  /* FAQ */
+  .faq{background:var(--bg);}
+  .faq-item{background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+  .faq-item h4{font-size:14px;color:var(--navy);margin-bottom:6px;}
+  .faq-item p{font-size:13px;color:var(--grey);}
+
+  /* FINAL CTA */
+  .final-cta{background:linear-gradient(135deg,#FFF7E6,var(--teal-light));text-align:center;}
+  .final-cta h2{font-size:22px;margin-bottom:8px;}
+  .final-cta p{color:var(--grey);font-size:14px;margin-bottom:18px;}
+
+  footer{background:#fff;border-top:1px solid #eee;padding:20px 0 90px;text-align:center;font-size:12px;color:var(--grey);}
+
+  /* STICKY MOBILE CTA */
+  .sticky-cta{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,0.1);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:200;}
+  .sticky-cta .price-now{font-size:18px;}
+  .sticky-cta button{background:var(--orange);color:#fff;border:none;padding:12px 20px;border-radius:12px;font-weight:800;font-size:14px;cursor:pointer;}
+
+  /* ===== POPUP FORM ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(42,27,77,0.55);z-index:500;display:none;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(2px);}
+  .modal-overlay.open{display:flex;animation:fadeIn .2s ease;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  @keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:22px 20px 28px;position:relative;animation:slideUp .25s ease;}
+  .modal-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:#f3f4f6;color:var(--grey);font-size:18px;font-weight:700;cursor:pointer;line-height:1;}
+  .modal h3{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:4px;padding-right:36px;}
+  .modal .modal-sub{font-size:13px;color:var(--grey);margin-bottom:16px;}
+  .form-group{margin-bottom:14px;}
+  .form-group label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+  .form-group label .req{color:var(--red-badge);}
+  .form-group input,.form-group select,.form-group textarea{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;font-family:inherit;color:var(--navy);background:#fff;outline:none;transition:border-color .15s;}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);}
+  .form-group input.error,.form-group select.error,.form-group textarea.error{border-color:var(--red-badge);background:var(--red-bg);}
+  .field-error{font-size:12px;color:var(--red-badge);margin-top:4px;display:none;}
+  .qty-row{display:flex;align-items:center;gap:12px;}
+  .qty-btn{width:42px;height:42px;border-radius:10px;border:1.5px solid #e5e7eb;background:#fff;font-size:20px;font-weight:700;color:var(--navy);cursor:pointer;flex:0 0 auto;}
+  .qty-btn:active{background:var(--teal-light);}
+  .qty-row input{text-align:center;font-weight:800;flex:1;max-width:90px;}
+  .order-summary{background:var(--teal-light);border-radius:12px;padding:14px 16px;margin:16px 0;display:flex;justify-content:space-between;align-items:baseline;}
+  .order-summary .label{font-size:13px;font-weight:700;color:var(--teal-dark);}
+  .order-summary .total{font-size:22px;font-weight:800;color:var(--orange-dark);}
+  .order-summary .old{font-size:13px;color:var(--grey);text-decoration:line-through;margin-left:6px;}
+  .btn-submit{width:100%;background:var(--orange);color:#fff;font-weight:800;font-size:16px;padding:15px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 6px 16px rgba(255,90,54,0.3);}
+  .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+  .form-note{font-size:11.5px;color:var(--grey);text-align:center;margin-top:10px;}
+  .form-msg{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:600;}
+  .form-msg.error{display:block;background:var(--red-bg);color:var(--red-badge);}
+  .success-view{display:none;text-align:center;padding:20px 0 10px;}
+  .success-view .icon{width:64px;height:64px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid var(--teal);}
+  .success-view h3{padding:0;margin-bottom:8px;}
+  .success-view p{font-size:14px;color:var(--grey);margin-bottom:18px;}
+  .success-view .btn-submit{background:var(--teal);box-shadow:0 6px 16px rgba(31,174,150,0.3);}
+  .hp-field{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;}
+
+  /* DESKTOP */
+  @media(min-width:900px){
+    h1{font-size:42px;}
+    .hero-grid{flex-direction:row;text-align:left;align-items:center;}
+    .hero-text{text-align:left;flex:1;}
+    .hero-img-wrap{flex:1;display:flex;justify-content:center;}
+    .price-row{justify-content:flex-start;}
+    .countdown-box{justify-content:flex-start;}
+    .cta-primary{width:auto;}
+    .cta-note{text-align:left;}
+    .ps-grid{grid-template-columns:1fr 1fr;}
+    .benefit-list{grid-template-columns:1fr 1fr;}
+    .gallery-grid{grid-template-columns:repeat(4,1fr);}
+    .gallery-grid .full{grid-column:span 2;}
+    .steps{grid-template-columns:repeat(3,1fr);}
+    .sticky-cta{display:none;}
+    .header-cta{padding:12px 26px;}
+    footer{padding-bottom:20px;}
+    .modal-overlay{align-items:center;padding:20px;}
+    .modal{border-radius:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><img data-cms-attr="src:header.logo" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/brand/logos/mathca-logo-horizontal.webp" alt="MathCA"></div>
+    <button class="header-cta js-open-form" data-cms="header.ctaText">Đặt Trước Ngay</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <span class="badge" data-cms="hero.badge">PRE-ORDER 200 CUỐN ĐẦU TIÊN</span>
+      <h1 data-cms="hero.title">Mỗi Cuốn Sổ Tay – Mở Ra Một Thiên Tài Toán Học</h1>
+      <p class="hero-sub" data-cms="hero.sub">Sổ công thức &amp; mẹo Toán lớp 1–5 tích hợp video QR và trọn bộ khóa học MathCA Online 5 năm. Con tự học chủ động, ba mẹ an tâm đồng hành.</p>
+
+      <div class="countdown-box">
+        <span class="label" data-cms="hero.countdownLabel">⏰ Ưu đãi kết thúc sau</span>
+        <div class="timer" id="countdown">
+          <div><span data-cd="d">--</span><small>Ngày</small></div>
+          <div><span data-cd="h">--</span><small>Giờ</small></div>
+          <div><span data-cd="m">--</span><small>Phút</small></div>
+          <div><span data-cd="s">--</span><small>Giây</small></div>
+        </div>
+      </div>
+
+      <div class="price-row">
+        <span class="price-now" data-price="unit">239.000đ</span>
+        <span class="price-old" data-price="old">320.000đ</span>
+        <span class="save-tag" data-cms="hero.saveTag">Tiết kiệm 25%</span>
+      </div>
+
+      <button class="cta-primary js-open-form" data-cms="hero.ctaText">⚡ Đặt Trước Ngay</button>
+      <p class="cta-note" data-cms="hero.note">Miễn phí vận chuyển toàn quốc · Không cần đăng nhập · Còn 200/200 suất</p>
+    </div>
+    <div class="hero-img-wrap">
+      <div class="hero-img">
+        <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="problem">
+  <div class="container">
+    <h2 class="section-title" data-cms="problem.title">Con Học Trước Quên Sau? MathCA Có Giải Pháp</h2>
+    <p class="section-sub" data-cms="problem.sub">Không cần lo lắng khi ba mẹ bận rộn không kèm được con học Toán mỗi ngày.</p>
+    <div class="ps-grid" id="psGrid">
+      <div class="ps-card">
+        <h3>😟 Nỗi lo của ba mẹ</h3>
+        <p>Con quên công thức cũ, sợ môn Toán, không có ai giảng lại đúng bài khi cần, ba mẹ không đủ thời gian kèm cặp mỗi tối.</p>
+      </div>
+      <div class="ps-card">
+        <h3>✅ Giải pháp từ MathCA</h3>
+        <p>Một cuốn sổ tra cứu nhanh mọi công thức lớp 1–5, kèm video hướng dẫn đúng bài chỉ bằng một lần quét QR — con tự học, tự ôn mọi lúc.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="benefits">
+  <div class="container">
+    <h2 class="section-title" data-cms="benefits.title">Bạn Nhận Được Gì</h2>
+    <p class="section-sub" data-cms="benefits.sub">Trọn bộ công cụ tự học Toán tiểu học trong một sản phẩm duy nhất</p>
+    <div class="benefit-list" id="benefitList">
+      <div class="benefit-item"><div class="check">✓</div><p>Tra cứu công thức và mẹo Toán xuyên suốt lớp 1–5 trong một cuốn sổ</p></div>
+      <div class="benefit-item"><div class="check">✓</div><p>Quét QR để xem video giáo viên MathCA giải thích đúng nội dung đang học</p></div>
+      <div class="benefit-item"><div class="check">✓</div><p>Kích hoạt Khóa MathCA Online theo Sổ Tay lớp 1–5 trong 5 năm</p></div>
+      <div class="benefit-item"><div class="check">✓</div><p>Nhận bài luyện tập cập nhật qua MathCA Online và email</p></div>
+      <div class="benefit-item"><div class="check">✓</div><p>Tham gia nhóm Zalo hỗ trợ trao đổi cùng phụ huynh</p></div>
+      <div class="benefit-item"><div class="check">✓</div><p>Thiết kế để bàn tiện tra cứu, khổ A5 gọn nhẹ, 66 trang bền bỉ</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery">
+  <div class="container">
+    <h2 class="section-title" data-cms="gallery.title">Xem Bên Trong Cuốn Sổ</h2>
+    <p class="section-sub" data-cms="gallery.sub">Nội dung minh họa sinh động, dễ hiểu cho từng độ tuổi</p>
+    <div class="gallery-grid" id="galleryGrid">
+      <img class="full" loading="lazy" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
+      <img loading="lazy" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/5-inner-number-0-10-951e83306104.webp" alt="Trang nội dung số học">
+      <img loading="lazy" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-inner-geometry-study-0c60e82ee04a.webp" alt="Hình học">
+      <img loading="lazy" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/8-inner-qr-scan-fa036a1241c2.webp" alt="Quét QR xem video">
+      <img loading="lazy" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/9-inner-unit-table-62efff3070e8.webp" alt="Bảng đơn vị">
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="container">
+    <h2 class="section-title" data-cms="how.title">Chỉ 3 Bước Để Con Bắt Đầu Học</h2>
+    <div class="steps" id="stepList">
+      <div class="step"><div class="step-num">1</div><h4>Nhận Sổ Tay Tận Nhà</h4><p>Đặt trước hôm nay, nhận sổ nhanh chóng với miễn phí vận chuyển toàn quốc.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Kích Hoạt Mã Trong Sổ</h4><p>Đăng nhập và nhập mã cào để mở khóa MathCA Online theo đúng lớp của con.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Học Cùng Video Mỗi Ngày</h4><p>Quét QR đúng bài, xem video, luyện tập và theo dõi tiến độ ngay trên điện thoại.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="specs">
+  <div class="container" style="max-width:700px;">
+    <h2 class="section-title" data-cms="specs.title">Thông Số Sản Phẩm</h2>
+    <table class="spec-table"><tbody id="specBody">
+      <tr><td>Nội dung</td><td>Công thức và mẹo Toán lớp 1–5</td></tr>
+      <tr><td>Quy cách</td><td>Khổ A5, 66 trang, dạng để bàn</td></tr>
+      <tr><td>Học trực tuyến</td><td>Khóa MathCA Online theo Sổ Tay lớp 1–5</td></tr>
+      <tr><td>Thời hạn</td><td>60 tháng (5 năm) từ ngày kích hoạt</td></tr>
+      <tr><td>Chính sách</td><td>Được kiểm tra trước khi nhận; không đổi trả, đơn trên sàn theo chính sách của sàn</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<section class="offer">
+  <div class="container" style="max-width:600px;">
+    <h2 data-cms="offer.title">Ưu Đãi Pre-order Có Hạn</h2>
+    <p class="stock-text" data-cms="offer.stockText">Còn lại 200/200 suất — Tối đa 20 cuốn/đơn</p>
+    <div class="stock-bar"><div class="stock-fill" id="stockFill"></div></div>
+    <div class="price-row" style="justify-content:center;">
+      <span class="price-now" data-price="unit">239.000đ</span>
+      <span class="price-old" data-price="old">320.000đ</span>
+    </div>
+    <button class="cta-primary js-open-form" data-cms="offer.ctaText">⚡ Đặt Trước Ngay</button>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container" style="max-width:700px;">
+    <h2 class="section-title" data-cms="faq.title">Câu Hỏi Thường Gặp</h2>
+    <div id="faqList">
+      <div class="faq-item"><h4>Sổ tay dùng được trong bao lâu?</h4><p>Khóa MathCA Online đi kèm có thời hạn 60 tháng (5 năm) kể từ ngày kích hoạt mã.</p></div>
+      <div class="faq-item"><h4>Có cần tài khoản để đặt hàng không?</h4><p>Không cần. Bạn chỉ cần điền thông tin nhận hàng vào form đặt trước, MathCA sẽ liên hệ xác nhận đơn.</p></div>
+      <div class="faq-item"><h4>Chính sách đổi trả như thế nào?</h4><p>Sản phẩm được kiểm tra trước khi nhận hàng; sau khi nhận sẽ không áp dụng đổi trả (đơn trên sàn theo chính sách riêng của sàn).</p></div>
+      <div class="faq-item"><h4>Sổ tay phù hợp cho lớp mấy?</h4><p>Nội dung bao phủ trọn vẹn chương trình Toán từ lớp 1 đến lớp 5 trong cùng một cuốn.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container" style="max-width:600px;">
+    <h2 data-cms="finalCta.title">Đừng Để Con Bỏ Lỡ Ưu Đãi 25%</h2>
+    <p data-cms="finalCta.sub">Chỉ áp dụng cho 200 suất pre-order đầu tiên — miễn phí vận chuyển toàn quốc</p>
+    <button class="cta-primary js-open-form" data-cms="finalCta.ctaText">⚡ Đặt Trước Ngay – 239.000đ</button>
+  </div>
+</section>
+
+<footer data-cms="footer.text">
+  © 2026 MathCA. Sổ Tay Thiên Tài Toán Lớp 1–5.
+</footer>
+
+<div class="sticky-cta">
+  <div><span class="price-now" data-price="unit" style="color:var(--orange-dark);">239.000đ</span> <span class="price-old" data-price="old" style="font-size:12px;">320.000đ</span></div>
+  <button class="js-open-form" data-cms="header.ctaText">Đặt Trước Ngay</button>
+</div>
+
+<!-- ===== POPUP FORM ĐẶT TRƯỚC ===== -->
+<div class="modal-overlay" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Đóng">✕</button>
+
+    <div id="formView">
+      <h3 id="modalTitle" data-cms="form.title">🛒 Đặt Trước Sổ Tay Thiên Tài Toán</h3>
+      <p class="modal-sub" data-cms="form.sub">Điền thông tin bên dưới, MathCA sẽ gọi xác nhận đơn trong 24h. Thanh toán khi nhận hàng (COD).</p>
+
+      <form id="orderForm" novalidate>
+        <input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off">
+
+        <div class="form-group">
+          <label for="fName">Họ và tên phụ huynh <span class="req">*</span></label>
+          <input type="text" id="fName" name="name" placeholder="VD: Nguyễn Thị Lan" autocomplete="name" required>
+          <p class="field-error">Vui lòng nhập họ tên</p>
+        </div>
+
+        <div class="form-group">
+          <label for="fPhone">Số điện thoại (Zalo) <span class="req">*</span></label>
+          <input type="tel" id="fPhone" name="phone" placeholder="VD: 0912 345 678" autocomplete="tel" required>
+          <p class="field-error">Số điện thoại chưa đúng định dạng</p>
+        </div>
+
+        <div class="form-group">
+          <label for="fEmail">Email (nhận bài luyện tập cập nhật)</label>
+          <input type="email" id="fEmail" name="email" placeholder="VD: email@gmail.com" autocomplete="email">
+          <p class="field-error">Email chưa đúng định dạng</p>
+        </div>
+
+        <div class="form-group">
+          <label for="fGrade">Con đang học lớp</label>
+          <select id="fGrade" name="grade">
+            <option value="">-- Chọn lớp --</option>
+            <option value="Chuẩn bị vào lớp 1">Chuẩn bị vào lớp 1</option>
+            <option value="Lớp 1">Lớp 1</option>
+            <option value="Lớp 2">Lớp 2</option>
+            <option value="Lớp 3">Lớp 3</option>
+            <option value="Lớp 4">Lớp 4</option>
+            <option value="Lớp 5">Lớp 5</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fQty">Số lượng (tối đa <span id="maxQtyLabel">20</span> cuốn/đơn)</label>
+          <div class="qty-row">
+            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Giảm">−</button>
+            <input type="number" id="fQty" name="qty" value="1" min="1" max="20" inputmode="numeric">
+            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Tăng">+</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fAddress">Địa chỉ nhận hàng <span class="req">*</span></label>
+          <textarea id="fAddress" name="address" rows="2" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required></textarea>
+          <p class="field-error">Vui lòng nhập địa chỉ nhận hàng</p>
+        </div>
+
+        <div class="form-group">
+          <label for="fNote">Ghi chú (nếu có)</label>
+          <input type="text" id="fNote" name="note" placeholder="VD: Giao giờ hành chính">
+        </div>
+
+        <div class="order-summary">
+          <span class="label">Tạm tính (freeship)</span>
+          <span><span class="total" id="totalPrice">239.000đ</span><span class="old" id="totalOld">320.000đ</span></span>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn" data-cms="form.submitText">⚡ Xác Nhận Đặt Trước</button>
+        <p class="form-note" data-cms="form.note">🔒 Thông tin của bạn được bảo mật, chỉ dùng để xử lý đơn hàng.</p>
+        <p class="form-msg" id="formMsg"></p>
+      </form>
+    </div>
+
+    <div class="success-view" id="successView">
+      <div class="icon">✓</div>
+      <h3 data-cms="form.successTitle">Đặt trước thành công!</h3>
+      <p data-cms="form.successText">Cảm ơn ba mẹ đã tin tưởng MathCA. Chúng tôi sẽ gọi điện xác nhận đơn hàng trong vòng 24h. Ba mẹ vui lòng để ý điện thoại nhé!</p>
+      <button class="btn-submit" id="successClose">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   CẤU HÌNH MẶC ĐỊNH
+   Các giá trị này được ghi đè bằng dữ liệu từ /api/content
+   (chỉnh trong trang /admin). Nếu API lỗi, trang vẫn chạy
+   với nội dung tĩnh sẵn có bên trên.
+   ========================================================= */
+var CONFIG = {
+  DEADLINE: '2026-08-16T23:59:59+07:00',
+  UNIT_PRICE: 239000,
+  OLD_PRICE: 320000,
+  MAX_QTY: 20,
+  STOCK_LEFT: 200,
+  STOCK_TOTAL: 200,
+  ENDPOINT: '/api/preorder',
+  ERROR_TEXT: 'Có lỗi khi gửi đơn. Vui lòng thử lại hoặc liên hệ Zalo/Hotline của MathCA.'
+};
+
+function formatVnd(n) { return Number(n || 0).toLocaleString('vi-VN') + 'đ'; }
+
+/* ================= COUNTDOWN ================= */
+var cdEls = {
+  d: document.querySelector('[data-cd="d"]'),
+  h: document.querySelector('[data-cd="h"]'),
+  m: document.querySelector('[data-cd="m"]'),
+  s: document.querySelector('[data-cd="s"]')
+};
+var cdTimer = null;
+
+function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+function startCountdown() {
+  if (cdTimer) clearTimeout(cdTimer);
+  var deadline = new Date(CONFIG.DEADLINE).getTime();
+  if (isNaN(deadline)) return;
+  (function tick() {
+    var diff = deadline - Date.now();
+    if (diff <= 0) {
+      cdEls.d.textContent = cdEls.h.textContent = cdEls.m.textContent = cdEls.s.textContent = '00';
+      return;
+    }
+    cdEls.d.textContent = pad(Math.floor(diff / 86400000));
+    cdEls.h.textContent = pad(Math.floor(diff / 3600000) % 24);
+    cdEls.m.textContent = pad(Math.floor(diff / 60000) % 60);
+    cdEls.s.textContent = pad(Math.floor(diff / 1000) % 60);
+    cdTimer = setTimeout(tick, 1000);
+  })();
+}
+startCountdown();
+
+/* ================= POPUP ================= */
+var overlay = document.getElementById('orderModal');
+var formView = document.getElementById('formView');
+var successView = document.getElementById('successView');
+
+function openModal() {
+  formView.style.display = 'block';
+  successView.style.display = 'none';
+  clearErrors();
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  track('InitiateCheckout', 'begin_checkout');
+}
+function closeModal() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function clearErrors() {
+  document.querySelectorAll('#orderForm .error').forEach(function (el) { el.classList.remove('error'); });
+  document.querySelectorAll('#orderForm .field-error').forEach(function (el) { el.style.display = 'none'; });
+  var msg = document.getElementById('formMsg');
+  msg.className = 'form-msg';
+  msg.textContent = '';
+}
+
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('.js-open-form');
+  if (btn) openModal();
+});
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('successClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+/* ================= SỐ LƯỢNG & TẠM TÍNH ================= */
+var qtyInput = document.getElementById('fQty');
+var totalEl = document.getElementById('totalPrice');
+var totalOldEl = document.getElementById('totalOld');
+
+function clampQty() {
+  var q = parseInt(qtyInput.value, 10);
+  if (isNaN(q) || q < 1) q = 1;
+  if (q > CONFIG.MAX_QTY) q = CONFIG.MAX_QTY;
+  qtyInput.value = q;
+  return q;
+}
+function updateTotal() {
+  var q = clampQty();
+  totalEl.textContent = formatVnd(q * CONFIG.UNIT_PRICE);
+  totalOldEl.textContent = formatVnd(q * CONFIG.OLD_PRICE);
+}
+document.getElementById('qtyMinus').addEventListener('click', function () { qtyInput.value = clampQty() - 1 || 1; updateTotal(); });
+document.getElementById('qtyPlus').addEventListener('click', function () { qtyInput.value = clampQty() + 1; updateTotal(); });
+qtyInput.addEventListener('input', updateTotal);
+updateTotal();
+
+/* ================= VALIDATE & SUBMIT ================= */
+var form = document.getElementById('orderForm');
+var submitBtn = document.getElementById('submitBtn');
+var formMsg = document.getElementById('formMsg');
+
+function setFieldError(input, hasError) {
+  input.classList.toggle('error', hasError);
+  var err = input.closest('.form-group').querySelector('.field-error');
+  if (err) err.style.display = hasError ? 'block' : 'none';
+}
+
+function validate() {
+  var ok = true;
+  var name = document.getElementById('fName');
+  var phone = document.getElementById('fPhone');
+  var email = document.getElementById('fEmail');
+  var address = document.getElementById('fAddress');
+
+  if (!name.value.trim()) { setFieldError(name, true); ok = false; } else setFieldError(name, false);
+
+  var phoneVal = phone.value.replace(/[\s.\-]/g, '');
+  if (!/^(0|\+84)\d{9,10}$/.test(phoneVal)) { setFieldError(phone, true); ok = false; } else setFieldError(phone, false);
+
+  if (email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, true); ok = false; } else setFieldError(email, false);
+
+  if (!address.value.trim()) { setFieldError(address, true); ok = false; } else setFieldError(address, false);
+
+  return ok;
+}
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  formMsg.className = 'form-msg';
+  formMsg.textContent = '';
+
+  if (!validate()) return;
+  if (form.elements['website'].value) return; // honeypot
+
+  var qty = clampQty();
+  var total = qty * CONFIG.UNIT_PRICE;
+  var payload = {
+    name: document.getElementById('fName').value.trim(),
+    phone: document.getElementById('fPhone').value.replace(/[\s.\-]/g, ''),
+    email: document.getElementById('fEmail').value.trim(),
+    grade: document.getElementById('fGrade').value,
+    qty: qty,
+    address: document.getElementById('fAddress').value.trim(),
+    note: document.getElementById('fNote').value.trim(),
+    source: location.href,
+    userAgent: navigator.userAgent
+  };
+
+  var btnText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Đang gửi...';
+
+  fetch(CONFIG.ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function () {
+      form.reset();
+      updateTotal();
+      formView.style.display = 'none';
+      successView.style.display = 'block';
+      track('Lead', 'generate_lead', total);
+      track('Purchase', 'purchase', total);
+    })
+    .catch(function () {
+      formMsg.className = 'form-msg error';
+      formMsg.textContent = CONFIG.ERROR_TEXT;
+    })
+    .finally(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = btnText;
+    });
+});
+
+/* ================= TRACKING (Pixel + GA4) ================= */
+function loadAnalytics(s) {
+  if (s.ga4Id && !window.__gaLoaded) {
+    window.__gaLoaded = true;
+    var g = document.createElement('script');
+    g.async = true;
+    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(s.ga4Id);
+    document.head.appendChild(g);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', s.ga4Id);
+  }
+  if (s.fbPixelId && !window.__fbLoaded) {
+    window.__fbLoaded = true;
+    !function (f, b, e, v, n, t, s2) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s2 = b.getElementsByTagName(e)[0]; s2.parentNode.insertBefore(t, s2);
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', s.fbPixelId);
+    window.fbq('track', 'PageView');
+  }
+}
+
+function track(fbEvent, gaEvent, value) {
+  try {
+    if (window.fbq) window.fbq('track', fbEvent, value ? { value: value, currency: 'VND' } : {});
+    if (window.gtag) window.gtag('event', gaEvent, value ? { value: value, currency: 'VND' } : {});
+  } catch (err) { /* không để lỗi tracking chặn luồng đặt hàng */ }
+}
+
+/* ================= NẠP NỘI DUNG TỪ CMS ================= */
+function getPath(obj, path) {
+  return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj);
+}
+
+// Thay các biến động trong chuỗi: {price} {oldPrice} {stockLeft} {stockTotal} {maxQty}
+function tpl(str) {
+  return String(str)
+    .replace(/\{price\}/g, formatVnd(CONFIG.UNIT_PRICE))
+    .replace(/\{oldPrice\}/g, formatVnd(CONFIG.OLD_PRICE))
+    .replace(/\{stockLeft\}/g, CONFIG.STOCK_LEFT)
+    .replace(/\{stockTotal\}/g, CONFIG.STOCK_TOTAL)
+    .replace(/\{maxQty\}/g, CONFIG.MAX_QTY);
+}
+
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+
+function renderLists(c) {
+  // Vấn đề / Giải pháp
+  if (c.problem && Array.isArray(c.problem.cards)) {
+    var grid = document.getElementById('psGrid');
+    grid.innerHTML = '';
+    c.problem.cards.forEach(function (card) {
+      var box = el('div', 'ps-card');
+      box.appendChild(el('h3', null, tpl(card.title || '')));
+      box.appendChild(el('p', null, tpl(card.text || '')));
+      grid.appendChild(box);
+    });
+  }
+  // Lợi ích
+  if (c.benefits && Array.isArray(c.benefits.items)) {
+    var list = document.getElementById('benefitList');
+    list.innerHTML = '';
+    c.benefits.items.forEach(function (text) {
+      var item = el('div', 'benefit-item');
+      item.appendChild(el('div', 'check', '✓'));
+      item.appendChild(el('p', null, tpl(text)));
+      list.appendChild(item);
+    });
+  }
+  // Thư viện ảnh
+  if (c.gallery && Array.isArray(c.gallery.images)) {
+    var gal = document.getElementById('galleryGrid');
+    gal.innerHTML = '';
+    c.gallery.images.forEach(function (img) {
+      var node = new Image();
+      node.loading = 'lazy';
+      node.src = img.src || '';
+      node.alt = img.alt || '';
+      if (img.wide) node.className = 'full';
+      gal.appendChild(node);
+    });
+  }
+  // 3 bước
+  if (c.how && Array.isArray(c.how.steps)) {
+    var steps = document.getElementById('stepList');
+    steps.innerHTML = '';
+    c.how.steps.forEach(function (s, i) {
+      var box = el('div', 'step');
+      box.appendChild(el('div', 'step-num', String(i + 1)));
+      box.appendChild(el('h4', null, tpl(s.title || '')));
+      box.appendChild(el('p', null, tpl(s.text || '')));
+      steps.appendChild(box);
+    });
+  }
+  // Thông số
+  if (c.specs && Array.isArray(c.specs.rows)) {
+    var body = document.getElementById('specBody');
+    body.innerHTML = '';
+    c.specs.rows.forEach(function (row) {
+      var tr = document.createElement('tr');
+      tr.appendChild(el('td', null, tpl(row.label || '')));
+      tr.appendChild(el('td', null, tpl(row.value || '')));
+      body.appendChild(tr);
+    });
+  }
+  // FAQ
+  if (c.faq && Array.isArray(c.faq.items)) {
+    var faq = document.getElementById('faqList');
+    faq.innerHTML = '';
+    c.faq.items.forEach(function (item) {
+      var box = el('div', 'faq-item');
+      box.appendChild(el('h4', null, tpl(item.q || '')));
+      box.appendChild(el('p', null, tpl(item.a || '')));
+      faq.appendChild(box);
+    });
+  }
+  // Danh sách lớp trong form
+  if (c.form && Array.isArray(c.form.grades)) {
+    var sel = document.getElementById('fGrade');
+    sel.innerHTML = '';
+    sel.appendChild(new Option('-- Chọn lớp --', ''));
+    c.form.grades.forEach(function (g) { sel.appendChild(new Option(g, g)); });
+  }
+}
+
+function applyContent(c) {
+  var s = c.settings || {};
+  if (s.deadline) CONFIG.DEADLINE = s.deadline;
+  if (s.unitPrice) CONFIG.UNIT_PRICE = Number(s.unitPrice);
+  if (s.oldPrice) CONFIG.OLD_PRICE = Number(s.oldPrice);
+  if (s.maxQty) CONFIG.MAX_QTY = Number(s.maxQty);
+  if (s.stockLeft != null) CONFIG.STOCK_LEFT = Number(s.stockLeft);
+  if (s.stockTotal != null) CONFIG.STOCK_TOTAL = Number(s.stockTotal);
+  if (c.form && c.form.errorText) CONFIG.ERROR_TEXT = c.form.errorText;
+
+  // Chuỗi văn bản
+  document.querySelectorAll('[data-cms]').forEach(function (node) {
+    var val = getPath(c, node.getAttribute('data-cms'));
+    if (val != null && val !== '') node.textContent = tpl(val);
+  });
+  // Thuộc tính (src, alt...)
+  document.querySelectorAll('[data-cms-attr]').forEach(function (node) {
+    node.getAttribute('data-cms-attr').split('|').forEach(function (pair) {
+      var parts = pair.split(':');
+      var attr = parts.shift();
+      var val = getPath(c, parts.join(':'));
+      if (val != null && val !== '') node.setAttribute(attr, val);
+    });
+  });
+  // Giá
+  document.querySelectorAll('[data-price="unit"]').forEach(function (n) { n.textContent = formatVnd(CONFIG.UNIT_PRICE); });
+  document.querySelectorAll('[data-price="old"]').forEach(function (n) { n.textContent = formatVnd(CONFIG.OLD_PRICE); });
+
+  renderLists(c);
+
+  // Thanh tồn kho + giới hạn số lượng
+  var pct = CONFIG.STOCK_TOTAL > 0 ? Math.max(0, Math.min(100, (CONFIG.STOCK_LEFT / CONFIG.STOCK_TOTAL) * 100)) : 0;
+  document.getElementById('stockFill').style.width = pct + '%';
+  document.getElementById('maxQtyLabel').textContent = CONFIG.MAX_QTY;
+  qtyInput.max = CONFIG.MAX_QTY;
+
+  // SEO
+  if (c.seo) {
+    if (c.seo.title) document.title = c.seo.title;
+    var descTag = document.querySelector('meta[name="description"]');
+    if (descTag && c.seo.description) descTag.setAttribute('content', c.seo.description);
+    var ogImg = document.querySelector('meta[property="og:image"]');
+    if (ogImg && c.seo.ogImage) ogImg.setAttribute('content', c.seo.ogImage);
+  }
+
+  updateTotal();
+  startCountdown();
+  loadAnalytics(s);
+}
+
+fetch('/api/content')
+  .then(function (r) { return r.ok ? r.json() : null; })
+  .then(function (data) { if (data && data.ok && data.content) applyContent(data.content); })
+  .catch(function () { /* giữ nguyên nội dung tĩnh */ });
+</script>
+
+</body>
+</html>
