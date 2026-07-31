@@ -43,7 +43,10 @@
   .hero-text{text-align:center;}
   h1{font-size:24px;line-height:1.25;color:var(--navy);margin-bottom:14px;font-weight:800;}
   .hero-sub{color:var(--grey);font-size:15px;margin-bottom:20px;}
+  .hero-badge-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+  .hero-badge-row .badge { margin-bottom: 0; }
   .hero-img{width:100%;max-width:420px;border-radius:16px;overflow:hidden;border:5px solid #fff;box-shadow:0 12px 36px rgba(0,0,0,0.15),0 4px 12px rgba(0,0,0,0.08);}
+  .hero-img img { width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
   .hero-notice{background:#fff;border:1px solid #e5e7eb;border-left:4px solid var(--teal);border-radius:10px;padding:12px 14px;margin-top:14px;max-width:420px;text-align:left;}
   .hero-notice strong{display:block;font-size:13px;color:var(--navy);margin-bottom:4px;}
   .hero-notice p{font-size:12px;color:var(--grey);line-height:1.5;margin:0;}
@@ -55,6 +58,9 @@
   .hero-carousel img{width:80px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,0.1);scroll-snap-align:start;flex:0 0 auto;cursor:pointer;transition:border-color .2s;}
   .hero-carousel img:hover{border-color:var(--teal);}
   
+  .swipe-indicator { text-align: center; font-size: 11px; color: var(--grey); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+  .swipe-indicator svg { width: 14px; height: 14px; }
+
   .header-countdown{display:flex;align-items:center;gap:6px;flex:1;justify-content:center;}
   .header-countdown .label{color:var(--red-badge);font-weight:700;font-size:11px;display:none;}
   .timer{display:flex;gap:4px;}
@@ -259,6 +265,8 @@
     h1{font-size:34px;}
     .hero-grid{flex-direction:row;text-align:left;align-items:flex-start;}
     .hero-text{text-align:left;flex:1;}
+    .hero-badge-row{justify-content:flex-start;}
+    .hero-img img{aspect-ratio:auto;}
     .hero-img-wrap{flex:1;display:flex;flex-direction:column;align-items:center;position:sticky;top:90px;}
     .price-row{justify-content:flex-start;}
     
@@ -305,15 +313,6 @@
 <header>
   <div class="header-inner">
     <div class="logo"><img data-cms-attr="src:header.logo" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/brand/logos/mathca-logo-horizontal.webp" alt="MathCA"></div>
-    <div class="header-countdown">
-      <span class="label" data-cms="hero.countdownLabel">⏰ Ưu đãi kết thúc sau</span>
-      <div class="timer" id="countdown">
-        <div><span data-cd="d">--</span><small>Ngày</small></div>
-        <div><span data-cd="h">--</span><small>Giờ</small></div>
-        <div><span data-cd="m">--</span><small>Phút</small></div>
-        <div><span data-cd="s">--</span><small>Giây</small></div>
-      </div>
-    </div>
     <button class="header-cta js-open-form" data-cms="header.ctaText">Đặt Trước Ngay</button>
   </div>
 </header>
@@ -321,7 +320,18 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-text">
-      <span class="badge" data-cms="hero.badge">PRE-ORDER 200 CUỐN ĐẦU TIÊN</span>
+      <div class="hero-badge-row">
+        <span class="badge" data-cms="hero.badge">PRE-ORDER 200 CUỐN ĐẦU TIÊN</span>
+        <div class="header-countdown">
+          <span class="label" data-cms="hero.countdownLabel">⏰ Ưu đãi kết thúc sau</span>
+          <div class="timer" id="countdown">
+            <div><span data-cd="d">--</span><small>Ngày</small></div>
+            <div><span data-cd="h">--</span><small>Giờ</small></div>
+            <div><span data-cd="m">--</span><small>Phút</small></div>
+            <div><span data-cd="s">--</span><small>Giây</small></div>
+          </div>
+        </div>
+      </div>
       <h1 data-cms="hero.title">Mỗi Cuốn Sổ Tay – Mở Ra Một Thiên Tài Toán Học</h1>
       <p class="hero-sub" data-cms="hero.sub">Sổ công thức &amp; mẹo Toán lớp 1–5 tích hợp video QR và trọn bộ khóa học MathCA Online 5 năm. Con tự học chủ động, ba mẹ an tâm đồng hành.</p>
 
@@ -343,11 +353,17 @@
       <div class="hero-img">
         <img data-cms-attr="src:hero.image|alt:hero.imageAlt" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sổ Tay Thiên Tài Toán Lớp 1-5">
       </div>
-      <div class="hero-carousel">
+      <div class="hero-carousel" id="heroCarousel">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/3-construction-side-aca7661db528.webp" alt="Thiết kế để bàn">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/2-pages-fbc6d333857d.webp" alt="Nội dung bên trong">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/4-content-layout-830206124efb.webp" alt="Minh họa sinh động">
         <img src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/6-book-standing-cd1314644eb9.webp" alt="Dễ dàng tra cứu">
+      </div>
+      <div class="swipe-indicator mobile-only">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 8l4 4-4 4M7 8l-4 4 4 4M3 12h18"/>
+        </svg>
+        <span>Vuốt để xem thêm</span>
       </div>
       <div class="hero-notice mobile-only">
         <strong>Khóa MathCA Online theo Sổ Tay lớp 1–5 là một phần của Sổ</strong>
@@ -976,6 +992,21 @@ function renderLists(c) {
     if (nt && c.hero.noticeTitle) nt.textContent = tpl(c.hero.noticeTitle);
     if (np && c.hero.noticeText) np.textContent = tpl(c.hero.noticeText);
   }
+  // Hero carousel
+  if (c.hero && Array.isArray(c.hero.carouselImages)) {
+    var hc = document.getElementById('heroCarousel');
+    if (hc) {
+      hc.innerHTML = '';
+      c.hero.carouselImages.forEach(function (img) {
+        if (!img.src) return;
+        var node = new Image();
+        node.src = img.src;
+        node.alt = img.alt || '';
+        hc.appendChild(node);
+      });
+    }
+  }
+
   // Lợi ích - 2 nhóm
   if (c.benefits) {
     function renderBenefitList(listId, items) {

@@ -185,7 +185,11 @@ var SCHEMA = [
       { path: 'hero.imageAlt', label: 'Mô tả ảnh (alt)', type: 'text' },
       { path: 'hero.noticeTitle', label: 'Tiêu đề ghi chú dưới ảnh', type: 'text' },
       { path: 'hero.noticeText', label: 'Nội dung ghi chú dưới ảnh', type: 'textarea' }
-    ]
+    ],
+    list: { path: 'hero.carouselImages', itemLabel: 'Ảnh Slider', itemFields: [
+      { key: 'src', label: 'URL ảnh', type: 'url', preview: true },
+      { key: 'alt', label: 'Mô tả ảnh (alt)', type: 'text' }
+    ]}
   },
   {
     key: 'problem', label: '💡 Vấn đề / Giải pháp',
