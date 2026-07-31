@@ -25,14 +25,14 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'Thiếu địa chỉ' });
   }
 
-  // Giá và giới hạn số lượng lấy từ CMS để luôn khớp với trang hiển thị
-  const content = await getContent();
-  const settings = content.settings || {};
-  const unitPrice = Number(settings.unitPrice) || 239000;
-  const maxQty = Number(settings.maxQty) || 20;
-  const scriptUrl = settings.googleScriptUrl || process.env.GOOGLE_SCRIPT_URL || '';
+  const results = { sheet: false, supabase: false };
 
-  const cleanQty = Math.min(Math.max(parseInt(qty, 10) || 1, 1), maxQty);
+  // Lấy cài đặt CMS song song với việc chuẩn bị dữ liệu
+  // → không block luồng ghi
+  const contentPromise = getContent().catch(() => ({}));
+
+  // Tạo record với giá mặc định trước, cập nhật sau khi CMS trả về
+  const cleanQty = Math.min(Math.max(parseInt(qty, 10) || 1, 1), 20);
 
   const record = {
     createdAt: new Date().toISOString(),
@@ -41,33 +41,41 @@ export default async function handler(req, res) {
     email: String(email || '').trim().slice(0, 200),
     grade: String(grade || '').slice(0, 50),
     qty: cleanQty,
-    total: cleanQty * unitPrice,
+    total: 0,
     address: String(address).trim().slice(0, 500),
     note: String(note || '').trim().slice(0, 500),
     source: String(source || '').slice(0, 300),
     userAgent: String(userAgent || '').slice(0, 300)
   };
 
-  const results = { sheet: false, supabase: false };
+  // Chờ CMS để lấy giá chính xác + script URL
+  const content = await contentPromise;
+  const settings = content.settings || {};
+  const unitPrice = Number(settings.unitPrice) || 239000;
+  const maxQty = Number(settings.maxQty) || 20;
+  const scriptUrl = settings.googleScriptUrl || process.env.GOOGLE_SCRIPT_URL || '';
 
-  // 1) Ghi vào Google Sheet qua Apps Script
+  record.qty = Math.min(record.qty, maxQty);
+  record.total = record.qty * unitPrice;
+
+  // Ghi Google Sheet + Supabase SONG SONG (không chờ nhau)
+  const tasks = [];
+
   if (scriptUrl) {
-    try {
-      const r = await fetch(scriptUrl, {
+    tasks.push(
+      fetch(scriptUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(record)
-      });
-      results.sheet = r.ok;
-    } catch (err) {
-      console.error('Google Sheet error:', err);
-    }
+      })
+        .then(r => { results.sheet = r.ok; })
+        .catch(err => { console.error('Google Sheet error:', err); })
+    );
   }
 
-  // 2) Ghi song song vào Supabase (nếu có cấu hình)
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-    try {
-      const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
+    tasks.push(
+      fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -87,13 +95,16 @@ export default async function handler(req, res) {
           source: record.source,
           user_agent: record.userAgent
         })
-      });
-      results.supabase = r.ok;
-      if (!r.ok) console.error('Supabase error:', await r.text());
-    } catch (err) {
-      console.error('Supabase error:', err);
-    }
+      })
+        .then(async r => {
+          results.supabase = r.ok;
+          if (!r.ok) console.error('Supabase error:', await r.text());
+        })
+        .catch(err => { console.error('Supabase error:', err); })
+    );
   }
+
+  await Promise.allSettled(tasks);
 
   // Thành công nếu ghi được ít nhất 1 nơi
   if (results.sheet || results.supabase) {
