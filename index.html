@@ -196,11 +196,21 @@
   .qty-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;font-size:18px;font-weight:700;color:var(--navy);cursor:pointer;flex:0 0 auto;}
   .qty-btn:active{background:var(--teal-light);}
   .qty-row input{text-align:center;font-weight:800;font-size:16px;flex:0 0 54px;width:54px;padding:9px 2px;-moz-appearance:textfield;-webkit-appearance:none;appearance:textfield;}
-  .qty-row input::-webkit-outer-spin-button,.qty-row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-  .order-summary{background:var(--teal-light);border-radius:10px;padding:10px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:baseline;}
-  .order-summary .label{font-size:12px;font-weight:700;color:var(--teal-dark);}
-  .order-summary .total{font-size:20px;font-weight:800;color:var(--orange-dark);}
-  .order-summary .old{font-size:12px;color:var(--grey);text-decoration:line-through;margin-left:6px;}
+  /* MODAL GRID */
+  .modal-grid{display:flex;flex-direction:column;gap:20px;}
+  .order-box{background:var(--navy);color:#fff;border-radius:14px;padding:20px;}
+  .order-box-title{font-size:16px;font-weight:800;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:12px;}
+  .order-product{display:flex;gap:14px;margin-bottom:16px;}
+  .order-product img{width:70px;height:70px;object-fit:cover;border-radius:10px;background:#fff;border:2px solid rgba(255,255,255,0.2);}
+  .order-product-info{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .order-product-info strong{font-size:14px;margin-bottom:6px;line-height:1.4;display:block;}
+  .order-product-price span{font-size:15px;font-weight:800;color:var(--yellow);}
+  .order-product-price span:last-child{font-size:12px;color:#b3adc4;text-decoration:line-through;margin-left:8px;font-weight:400;}
+  .order-breakdown{border-top:1px dashed rgba(255,255,255,0.15);border-bottom:1px solid rgba(255,255,255,0.1);padding:16px 0;margin-bottom:16px;display:flex;flex-direction:column;gap:12px;font-size:13px;}
+  .breakdown-row{display:flex;justify-content:space-between;color:#e5dff5;}
+  .breakdown-row.discount{color:#ff9f9f;}
+  .order-total-row{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px;margin-bottom:20px;}
+  .order-total-row span:last-child{font-size:22px;color:var(--yellow);}
   .btn-submit{width:100%;background:var(--orange);color:#fff;font-weight:800;font-size:15px;padding:13px;border-radius:10px;border:none;cursor:pointer;box-shadow:0 6px 16px rgba(255,90,54,0.3);}
   .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
   .form-note{font-size:11px;color:var(--grey);text-align:center;margin-top:6px;}
@@ -238,14 +248,13 @@
     .footer-grid{grid-template-columns:1.5fr 1fr 1fr 1fr;}
     .footer-bottom{flex-direction:row;align-items:center;justify-content:space-between;}
     .modal-overlay{align-items:center;padding:20px;}
-    .modal{border-radius:20px;max-width:520px;padding:24px 24px 28px;}
-    .modal h3{font-size:19px;}
-    .modal .modal-sub{font-size:13px;margin-bottom:12px;}
+    .modal{border-radius:20px;max-width:860px;padding:32px;}
+    .modal-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;}
+    .modal h3{font-size:24px;}
+    .modal .modal-sub{font-size:14px;margin-bottom:16px;}
     .form-group{margin-bottom:12px;}
     .form-group input,.form-group select,.form-group textarea{padding:10px 14px;font-size:14px;}
     .form-row-inline{gap:14px;}
-    .order-summary{padding:12px 16px;margin:12px 0;}
-    .order-summary .total{font-size:22px;}
     .btn-submit{padding:14px;font-size:16px;}
   }
 </style>
@@ -479,61 +488,93 @@
 
       <form id="orderForm" novalidate>
         <input class="hp-field" type="text" name="website" tabindex="-1" autocomplete="off">
+        
+        <div class="modal-grid">
+          <div class="modal-left">
+            <div class="form-group">
+              <label for="fName">Họ và tên phụ huynh <span class="req">*</span></label>
+              <input type="text" id="fName" name="name" placeholder="VD: Nguyễn Thị Lan" autocomplete="name" required>
+              <p class="field-error">Vui lòng nhập họ tên</p>
+            </div>
 
-        <div class="form-group">
-          <label for="fName">Họ và tên phụ huynh <span class="req">*</span></label>
-          <input type="text" id="fName" name="name" placeholder="VD: Nguyễn Thị Lan" autocomplete="name" required>
-          <p class="field-error">Vui lòng nhập họ tên</p>
-        </div>
+            <div class="form-group">
+              <label for="fPhone">Số điện thoại (Zalo) <span class="req">*</span></label>
+              <input type="tel" id="fPhone" name="phone" placeholder="VD: 0912 345 678" autocomplete="tel" required>
+              <p class="field-error">Số điện thoại chưa đúng định dạng</p>
+            </div>
 
-        <div class="form-group">
-          <label for="fPhone">Số điện thoại (Zalo) <span class="req">*</span></label>
-          <input type="tel" id="fPhone" name="phone" placeholder="VD: 0912 345 678" autocomplete="tel" required>
-          <p class="field-error">Số điện thoại chưa đúng định dạng</p>
-        </div>
+            <div class="form-group" style="display:none;">
+              <label for="fEmail">Email (nhận bài luyện tập cập nhật)</label>
+              <input type="email" id="fEmail" name="email" placeholder="VD: email@gmail.com" autocomplete="email">
+              <p class="field-error">Email chưa đúng định dạng</p>
+            </div>
 
-        <div class="form-group" style="display:none;">
-          <label for="fEmail">Email (nhận bài luyện tập cập nhật)</label>
-          <input type="email" id="fEmail" name="email" placeholder="VD: email@gmail.com" autocomplete="email">
-          <p class="field-error">Email chưa đúng định dạng</p>
-        </div>
+            <div class="form-row-inline">
+              <div class="form-group" style="display:none;">
+                <label for="fGrade">Con đang học lớp</label>
+                <select id="fGrade" name="grade">
+                  <option value="">-- Chọn lớp --</option>
+                </select>
+              </div>
+              <div class="form-group" style="width:100%;">
+                <label for="fPackage">Gói ưu đãi <span class="req">*</span></label>
+                <select id="fPackage" name="package" required>
+                  <!-- render từ CMS -->
+                  <option value="1">Mua lẻ 1 cuốn (Ưu đãi 25%)</option>
+                </select>
+              </div>
+            </div>
 
-        <div class="form-row-inline">
-          <div class="form-group" style="display:none;">
-            <label for="fGrade">Con đang học lớp</label>
-            <select id="fGrade" name="grade">
-              <option value="">-- Chọn lớp --</option>
-            </select>
+            <div class="form-group">
+              <label for="fAddress">Địa chỉ nhận hàng <span class="req">*</span></label>
+              <input type="text" id="fAddress" name="address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required>
+              <p class="field-error">Vui lòng nhập địa chỉ nhận hàng</p>
+            </div>
+
+            <div class="form-group">
+              <label for="fNote">Ghi chú (nếu có)</label>
+              <input type="text" id="fNote" name="note" placeholder="VD: Giao giờ hành chính">
+            </div>
+
+            <p class="form-note" data-cms="form.note">🔒 Thông tin của bạn được bảo mật, chỉ dùng để xử lý đơn hàng.</p>
+            <p class="form-msg" id="formMsg"></p>
           </div>
-          <div class="form-group" style="width:100%;">
-            <label for="fPackage">Gói ưu đãi <span class="req">*</span></label>
-            <select id="fPackage" name="package" required>
-              <option value="1">Mua lẻ 1 cuốn (Ưu đãi 25%)</option>
-              <option value="2">Mua 2 cuốn (Ưu đãi 30%)</option>
-              <option value="combo">Combo Tập Trung Học Tập (Ưu đãi 35%)</option>
-            </select>
+
+          <div class="modal-right">
+            <div class="order-box">
+              <h4 class="order-box-title">Đơn hàng của bạn</h4>
+              <div class="order-product">
+                <img id="pkgImage" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" alt="Sản phẩm">
+                <div class="order-product-info">
+                  <strong id="pkgNameDisplay">Sổ Tay Thiên Tài Toán</strong>
+                  <div class="order-product-price">
+                    <span id="pkgPrice">239.000đ</span>
+                    <span id="pkgOldPrice">320.000đ</span>
+                  </div>
+                </div>
+              </div>
+              <div class="order-breakdown">
+                <div class="breakdown-row">
+                  <span>Giá gốc</span>
+                  <span id="bdOldPrice">320.000đ</span>
+                </div>
+                <div class="breakdown-row discount">
+                  <span>Ưu đãi sản phẩm</span>
+                  <span id="bdDiscount">-81.000đ</span>
+                </div>
+                <div class="breakdown-row">
+                  <span>Phí vận chuyển</span>
+                  <span><del style="color:#b3adc4;margin-right:6px;">30.000đ</del><strong style="color:var(--teal);">Miễn phí</strong></span>
+                </div>
+              </div>
+              <div class="order-total-row">
+                <span>Tổng tạm tính</span>
+                <span id="bdTotal">239.000đ</span>
+              </div>
+              <button type="submit" class="btn-submit" id="submitBtn" data-cms="form.submitText">⚡ Xác Nhận Đặt Trước</button>
+            </div>
           </div>
         </div>
-
-        <div class="form-group">
-          <label for="fAddress">Địa chỉ nhận hàng <span class="req">*</span></label>
-          <input type="text" id="fAddress" name="address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required>
-          <p class="field-error">Vui lòng nhập địa chỉ nhận hàng</p>
-        </div>
-
-        <div class="form-group">
-          <label for="fNote">Ghi chú (nếu có)</label>
-          <input type="text" id="fNote" name="note" placeholder="VD: Giao giờ hành chính">
-        </div>
-
-        <div class="order-summary">
-          <span class="label">Tạm tính (freeship)</span>
-          <span><span class="total" id="totalPrice">239.000đ</span><span class="old" id="totalOld">320.000đ</span></span>
-        </div>
-
-        <button type="submit" class="btn-submit" id="submitBtn" data-cms="form.submitText">⚡ Xác Nhận Đặt Trước</button>
-        <p class="form-note" data-cms="form.note">🔒 Thông tin của bạn được bảo mật, chỉ dùng để xử lý đơn hàng.</p>
-        <p class="form-msg" id="formMsg"></p>
       </form>
     </div>
 
@@ -684,20 +725,31 @@ document.addEventListener('keydown', function (e) { if (e.key === 'Escape') clos
 
 /* ================= SỐ LƯỢNG & TẠM TÍNH ================= */
 var packageSelect = document.getElementById('fPackage');
-var totalEl = document.getElementById('totalPrice');
-var totalOldEl = document.getElementById('totalOld');
+var pkgImage = document.getElementById('pkgImage');
+var pkgNameDisplay = document.getElementById('pkgNameDisplay');
+var pkgPrice = document.getElementById('pkgPrice');
+var pkgOldPrice = document.getElementById('pkgOldPrice');
+var bdOldPrice = document.getElementById('bdOldPrice');
+var bdDiscount = document.getElementById('bdDiscount');
+var bdTotal = document.getElementById('bdTotal');
 
 var PACKAGES = {
-  "1": { old: 320000, new: 239000, qty: 1 },
-  "2": { old: 640000, new: 448000, qty: 2 },
-  "combo": { old: 522000, new: 339000, qty: 1 }
+  "1": { id: "1", name: "Mua lẻ 1 cuốn", old: 320000, new: 239000, qty: 1, image: "https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" }
 };
 
 function updateTotal() {
-  var val = packageSelect.value || "1";
-  var pkg = PACKAGES[val] || PACKAGES["1"];
-  totalEl.textContent = formatVnd(pkg.new);
-  totalOldEl.textContent = formatVnd(pkg.old);
+  var val = packageSelect.value || Object.keys(PACKAGES)[0];
+  var pkg = PACKAGES[val] || PACKAGES[Object.keys(PACKAGES)[0]];
+  if (!pkg) return;
+  
+  if (pkg.image) pkgImage.src = pkg.image;
+  pkgNameDisplay.textContent = pkg.name;
+  pkgPrice.textContent = formatVnd(pkg.new);
+  pkgOldPrice.textContent = formatVnd(pkg.old);
+  
+  bdOldPrice.textContent = formatVnd(pkg.old);
+  bdDiscount.textContent = '-' + formatVnd(pkg.old - pkg.new);
+  bdTotal.textContent = formatVnd(pkg.new);
 }
 packageSelect.addEventListener('change', updateTotal);
 updateTotal();
@@ -934,12 +986,27 @@ function renderLists(c) {
       faq.appendChild(box);
     });
   }
-  // Danh sách lớp trong form
-  if (c.form && Array.isArray(c.form.grades)) {
-    var sel = document.getElementById('fGrade');
+  // Form - Packages từ CMS
+  if (c.form && Array.isArray(c.form.packages) && c.form.packages.length > 0) {
+    var sel = document.getElementById('fPackage');
     sel.innerHTML = '';
-    sel.appendChild(new Option('-- Chọn lớp --', ''));
-    c.form.grades.forEach(function (g) { sel.appendChild(new Option(g, g)); });
+    PACKAGES = {};
+    c.form.packages.forEach(function (pkg) {
+      if (!pkg.id) return;
+      PACKAGES[pkg.id] = {
+        id: pkg.id,
+        name: pkg.name || pkg.id,
+        old: Number(pkg.old) || 0,
+        new: Number(pkg.new) || 0,
+        qty: Number(pkg.qty) || 1,
+        image: pkg.image || ''
+      };
+      var opt = document.createElement('option');
+      opt.value = pkg.id;
+      opt.textContent = pkg.name || pkg.id;
+      sel.appendChild(opt);
+    });
+    updateTotal();
   }
   // Footer
   if (c.footer) {

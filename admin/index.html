@@ -303,10 +303,19 @@ var SCHEMA = [
       { path: 'form.submitText', label: 'Chữ trên nút gửi', type: 'text' },
       { path: 'form.note', label: 'Ghi chú bảo mật', type: 'text' },
       { path: 'form.errorText', label: 'Thông báo khi gửi lỗi', type: 'textarea' },
-      { path: 'form.successTitle', label: 'Tiêu đề màn hình cảm ơn', type: 'text' },
-      { path: 'form.successText', label: 'Nội dung màn hình cảm ơn', type: 'textarea' }
+      { path: 'form.successTitle', label: 'Tiêu đề trang thành công', type: 'text' },
+      { path: 'form.successText', label: 'Mô tả trang thành công', type: 'textarea' }
     ],
-    list: { path: 'form.grades', itemLabel: 'Lựa chọn lớp', itemType: 'text' }
+    lists: [
+      { path: 'form.packages', itemLabel: 'Gói ưu đãi', itemFields: [
+        { key: 'id', label: 'ID gói (bắt buộc, vd: 1, 2, combo)', type: 'text' },
+        { key: 'name', label: 'Tên gói (hiển thị)', type: 'text' },
+        { key: 'old', label: 'Giá gốc (VNĐ)', type: 'number' },
+        { key: 'new', label: 'Giá ưu đãi (VNĐ)', type: 'number' },
+        { key: 'qty', label: 'Số lượng sách thực tế trong gói', type: 'number' },
+        { key: 'image', label: 'Ảnh gói (URL)', type: 'url', preview: true }
+      ]}
+    ]
   },
   { key: 'orders', label: '📦 Đơn hàng', custom: 'orders' }
 ];
