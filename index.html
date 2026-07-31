@@ -81,6 +81,18 @@
   .check{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
   .benefit-item p{font-size:14px;color:var(--navy);font-weight:600;}
 
+  /* MATHCA ONLINE */
+  .online{background:var(--navy);color:#fff;text-align:center;}
+  .online h2{color:#fff;font-size:22px;}
+  .online .section-sub{color:#c9c2dd;}
+  .online-desc{color:#e5dff5;font-size:14px;line-height:1.6;max-width:620px;margin:0 auto 24px;}
+  .online-flow-label{display:inline-block;background:rgba(255,255,255,0.1);color:var(--yellow);font-weight:700;font-size:12px;letter-spacing:.5px;padding:6px 14px;border-radius:20px;margin-bottom:12px;}
+  .online-flow-title{font-size:20px;font-weight:800;color:#fff;margin-bottom:24px;}
+  .flow-grid{display:grid;grid-template-columns:1fr;gap:14px;text-align:left;}
+  .flow-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 16px;}
+  .flow-card .flow-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px;}
+  .flow-card h4{font-size:15px;color:#fff;margin-bottom:6px;}
+  .flow-card p{font-size:13px;color:#c9c2dd;line-height:1.5;}
   /* GALLERY */
   .gallery{background:#fff;}
   .gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -194,6 +206,9 @@
     .cta-note{text-align:left;}
     .ps-grid{grid-template-columns:1fr 1fr;}
     .benefit-list{grid-template-columns:1fr 1fr;}
+    .flow-grid{grid-template-columns:repeat(4,1fr);}
+    .online h2{font-size:28px;}
+    .online-flow-title{font-size:24px;}
     .gallery-grid{grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr;gap:14px;}
     .gallery-grid .full{grid-column:1/3;grid-row:1/3;aspect-ratio:auto;height:100%;}
     .gallery-grid img:not(.full){aspect-ratio:1;}
@@ -293,6 +308,38 @@
   </div>
 </section>
 
+<section class="online">
+  <div class="container">
+    <h2 class="section-title">Mỗi Cuốn Sổ Tay Mở Ra Một Lớp Học Online</h2>
+    <p class="online-desc">MathCA Online giúp học sinh kích hoạt mã sách, xem video hướng dẫn và học Toán chủ động tại nhà. Đây là sản phẩm tự học độc lập, không yêu cầu đăng ký CLB.</p>
+
+    <span class="online-flow-label">MỘT LUỒNG HỌC RÕ RÀNG</span>
+    <div class="online-flow-title">Từ Trang Sách Đến Đúng Bài Giảng</div>
+
+    <div class="flow-grid">
+      <div class="flow-card">
+        <div class="flow-icon">🔑</div>
+        <h4>Kích hoạt mã sách</h4>
+        <p>Nhập mã trong Sổ Tay MathCA để mở nội dung được cấp quyền.</p>
+      </div>
+      <div class="flow-card">
+        <div class="flow-icon">📲</div>
+        <h4>Quét QR đúng bài</h4>
+        <p>Mỗi mã đưa học sinh đến đúng video hoặc bài học tương ứng.</p>
+      </div>
+      <div class="flow-card">
+        <div class="flow-icon">▶️</div>
+        <h4>Học cùng video</h4>
+        <p>Xem lại hướng dẫn theo chủ đề trên điện thoại, máy tính hoặc tablet.</p>
+      </div>
+      <div class="flow-card">
+        <div class="flow-icon">📈</div>
+        <h4>Theo dõi tiến độ</h4>
+        <p>Ghi nhận bài đã hoàn thành và kết quả luyện tập cơ bản.</p>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="gallery">
   <div class="container">
     <h2 class="section-title" data-cms="gallery.title">Xem Bên Trong Cuốn Sổ</h2>
