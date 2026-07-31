@@ -80,7 +80,9 @@
   .benefit-item{background:#fff;border-radius:14px;padding:18px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 4px 14px rgba(0,0,0,0.04);}
   .check{flex:0 0 28px;height:28px;border-radius:50%;background:var(--teal-light);color:var(--teal-dark);border:2px solid var(--teal);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
   .benefit-item p{font-size:14px;color:var(--navy);font-weight:600;}
-
+  .benefit-groups{display:grid;grid-template-columns:1fr;gap:20px;}
+  .benefit-group-title{font-size:15px;font-weight:800;color:var(--teal-dark);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+  .benefit-group-title span{font-size:20px;}
   /* MATHCA ONLINE */
   .online{background:var(--navy);color:#fff;text-align:center;}
   .online h2{color:#fff;font-size:22px;}
@@ -205,7 +207,8 @@
     .cta-primary{width:auto;}
     .cta-note{text-align:left;}
     .ps-grid{grid-template-columns:1fr 1fr;}
-    .benefit-list{grid-template-columns:1fr 1fr;}
+    .benefit-list{grid-template-columns:1fr;}
+    .benefit-groups{grid-template-columns:1fr 1fr;gap:24px;}
     .flow-grid{grid-template-columns:repeat(4,1fr);}
     .online h2{font-size:28px;}
     .online-flow-title{font-size:24px;}
@@ -297,45 +300,22 @@
   <div class="container">
     <h2 class="section-title" data-cms="benefits.title">Bạn Nhận Được Gì</h2>
     <p class="section-sub" data-cms="benefits.sub">Trọn bộ công cụ tự học Toán tiểu học trong một sản phẩm duy nhất</p>
-    <div class="benefit-list" id="benefitList">
-      <div class="benefit-item"><div class="check">✓</div><p>Tra cứu công thức và mẹo Toán xuyên suốt lớp 1–5 trong một cuốn sổ</p></div>
-      <div class="benefit-item"><div class="check">✓</div><p>Quét QR để xem video giáo viên MathCA giải thích đúng nội dung đang học</p></div>
-      <div class="benefit-item"><div class="check">✓</div><p>Kích hoạt Khóa MathCA Online theo Sổ Tay lớp 1–5 trong 5 năm</p></div>
-      <div class="benefit-item"><div class="check">✓</div><p>Nhận bài luyện tập cập nhật qua MathCA Online và email</p></div>
-      <div class="benefit-item"><div class="check">✓</div><p>Tham gia nhóm Zalo hỗ trợ trao đổi cùng phụ huynh</p></div>
-      <div class="benefit-item"><div class="check">✓</div><p>Thiết kế để bàn tiện tra cứu, khổ A5 gọn nhẹ, 66 trang bền bỉ</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="online">
-  <div class="container">
-    <h2 class="section-title">Mỗi Cuốn Sổ Tay Mở Ra Một Lớp Học Online</h2>
-    <p class="online-desc">MathCA Online giúp học sinh kích hoạt mã sách, xem video hướng dẫn và học Toán chủ động tại nhà. Đây là sản phẩm tự học độc lập, không yêu cầu đăng ký CLB.</p>
-
-    <span class="online-flow-label">MỘT LUỒNG HỌC RÕ RÀNG</span>
-    <div class="online-flow-title">Từ Trang Sách Đến Đúng Bài Giảng</div>
-
-    <div class="flow-grid">
-      <div class="flow-card">
-        <div class="flow-icon">🔑</div>
-        <h4>Kích hoạt mã sách</h4>
-        <p>Nhập mã trong Sổ Tay MathCA để mở nội dung được cấp quyền.</p>
+    <div class="benefit-groups">
+      <div>
+        <div class="benefit-group-title"><span>📒</span> Sổ Tay Thiên Tài Toán</div>
+        <div class="benefit-list" id="benefitList">
+          <div class="benefit-item"><div class="check">✓</div><p>Tra cứu công thức và mẹo Toán xuyên suốt lớp 1–5 trong một cuốn sổ</p></div>
+          <div class="benefit-item"><div class="check">✓</div><p>Quét QR để xem video giáo viên MathCA giải thích đúng nội dung đang học</p></div>
+          <div class="benefit-item"><div class="check">✓</div><p>Thiết kế để bàn tiện tra cứu, khổ A5 gọn nhẹ, 66 trang bền bỉ</p></div>
+        </div>
       </div>
-      <div class="flow-card">
-        <div class="flow-icon">📲</div>
-        <h4>Quét QR đúng bài</h4>
-        <p>Mỗi mã đưa học sinh đến đúng video hoặc bài học tương ứng.</p>
-      </div>
-      <div class="flow-card">
-        <div class="flow-icon">▶️</div>
-        <h4>Học cùng video</h4>
-        <p>Xem lại hướng dẫn theo chủ đề trên điện thoại, máy tính hoặc tablet.</p>
-      </div>
-      <div class="flow-card">
-        <div class="flow-icon">📈</div>
-        <h4>Theo dõi tiến độ</h4>
-        <p>Ghi nhận bài đã hoàn thành và kết quả luyện tập cơ bản.</p>
+      <div>
+        <div class="benefit-group-title"><span>🎓</span> Khóa MathCA Online (tặng kèm)</div>
+        <div class="benefit-list">
+          <div class="benefit-item"><div class="check">✓</div><p>Kích hoạt Khóa MathCA Online theo Sổ Tay lớp 1–5 trong 5 năm</p></div>
+          <div class="benefit-item"><div class="check">✓</div><p>Nhận bài luyện tập cập nhật qua MathCA Online và email</p></div>
+          <div class="benefit-item"><div class="check">✓</div><p>Tham gia nhóm Zalo hỗ trợ trao đổi cùng phụ huynh</p></div>
+        </div>
       </div>
     </div>
   </div>
