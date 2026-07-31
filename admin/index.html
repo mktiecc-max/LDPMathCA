@@ -192,6 +192,18 @@ var SCHEMA = [
     ]}
   },
   {
+    key: 'notify', label: '🔔 Đơn hàng ảo',
+    desc: 'Hiển thị popup góc màn hình giả lập có khách vừa đặt hàng để tạo sự khan hiếm.',
+    fields: [
+      { path: 'notify.initialStock', label: 'Số suất còn lại ban đầu (x)', type: 'number' },
+      { path: 'notify.totalStock', label: 'Tổng số suất', type: 'number' }
+    ],
+    list: { path: 'notify.customers', itemLabel: 'Khách hàng', itemFields: [
+      { key: 'name', label: 'Tên khách hàng', type: 'text' },
+      { key: 'time', label: 'Thời gian (vd: vừa xong, 2 phút trước)', type: 'text' }
+    ]}
+  },
+  {
     key: 'problem', label: '💡 Vấn đề / Giải pháp',
     fields: [
       { path: 'problem.title', label: 'Tiêu đề mục', type: 'text' },

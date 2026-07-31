@@ -83,6 +83,24 @@
   .section-title{text-align:center;font-size:20px;font-weight:800;color:var(--navy);margin-bottom:8px;}
   .section-sub{text-align:center;color:var(--grey);font-size:14px;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto;}
 
+  /* TOAST NOTIFICATION */
+  .toast-notification {
+    position: fixed; bottom: 24px; left: 24px; background: #fff; border-left: 4px solid var(--teal);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 12px; padding: 14px 16px;
+    display: flex; gap: 12px; align-items: center; z-index: 1000;
+    transform: translateX(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 320px; pointer-events: none;
+  }
+  .toast-notification.show { transform: translateX(0); }
+  .toast-icon { font-size: 24px; }
+  .toast-content strong { display: block; font-size: 14px; color: var(--navy); margin-bottom: 2px; }
+  .toast-content p { font-size: 13px; color: var(--grey); margin: 0 0 2px; line-height: 1.3; }
+  .toast-content small { font-size: 11px; color: var(--teal); font-weight: 700; }
+  @media(max-width: 600px) {
+    .toast-notification { left: 16px; right: 16px; bottom: 16px; max-width: none; transform: translateY(150%); }
+    .toast-notification.show { transform: translateY(0); }
+  }
+
   /* PROBLEM/SOLUTION */
   .problem{background:#fff;}
   .ps-grid{display:grid;grid-template-columns:1fr;gap:18px;}
@@ -373,7 +391,7 @@
         <span class="save-tag" data-cms="hero.saveTag">Tiết kiệm 25%</span>
       </div>
       <button class="cta-primary js-open-form" data-cms="hero.ctaText">⚡ Đặt Trước Ngay</button>
-      <p class="cta-note" data-cms="hero.note">Miễn phí vận chuyển toàn quốc · Không cần đăng nhập · Còn 200/200 suất</p>
+      <p class="cta-note"><span data-cms="hero.note">Miễn phí vận chuyển toàn quốc.</span> Còn lại <b id="stockRemainingCount">200</b>/<span data-cms="notify.totalStock">200</span> suất</p>
     </div>
   </div>
 </section>
@@ -1310,6 +1328,39 @@ function applyContent(c) {
   updateTotal();
   startCountdown();
   loadAnalytics(s);
+  startFakeOrders(c);
+}
+
+function startFakeOrders(c) {
+  var notify = c.notify || {};
+  var currentStock = Number(notify.initialStock) || 142;
+  var customers = notify.customers || [];
+  var stockEl = document.getElementById('stockRemainingCount');
+  
+  if (stockEl) stockEl.innerText = currentStock;
+
+  if (customers.length > 0) {
+    var cIndex = 0;
+    setInterval(function() {
+      if (currentStock <= 5) return; // limit
+      var cus = customers[cIndex];
+      cIndex = (cIndex + 1) % customers.length;
+      
+      var toast = document.getElementById('orderToast');
+      if (toast) {
+        document.getElementById('toastName').innerText = cus.name || 'Khách hàng';
+        document.getElementById('toastTime').innerText = cus.time || 'vừa xong';
+        toast.classList.add('show');
+        
+        currentStock--;
+        if (stockEl) stockEl.innerText = currentStock;
+
+        setTimeout(function() {
+          toast.classList.remove('show');
+        }, 4000);
+      }
+    }, 10000);
+  }
 }
 
 fetch('/api/content')
@@ -1335,6 +1386,15 @@ fetch('/api/content')
   obs.observe(specsSec);
 })();
 </script>
+
+<div class="toast-notification" id="orderToast">
+  <div class="toast-icon">📦</div>
+  <div class="toast-content">
+    <strong id="toastName">Nguyễn Văn A</strong>
+    <p>Vừa đặt trước Sổ Tay Thiên Tài Toán Học</p>
+    <small id="toastTime">vừa xong</small>
+  </div>
+</div>
 
 </body>
 </html>
