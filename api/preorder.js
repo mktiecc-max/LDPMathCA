@@ -1,5 +1,6 @@
-// Vercel Serverless Function: nhận đơn pre-order từ form popup,
-// ghi vào Google Sheet (qua Google Apps Script) và Supabase (nếu cấu hình).
+// Vercel Serverless Function: nhận đơn pre-order từ form popup.
+// Ưu tiên ghi Supabase (nhanh ~200ms) → trả response ngay cho khách.
+// Google Sheet được đẩy ở background (fire-and-forget), không block response.
 //
 // URL Apps Script lấy từ phần Cài đặt của trang /admin; nếu chưa nhập ở đó thì
 // dùng biến môi trường GOOGLE_SCRIPT_URL.
@@ -25,14 +26,15 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false, error: 'Thiếu địa chỉ' });
   }
 
-  const results = { sheet: false, supabase: false };
+  // Lấy cài đặt CMS (giá, maxQty, script URL)
+  let content = {};
+  try { content = await getContent(); } catch (_) { /* dùng mặc định */ }
+  const settings = content.settings || {};
+  const unitPrice = Number(settings.unitPrice) || 239000;
+  const maxQty = Number(settings.maxQty) || 20;
+  const scriptUrl = settings.googleScriptUrl || process.env.GOOGLE_SCRIPT_URL || '';
 
-  // Lấy cài đặt CMS song song với việc chuẩn bị dữ liệu
-  // → không block luồng ghi
-  const contentPromise = getContent().catch(() => ({}));
-
-  // Tạo record với giá mặc định trước, cập nhật sau khi CMS trả về
-  const cleanQty = Math.min(Math.max(parseInt(qty, 10) || 1, 1), 20);
+  const cleanQty = Math.min(Math.max(parseInt(qty, 10) || 1, 1), maxQty);
 
   const record = {
     createdAt: new Date().toISOString(),
@@ -41,41 +43,19 @@ export default async function handler(req, res) {
     email: String(email || '').trim().slice(0, 200),
     grade: String(grade || '').slice(0, 50),
     qty: cleanQty,
-    total: 0,
+    total: cleanQty * unitPrice,
     address: String(address).trim().slice(0, 500),
     note: String(note || '').trim().slice(0, 500),
     source: String(source || '').slice(0, 300),
     userAgent: String(userAgent || '').slice(0, 300)
   };
 
-  // Chờ CMS để lấy giá chính xác + script URL
-  const content = await contentPromise;
-  const settings = content.settings || {};
-  const unitPrice = Number(settings.unitPrice) || 239000;
-  const maxQty = Number(settings.maxQty) || 20;
-  const scriptUrl = settings.googleScriptUrl || process.env.GOOGLE_SCRIPT_URL || '';
-
-  record.qty = Math.min(record.qty, maxQty);
-  record.total = record.qty * unitPrice;
-
-  // Ghi Google Sheet + Supabase SONG SONG (không chờ nhau)
-  const tasks = [];
-
-  if (scriptUrl) {
-    tasks.push(
-      fetch(scriptUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record)
-      })
-        .then(r => { results.sheet = r.ok; })
-        .catch(err => { console.error('Google Sheet error:', err); })
-    );
-  }
+  // ========== 1) GHI SUPABASE (ưu tiên, nhanh) ==========
+  let supabaseOk = false;
 
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-    tasks.push(
-      fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
+    try {
+      const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,20 +75,27 @@ export default async function handler(req, res) {
           source: record.source,
           user_agent: record.userAgent
         })
-      })
-        .then(async r => {
-          results.supabase = r.ok;
-          if (!r.ok) console.error('Supabase error:', await r.text());
-        })
-        .catch(err => { console.error('Supabase error:', err); })
-    );
+      });
+      supabaseOk = r.ok;
+      if (!r.ok) console.error('Supabase error:', await r.text());
+    } catch (err) {
+      console.error('Supabase error:', err);
+    }
   }
 
-  await Promise.allSettled(tasks);
-
-  // Thành công nếu ghi được ít nhất 1 nơi
-  if (results.sheet || results.supabase) {
-    return res.status(200).json({ ok: true, saved: results, total: record.total });
+  // ========== 2) GOOGLE SHEET — fire-and-forget ==========
+  // Đẩy vào background, KHÔNG chờ kết quả → khách nhận response ngay
+  if (scriptUrl) {
+    fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record)
+    }).catch(err => console.error('Google Sheet background error:', err));
   }
-  return res.status(502).json({ ok: false, error: 'Không lưu được đơn hàng', saved: results });
+
+  // ========== 3) TRẢ RESPONSE ==========
+  if (supabaseOk) {
+    return res.status(200).json({ ok: true, total: record.total });
+  }
+  return res.status(502).json({ ok: false, error: 'Không lưu được đơn hàng' });
 }
