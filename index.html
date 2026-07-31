@@ -150,8 +150,25 @@
   .final-cta h2{font-size:22px;margin-bottom:8px;}
   .final-cta p{color:var(--grey);font-size:14px;margin-bottom:18px;}
 
-  footer{background:#fff;border-top:1px solid #eee;padding:20px 0 90px;text-align:center;font-size:12px;color:var(--grey);}
-
+  /* FOOTER */
+  .site-footer{border-top:8px solid #FFBD05;background:#1C1140;padding:48px 0 28px;color:#fff;}
+  .footer-grid{display:grid;grid-template-columns:1fr;gap:32px;}
+  .footer-brand{}
+  .footer-logo{display:inline-block;background:#fff;border-radius:14px;padding:10px;margin-bottom:14px;}
+  .footer-logo img{height:48px;width:auto;}
+  .footer-brand p{font-size:13px;color:#b3adc4;line-height:1.6;margin-bottom:10px;}
+  .footer-tagline{font-size:13px;font-weight:700;color:#FFBD05;}
+  .footer-col h3{font-size:16px;font-weight:800;color:#FFBD05;margin-bottom:14px;}
+  .footer-col ul{list-style:none;}
+  .footer-col li{margin-bottom:10px;}
+  .footer-col a{color:#b3adc4;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;transition:color .15s;}
+  .footer-col a:hover{color:#fff;}
+  .footer-col .contact-item{display:flex;gap:8px;color:#b3adc4;font-size:13px;line-height:1.5;margin-bottom:12px;}
+  .footer-col .contact-icon{flex:0 0 20px;margin-top:2px;}
+  .footer-bottom{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;gap:12px;font-size:12px;color:#8a83a0;}
+  .footer-bottom a{color:#8a83a0;text-decoration:none;transition:color .15s;}
+  .footer-bottom a:hover{color:#fff;}
+  .footer-links{display:flex;flex-wrap:wrap;gap:16px;}
   /* STICKY MOBILE CTA */
   .sticky-cta{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 14px rgba(0,0,0,0.1);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:200;}
   .sticky-cta .price-now{font-size:18px;}
@@ -218,7 +235,8 @@
     .steps{grid-template-columns:repeat(3,1fr);}
     .sticky-cta{display:none;}
     .header-cta{padding:12px 26px;}
-    footer{padding-bottom:20px;}
+    .footer-grid{grid-template-columns:1.5fr 1fr 1fr 1fr;}
+    .footer-bottom{flex-direction:row;align-items:center;justify-content:space-between;}
     .modal-overlay{align-items:center;padding:20px;}
     .modal{border-radius:20px;max-width:520px;padding:24px 24px 28px;}
     .modal h3{font-size:19px;}
@@ -391,8 +409,48 @@
   </div>
 </section>
 
-<footer data-cms="footer.text">
-  © 2026 MathCA. Sổ Tay Thiên Tài Toán Lớp 1–5.
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo"><img alt="MathCA" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/brand/logos/mathca-logo-tagline.webp"></div>
+        <p>Thương hiệu Toán học Tiểu học với bộ tự học Sổ Tay MathCA + MathCA Online và chương trình trực tiếp CLB MathCA.</p>
+        <span class="footer-tagline">Học đúng để giỏi thật.</span>
+      </div>
+      <div class="footer-col">
+        <h3>Bộ tự học MathCA</h3>
+        <ul>
+          <li><a href="/so-tay-mathca">📖 Sổ Tay MathCA</a></li>
+          <li><a href="/mathca-online">🎓 MathCA Online</a></li>
+          <li><a href="/kich-hoat">Kích hoạt mã sách/khóa học</a></li>
+          <li><a href="/san-pham">Tất cả sản phẩm</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Học trực tiếp</h3>
+        <ul>
+          <li><a href="/clb-mathca">CLB Toán Bồi Dưỡng MathCA</a></li>
+          <li><a href="/phuong-phap">Phương pháp CPA + Apply</a></li>
+          <li><a href="/lien-he">Đăng ký tư vấn/học thử</a></li>
+          <li><a href="/goc-phu-huynh">Góc phụ huynh</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Liên hệ</h3>
+        <div class="contact-item"><span class="contact-icon">📍</span><span>Thông tin cơ sở được cập nhật tại trang Liên hệ.</span></div>
+        <div class="contact-item"><span class="contact-icon">📞</span><a href="/lien-he">Yêu cầu MathCA gọi lại</a></div>
+        <div class="contact-item"><span class="contact-icon">✉️</span><span>Email sẽ được cập nhật khi mở production.</span></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 MathCA. Nội dung và nhận diện thương hiệu được bảo lưu.</p>
+      <div class="footer-links">
+        <a href="/dieu-khoan">Điều khoản</a>
+        <a href="/chinh-sach-bao-mat">Chính sách bảo mật</a>
+        <a href="/lien-he">Liên hệ ↗</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <!-- LIGHTBOX -->
