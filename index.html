@@ -307,7 +307,7 @@
   </div>
 </section>
 
-<section class="specs">
+<section class="specs" id="specsSection">
   <div class="container" style="max-width:700px;">
     <h2 class="section-title" data-cms="specs.title">Thông Số Sản Phẩm</h2>
     <table class="spec-table"><tbody id="specBody">
@@ -887,6 +887,24 @@ fetch('/api/content')
   .then(function (r) { return r.ok ? r.json() : null; })
   .then(function (data) { if (data && data.ok && data.content) applyContent(data.content); })
   .catch(function () { /* giữ nguyên nội dung tĩnh */ });
+
+/* ================= AUTO POPUP KHI CUỘN ĐẾN THÔNG SỐ ================= */
+(function () {
+  var specsSec = document.getElementById('specsSection');
+  if (!specsSec || !('IntersectionObserver' in window)) return;
+  var fired = false;
+  var obs = new IntersectionObserver(function (entries) {
+    if (fired) return;
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        fired = true;
+        obs.disconnect();
+        openModal();
+      }
+    });
+  }, { threshold: 0.3 });
+  obs.observe(specsSec);
+})();
 </script>
 
 </body>
