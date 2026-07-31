@@ -63,7 +63,7 @@ export default async function handler(req, res) {
   const chosen = packages.find(p => p.name === pkgName) || packages[0];
   const serverTotal = chosen ? (Number(chosen.new) || 0) : cleanQty * unitPrice;
 
-  const record = {
+  const baseRecord = {
     createdAt: new Date().toISOString(),
     name: String(name).trim().slice(0, 200),
     phone: cleanPhone,
@@ -72,9 +72,26 @@ export default async function handler(req, res) {
     qty: cleanQty,
     total: serverTotal,
     address: String(address).trim().slice(0, 500),
-    note: String((pkgName ? `[Gói: ${pkgName}] ` : '') + (note || '')).trim().slice(0, 500),
+    note: String(note || '').trim().slice(0, 500),
     source: String(source || '').slice(0, 300),
-    userAgent: String(userAgent || '').slice(0, 300)
+    userAgent: String(userAgent || '').slice(0, 300),
+    pkgName: String(pkgName || '').slice(0, 200)
+  };
+
+  // Google Sheet payload: replaces qty with package name, and uses raw note.
+  // Property order is preserved for Google Apps Script Object.values() parsing.
+  const sheetRecord = {
+    createdAt: baseRecord.createdAt,
+    name: baseRecord.name,
+    phone: baseRecord.phone,
+    email: baseRecord.email,
+    grade: baseRecord.grade,
+    package: baseRecord.pkgName,
+    total: baseRecord.total,
+    address: baseRecord.address,
+    note: baseRecord.note,
+    source: baseRecord.source,
+    userAgent: baseRecord.userAgent
   };
 
   // Chuẩn bị các Promise để chạy song song
@@ -92,16 +109,16 @@ export default async function handler(req, res) {
         Prefer: 'return=minimal'
       },
       body: JSON.stringify({
-        name: record.name,
-        phone: record.phone,
-        email: record.email,
-        grade: record.grade,
-        qty: record.qty,
-        total: record.total,
-        address: record.address,
-        note: record.note,
-        source: record.source,
-        user_agent: record.userAgent
+        name: baseRecord.name,
+        phone: baseRecord.phone,
+        email: baseRecord.email,
+        grade: baseRecord.pkgName || baseRecord.grade, // Hiển thị package vào cột Lớp trên CMS
+        qty: baseRecord.qty,
+        total: baseRecord.total,
+        address: baseRecord.address,
+        note: baseRecord.note,
+        source: baseRecord.source,
+        user_agent: baseRecord.userAgent
       })
     })
     .then(r => { supabaseOk = r.ok; return r.ok ? r : Promise.reject('Supa fail'); })
@@ -115,7 +132,7 @@ export default async function handler(req, res) {
     const pGs = fetch(scriptUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record)
+      body: JSON.stringify(sheetRecord)
     }).catch(err => console.error('Google Sheet error:', err));
     
     tasks.push(pGs);
@@ -127,7 +144,7 @@ export default async function handler(req, res) {
   // ========== 3) TRẢ RESPONSE ==========
   // Ưu tiên check Supabase thành công. Nếu không cấu hình Supabase nhưng GS thành công thì vẫn báo ok.
   if (supabaseOk || (!process.env.SUPABASE_URL && scriptUrl)) {
-    return res.status(200).json({ ok: true, total: record.total });
+    return res.status(200).json({ ok: true, total: baseRecord.total });
   }
   return res.status(502).json({ ok: false, error: 'Không lưu được đơn hàng' });
 }
