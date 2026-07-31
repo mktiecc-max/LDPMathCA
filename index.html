@@ -414,12 +414,12 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-logo"><img alt="MathCA" src="https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/brand/logos/mathca-logo-tagline.webp"></div>
-        <p>Thương hiệu Toán học Tiểu học với bộ tự học Sổ Tay MathCA + MathCA Online và chương trình trực tiếp CLB MathCA.</p>
-        <span class="footer-tagline">Học đúng để giỏi thật.</span>
+        <p id="ftBrandDesc">Thương hiệu Toán học Tiểu học với bộ tự học Sổ Tay MathCA + MathCA Online và chương trình trực tiếp CLB MathCA.</p>
+        <span class="footer-tagline" id="ftTagline">Học đúng để giỏi thật.</span>
       </div>
       <div class="footer-col">
-        <h3>Bộ tự học MathCA</h3>
-        <ul>
+        <h3 id="ftSelfStudyTitle">Bộ tự học MathCA</h3>
+        <ul id="ftSelfStudyLinks">
           <li><a href="/so-tay-mathca">📖 Sổ Tay MathCA</a></li>
           <li><a href="/mathca-online">🎓 MathCA Online</a></li>
           <li><a href="/kich-hoat">Kích hoạt mã sách/khóa học</a></li>
@@ -427,8 +427,8 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h3>Học trực tiếp</h3>
-        <ul>
+        <h3 id="ftDirectTitle">Học trực tiếp</h3>
+        <ul id="ftDirectLinks">
           <li><a href="/clb-mathca">CLB Toán Bồi Dưỡng MathCA</a></li>
           <li><a href="/phuong-phap">Phương pháp CPA + Apply</a></li>
           <li><a href="/lien-he">Đăng ký tư vấn/học thử</a></li>
@@ -436,15 +436,17 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h3>Liên hệ</h3>
-        <div class="contact-item"><span class="contact-icon">📍</span><span>Thông tin cơ sở được cập nhật tại trang Liên hệ.</span></div>
-        <div class="contact-item"><span class="contact-icon">📞</span><a href="/lien-he">Yêu cầu MathCA gọi lại</a></div>
-        <div class="contact-item"><span class="contact-icon">✉️</span><span>Email sẽ được cập nhật khi mở production.</span></div>
+        <h3 id="ftContactTitle">Liên hệ</h3>
+        <div id="ftContacts">
+          <div class="contact-item"><span class="contact-icon">📍</span><span>Thông tin cơ sở được cập nhật tại trang Liên hệ.</span></div>
+          <div class="contact-item"><span class="contact-icon">📞</span><a href="/lien-he">Yêu cầu MathCA gọi lại</a></div>
+          <div class="contact-item"><span class="contact-icon">✉️</span><span>Email sẽ được cập nhật khi mở production.</span></div>
+        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 MathCA. Nội dung và nhận diện thương hiệu được bảo lưu.</p>
-      <div class="footer-links">
+      <p id="ftCopyright">© 2026 MathCA. Nội dung và nhận diện thương hiệu được bảo lưu.</p>
+      <div class="footer-links" id="ftLegalLinks">
         <a href="/dieu-khoan">Điều khoản</a>
         <a href="/chinh-sach-bao-mat">Chính sách bảo mật</a>
         <a href="/lien-he">Liên hệ ↗</a>
@@ -941,6 +943,68 @@ function renderLists(c) {
     sel.innerHTML = '';
     sel.appendChild(new Option('-- Chọn lớp --', ''));
     c.form.grades.forEach(function (g) { sel.appendChild(new Option(g, g)); });
+  }
+  // Footer
+  if (c.footer) {
+    var f = c.footer;
+    function setText(id, val) {
+      var node = document.getElementById(id);
+      if (node && val) node.textContent = tpl(val);
+    }
+    setText('ftBrandDesc', f.brandDesc);
+    setText('ftTagline', f.tagline);
+    setText('ftSelfStudyTitle', f.selfStudyTitle);
+    setText('ftDirectTitle', f.directTitle);
+    setText('ftContactTitle', f.contactTitle);
+    setText('ftCopyright', f.copyright);
+    
+    function renderLinkList(listId, items) {
+      var list = document.getElementById(listId);
+      if (!list || !Array.isArray(items)) return;
+      list.innerHTML = '';
+      items.forEach(function (item) {
+        var li = document.createElement(list.tagName === 'UL' ? 'li' : 'div');
+        var a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.text || '';
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    }
+    renderLinkList('ftSelfStudyLinks', f.selfStudyLinks);
+    renderLinkList('ftDirectLinks', f.directLinks);
+    
+    var contacts = document.getElementById('ftContacts');
+    if (contacts && Array.isArray(f.contacts)) {
+      contacts.innerHTML = '';
+      f.contacts.forEach(function (item) {
+        var div = el('div', 'contact-item');
+        var icon = el('span', 'contact-icon', item.icon || '');
+        div.appendChild(icon);
+        if (item.url) {
+          var a = document.createElement('a');
+          a.href = item.url;
+          a.textContent = item.text || '';
+          div.appendChild(a);
+        } else {
+          var span = document.createElement('span');
+          span.textContent = item.text || '';
+          div.appendChild(span);
+        }
+        contacts.appendChild(div);
+      });
+    }
+    
+    var legal = document.getElementById('ftLegalLinks');
+    if (legal && Array.isArray(f.legalLinks)) {
+      legal.innerHTML = '';
+      f.legalLinks.forEach(function (item) {
+        var a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.text || '';
+        legal.appendChild(a);
+      });
+    }
   }
 }
 

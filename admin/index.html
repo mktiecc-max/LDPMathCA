@@ -265,7 +265,34 @@ var SCHEMA = [
   },
   {
     key: 'footer', label: '🔻 Footer',
-    fields: [ { path: 'footer.text', label: 'Nội dung footer', type: 'textarea' } ]
+    desc: 'Nội dung footer: thông tin thương hiệu, liên kết và liên hệ.',
+    fields: [
+      { path: 'footer.brandDesc', label: 'Mô tả thương hiệu', type: 'textarea' },
+      { path: 'footer.tagline', label: 'Tagline', type: 'text' },
+      { path: 'footer.selfStudyTitle', label: 'Tiêu đề cột "Bộ tự học"', type: 'text' },
+      { path: 'footer.directTitle', label: 'Tiêu đề cột "Học trực tiếp"', type: 'text' },
+      { path: 'footer.contactTitle', label: 'Tiêu đề cột "Liên hệ"', type: 'text' },
+      { path: 'footer.copyright', label: 'Dòng bản quyền', type: 'text' }
+    ],
+    lists: [
+      { path: 'footer.selfStudyLinks', itemLabel: 'Link tự học', itemFields: [
+        { key: 'text', label: 'Tên hiển thị', type: 'text' },
+        { key: 'url', label: 'Đường dẫn', type: 'text' }
+      ]},
+      { path: 'footer.directLinks', itemLabel: 'Link trực tiếp', itemFields: [
+        { key: 'text', label: 'Tên hiển thị', type: 'text' },
+        { key: 'url', label: 'Đường dẫn', type: 'text' }
+      ]},
+      { path: 'footer.contacts', itemLabel: 'Liên hệ', itemFields: [
+        { key: 'icon', label: 'Icon (emoji)', type: 'text' },
+        { key: 'text', label: 'Nội dung', type: 'text' },
+        { key: 'url', label: 'Đường dẫn (tùy chọn)', type: 'text' }
+      ]},
+      { path: 'footer.legalLinks', itemLabel: 'Link pháp lý', itemFields: [
+        { key: 'text', label: 'Tên hiển thị', type: 'text' },
+        { key: 'url', label: 'Đường dẫn', type: 'text' }
+      ]}
+    ]
   },
   {
     key: 'form', label: '📝 Form đặt hàng',
