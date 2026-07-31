@@ -50,51 +50,56 @@ export default async function handler(req, res) {
     userAgent: String(userAgent || '').slice(0, 300)
   };
 
-  // ========== 1) GHI SUPABASE (ưu tiên, nhanh) ==========
-  let supabaseOk = false;
+  // Chuẩn bị các Promise để chạy song song
+  const tasks = [];
 
+  // ========== 1) GHI SUPABASE ==========
+  let supabaseOk = false;
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-    try {
-      const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: process.env.SUPABASE_SERVICE_KEY,
-          Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
-          Prefer: 'return=minimal'
-        },
-        body: JSON.stringify({
-          name: record.name,
-          phone: record.phone,
-          email: record.email,
-          grade: record.grade,
-          qty: record.qty,
-          total: record.total,
-          address: record.address,
-          note: record.note,
-          source: record.source,
-          user_agent: record.userAgent
-        })
-      });
-      supabaseOk = r.ok;
-      if (!r.ok) console.error('Supabase error:', await r.text());
-    } catch (err) {
-      console.error('Supabase error:', err);
-    }
+    const pSupa = fetch(`${process.env.SUPABASE_URL}/rest/v1/preorders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: process.env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        name: record.name,
+        phone: record.phone,
+        email: record.email,
+        grade: record.grade,
+        qty: record.qty,
+        total: record.total,
+        address: record.address,
+        note: record.note,
+        source: record.source,
+        user_agent: record.userAgent
+      })
+    })
+    .then(r => { supabaseOk = r.ok; return r.ok ? r : Promise.reject('Supa fail'); })
+    .catch(err => console.error('Supabase error:', err));
+    
+    tasks.push(pSupa);
   }
 
-  // ========== 2) GOOGLE SHEET — fire-and-forget ==========
-  // Đẩy vào background, KHÔNG chờ kết quả → khách nhận response ngay
+  // ========== 2) GOOGLE SHEET ==========
   if (scriptUrl) {
-    fetch(scriptUrl, {
+    const pGs = fetch(scriptUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record)
-    }).catch(err => console.error('Google Sheet background error:', err));
+    }).catch(err => console.error('Google Sheet error:', err));
+    
+    tasks.push(pGs);
   }
 
+  // Đợi cả 2 (hoặc 1) hoàn thành. Vercel Serverless yêu cầu await nếu không sẽ bị freeze process.
+  await Promise.allSettled(tasks);
+
   // ========== 3) TRẢ RESPONSE ==========
-  if (supabaseOk) {
+  // Ưu tiên check Supabase thành công. Nếu không cấu hình Supabase nhưng GS thành công thì vẫn báo ok.
+  if (supabaseOk || (!process.env.SUPABASE_URL && scriptUrl)) {
     return res.status(200).json({ ok: true, total: record.total });
   }
   return res.status(502).json({ ok: false, error: 'Không lưu được đơn hàng' });
