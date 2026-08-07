@@ -1370,10 +1370,10 @@ function applyContent(c) {
   updateTotal();
   startCountdown();
   loadAnalytics(s);
-  startFakeOrders();
+  startFakeOrders(c);
 }
 
-function startFakeOrders() {
+function startFakeOrders(c) {
   var stockEl = document.getElementById('stockRemainingCount');
   var fillEl = document.getElementById('stockFill');
 
@@ -1389,35 +1389,31 @@ function startFakeOrders() {
   
   if (stockEl) stockEl.innerText = CONFIG.STOCK_LEFT;
 
-  fetch('/api/recent-orders')
-    .then(function(r) { return r.json(); })
-    .then(function(res) {
-      if (!res.ok || !res.data || res.data.length === 0) return;
-      var customers = res.data;
-      var cIndex = 0;
+  var customers = (c && c.notify && Array.isArray(c.notify.customers)) ? c.notify.customers : [];
+  if (customers.length === 0) return;
+  
+  var cIndex = 0;
+  
+  setInterval(function() {
+    if (document.hidden) return; // P4.4
+    if (CONFIG.STOCK_LEFT <= 5) return; // limit
+    
+    var cus = customers[cIndex];
+    cIndex = (cIndex + 1) % customers.length;
+    
+    var toast = document.getElementById('orderToast');
+    if (toast) {
+      document.getElementById('toastName').innerText = cus.name || 'Khách hàng';
+      document.getElementById('toastTime').innerText = cus.time || 'vừa xong';
+      toast.classList.add('show');
       
-      setInterval(function() {
-        if (document.hidden) return; // P4.4
-        if (CONFIG.STOCK_LEFT <= 5) return; // limit
-        
-        var cus = customers[cIndex];
-        cIndex = (cIndex + 1) % customers.length;
-        
-        var toast = document.getElementById('orderToast');
-        if (toast) {
-          document.getElementById('toastName').innerText = cus.name || 'Khách hàng';
-          document.getElementById('toastTime').innerText = cus.time || 'vừa xong';
-          toast.classList.add('show');
-          
-          updateStock(CONFIG.STOCK_LEFT - 1); // P0-4: unify stock decrease
+      updateStock(CONFIG.STOCK_LEFT - 1); // P0-4: unify stock decrease
 
-          setTimeout(function() {
-            toast.classList.remove('show');
-          }, 4000);
-        }
-      }, 20000);
-    })
-    .catch(function(err) { console.error('Orders error', err); });
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 4000);
+    }
+  }, 20000);
 }
 
 fetch('/api/content')
