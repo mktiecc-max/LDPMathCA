@@ -625,6 +625,15 @@
             </div>
 
             <div class="form-group">
+              <label for="fVoucher">Mã Voucher (Nếu có)</label>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="fVoucher" name="voucher" placeholder="Nhập mã giảm giá" style="text-transform:uppercase;">
+                <button type="button" id="btnApplyVoucher" style="background:var(--teal);color:#fff;border:none;padding:0 16px;border-radius:8px;font-weight:700;cursor:pointer;flex-shrink:0;">Áp dụng</button>
+              </div>
+              <p class="field-error" id="voucherMsg" style="color:var(--teal);margin-top:4px;display:none;"></p>
+            </div>
+
+            <div class="form-group">
               <label for="fNote">Ghi chú (nếu có)</label>
               <input type="text" id="fNote" name="note" placeholder="VD: Giao giờ hành chính">
             </div>
@@ -654,6 +663,10 @@
                 <div class="breakdown-row discount">
                   <span>Ưu đãi sản phẩm</span>
                   <span id="bdDiscount">-81.000đ</span>
+                </div>
+                <div class="breakdown-row discount" id="rowVoucher" style="display:none;">
+                  <span>Voucher giảm giá</span>
+                  <span id="bdVoucherDiscount">-0đ</span>
                 </div>
                 <div class="breakdown-row">
                   <span>Phí vận chuyển</span>
@@ -883,10 +896,14 @@ var pkgOldPrice = document.getElementById('pkgOldPrice');
 var bdOldPrice = document.getElementById('bdOldPrice');
 var bdDiscount = document.getElementById('bdDiscount');
 var bdTotal = document.getElementById('bdTotal');
+var rowVoucher = document.getElementById('rowVoucher');
+var bdVoucherDiscount = document.getElementById('bdVoucherDiscount');
 
 var PACKAGES = {
   "1": { id: "1", name: "Mua lẻ 1 cuốn", old: 320000, new: 239000, qty: 1, image: "https://rwtpwdyoxirfpposmdcg.supabase.co/storage/v1/object/public/mathcaweb/storefront/products/mca-st-15/1-cover-hero-8960b400014c.webp" }
 };
+
+var currentVoucher = null;
 
 function updateTotal() {
   var val = packageSelect.value || Object.keys(PACKAGES)[0];
@@ -900,9 +917,49 @@ function updateTotal() {
   
   bdOldPrice.textContent = formatVnd(pkg.old);
   bdDiscount.textContent = '-' + formatVnd(pkg.old - pkg.new);
-  bdTotal.textContent = formatVnd(pkg.new);
+  
+  var finalPrice = pkg.new;
+  if (currentVoucher) {
+    var vDiscount = Math.floor(pkg.new * currentVoucher.discount / 100);
+    finalPrice = pkg.new - vDiscount;
+    bdVoucherDiscount.textContent = '-' + formatVnd(vDiscount);
+    rowVoucher.style.display = 'flex';
+  } else {
+    rowVoucher.style.display = 'none';
+  }
+  
+  bdTotal.textContent = formatVnd(finalPrice);
 }
 packageSelect.addEventListener('change', updateTotal);
+
+var btnApplyVoucher = document.getElementById('btnApplyVoucher');
+var fVoucher = document.getElementById('fVoucher');
+var voucherMsg = document.getElementById('voucherMsg');
+
+btnApplyVoucher.addEventListener('click', function() {
+  var code = fVoucher.value.trim().toUpperCase();
+  if (!code) {
+    currentVoucher = null;
+    voucherMsg.style.display = 'none';
+    updateTotal();
+    return;
+  }
+  var list = window.MATHCA_VOUCHERS || [];
+  var v = list.find(function(x) { return x.code && x.code.toUpperCase() === code && x.active; });
+  if (v) {
+    currentVoucher = v;
+    voucherMsg.textContent = 'Áp dụng mã thành công!';
+    voucherMsg.style.color = 'var(--teal)';
+    voucherMsg.style.display = 'block';
+  } else {
+    currentVoucher = null;
+    voucherMsg.textContent = 'Mã không hợp lệ hoặc đã hết hạn';
+    voucherMsg.style.color = 'var(--red-badge)';
+    voucherMsg.style.display = 'block';
+  }
+  updateTotal();
+});
+
 updateTotal();
 
 /* ================= VALIDATE & SUBMIT ================= */
@@ -955,8 +1012,9 @@ form.addEventListener('submit', function (e) {
     email: document.getElementById('fEmail').value.trim(),
     grade: '',
     package: pkgText,
+    voucherCode: currentVoucher ? currentVoucher.code : '',
     qty: pkg ? pkg.qty : 1,
-    total: total,
+    total: currentVoucher ? (total - Math.floor(total * currentVoucher.discount / 100)) : total,
     address: document.getElementById('fAddress').value.trim(),
     note: document.getElementById('fNote').value.trim(),
     source: location.href,
@@ -1333,6 +1391,8 @@ function applyContent(c) {
   if (s.stockLeft != null) CONFIG.STOCK_LEFT = Number(s.stockLeft);
   if (s.stockTotal != null) CONFIG.STOCK_TOTAL = Number(s.stockTotal);
   if (c.form && c.form.errorText) CONFIG.ERROR_TEXT = c.form.errorText;
+
+  window.MATHCA_VOUCHERS = c.vouchers || [];
 
   // Chuỗi văn bản (hỗ trợ xuống dòng từ CMS)
   document.querySelectorAll('[data-cms]').forEach(function (node) {

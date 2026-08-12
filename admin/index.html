@@ -334,6 +334,15 @@ var SCHEMA = [
       ]}
     ]
   },
+  {
+    key: 'vouchers', label: '🎫 Mã Voucher',
+    desc: 'Tạo mã voucher giảm giá (%) để khách hàng nhập ở form đặt trước.',
+    list: { path: 'vouchers', itemLabel: 'Voucher', itemFields: [
+      { key: 'code', label: 'Mã giảm giá', type: 'text' },
+      { key: 'discount', label: 'Phần trăm giảm (%)', type: 'number' },
+      { key: 'active', label: 'Kích hoạt', type: 'checkbox' }
+    ]}
+  },
   { key: 'orders', label: '📦 Đơn hàng', custom: 'orders' }
 ];
 

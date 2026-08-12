@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     return res.status(429).json({ ok: false, error: 'Bạn đang thao tác quá nhanh, vui lòng chờ một lát.' });
   }
 
-  const { name, phone, email, grade, qty, address, note, source, userAgent, total: reqTotal, package: pkgName, website } = req.body || {};
+  const { name, phone, email, grade, qty, address, note, source, userAgent, total: reqTotal, package: pkgName, voucherCode, website } = req.body || {};
 
   // P0-2: Honeypot check
   if (website) {
@@ -61,7 +61,18 @@ export default async function handler(req, res) {
   // P0-1: Tính giá server-side từ content
   const packages = (content.form && content.form.packages) || [];
   const chosen = packages.find(p => p.name === pkgName) || packages[0];
-  const serverTotal = chosen ? (Number(chosen.new) || 0) : cleanQty * unitPrice;
+  let serverTotal = chosen ? (Number(chosen.new) || 0) : cleanQty * unitPrice;
+  let finalNote = String(note || '').trim().slice(0, 500);
+
+  // Validate Voucher
+  if (voucherCode && Array.isArray(content.vouchers)) {
+    const vc = content.vouchers.find(v => v.code && v.code.toUpperCase() === String(voucherCode).trim().toUpperCase() && v.active);
+    if (vc && vc.discount) {
+      const discountAmount = Math.floor(serverTotal * Number(vc.discount) / 100);
+      serverTotal = serverTotal - discountAmount;
+      finalNote = finalNote + ` [Voucher: ${vc.code} -${vc.discount}%]`;
+    }
+  }
 
   const baseRecord = {
     createdAt: new Date().toISOString(),
@@ -72,7 +83,7 @@ export default async function handler(req, res) {
     qty: cleanQty,
     total: serverTotal,
     address: String(address).trim().slice(0, 500),
-    note: String(note || '').trim().slice(0, 500),
+    note: finalNote,
     source: String(source || '').slice(0, 300),
     userAgent: String(userAgent || '').slice(0, 300),
     pkgName: String(pkgName || '').slice(0, 200)
