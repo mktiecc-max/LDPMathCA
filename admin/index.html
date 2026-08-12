@@ -701,6 +701,7 @@ function renderOrders(host) {
           ['Lớp', function (o) { return o.grade || ''; }],
           ['SL', function (o) { return o.qty; }],
           ['Tổng', function (o) { return Number(o.total || 0).toLocaleString('vi-VN') + 'đ'; }],
+          ['Voucher', function (o) { return o.voucher || ''; }],
           ['Địa chỉ', function (o) { return o.address; }, true],
           ['Ghi chú', function (o) { return o.note || ''; }, true]
         ];

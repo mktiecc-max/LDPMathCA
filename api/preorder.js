@@ -63,6 +63,7 @@ export default async function handler(req, res) {
   const chosen = packages.find(p => p.name === pkgName) || packages[0];
   let serverTotal = chosen ? (Number(chosen.new) || 0) : cleanQty * unitPrice;
   let finalNote = String(note || '').trim().slice(0, 500);
+  let appliedVoucher = '';
 
   // Validate Voucher
   if (voucherCode && Array.isArray(content.vouchers)) {
@@ -70,7 +71,7 @@ export default async function handler(req, res) {
     if (vc && vc.discount) {
       const discountAmount = Math.floor(serverTotal * Number(vc.discount) / 100);
       serverTotal = serverTotal - discountAmount;
-      finalNote = finalNote + ` [Voucher: ${vc.code} -${vc.discount}%]`;
+      appliedVoucher = vc.code;
     }
   }
 
@@ -86,7 +87,8 @@ export default async function handler(req, res) {
     note: finalNote,
     source: String(source || '').slice(0, 300),
     userAgent: String(userAgent || '').slice(0, 300),
-    pkgName: String(pkgName || '').slice(0, 200)
+    pkgName: String(pkgName || '').slice(0, 200),
+    voucher: appliedVoucher
   };
 
   // Google Sheet payload: replaces qty with package name, and uses raw note.
@@ -98,6 +100,7 @@ export default async function handler(req, res) {
     email: baseRecord.email,
     grade: baseRecord.grade,
     package: baseRecord.pkgName,
+    voucher: baseRecord.voucher,
     total: baseRecord.total,
     address: baseRecord.address,
     note: baseRecord.note,
@@ -129,7 +132,8 @@ export default async function handler(req, res) {
         address: baseRecord.address,
         note: baseRecord.note,
         source: baseRecord.source,
-        user_agent: baseRecord.userAgent
+        user_agent: baseRecord.userAgent,
+        voucher: baseRecord.voucher
       })
     })
     .then(r => { supabaseOk = r.ok; return r.ok ? r : Promise.reject('Supa fail'); })

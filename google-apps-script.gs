@@ -19,7 +19,7 @@ var SHEET_NAME = 'Preorders';
 
 var HEADERS = [
   'Thời gian', 'Họ tên', 'SĐT', 'Email', 'Lớp',
-  'Số lượng', 'Tổng tiền', 'Địa chỉ', 'Ghi chú', 'Nguồn', 'Thiết bị'
+  'Gói ưu đãi', 'Voucher', 'Tổng tiền', 'Địa chỉ', 'Ghi chú', 'Nguồn', 'Thiết bị'
 ];
 
 function doPost(e) {
@@ -41,7 +41,8 @@ function doPost(e) {
       "'" + (data.phone || ''),   // thêm ' để giữ số 0 đầu
       data.email || '',
       data.grade || '',
-      data.qty || 1,
+      data.package || data.qty || 1,
+      data.voucher || '',
       data.total || '',
       data.address || '',
       data.note || '',

@@ -14,8 +14,12 @@ create table if not exists public.preorders (
   address     text not null,
   note        text,
   source      text,
-  user_agent  text
+  user_agent  text,
+  voucher     text
 );
+
+-- (Tùy chọn) Chạy lệnh sau nếu bạn đã tạo bảng từ trước và muốn thêm cột voucher:
+-- alter table public.preorders add column if not exists voucher text;
 
 -- 2) Nội dung + cài đặt landing page (luôn chỉ có đúng 1 dòng, id = 1)
 create table if not exists public.site_content (
