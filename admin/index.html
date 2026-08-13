@@ -335,13 +335,7 @@ var SCHEMA = [
     ]
   },
   {
-    key: 'vouchers', label: '🎫 Mã Voucher',
-    desc: 'Tạo mã voucher giảm giá (%) để khách hàng nhập ở form đặt trước.',
-    list: { path: 'vouchers', itemLabel: 'Voucher', itemFields: [
-      { key: 'code', label: 'Mã giảm giá', type: 'text' },
-      { key: 'discount', label: 'Phần trăm giảm (%)', type: 'number' },
-      { key: 'active', label: 'Kích hoạt', type: 'checkbox' }
-    ]}
+    key: 'vouchers', label: '🎫 Quản lý Voucher', custom: 'vouchers'
   },
   { key: 'orders', label: '📦 Đơn hàng', custom: 'orders' }
 ];
@@ -638,6 +632,7 @@ function renderSection() {
   }
 
   if (sec.custom === 'orders') { renderOrders(host); return; }
+  if (sec.custom === 'vouchers') { renderVouchers(host); return; }
 
   (sec.fields || []).forEach(function (fdef) {
     host.appendChild(makeField(fdef, getPath(state.content, fdef.path), function (v) {
@@ -741,6 +736,123 @@ function renderOrders(host) {
       });
   }
   reload.addEventListener('click', load);
+  load();
+}
+
+/* ================= VOUCHERS ================= */
+function renderVouchers(host) {
+  var desc = document.createElement('p');
+  desc.className = 'sec-desc';
+  desc.textContent = 'Nhập hàng loạt mã voucher (mỗi mã 1 dòng). Khách mua 1 cuốn giảm 44k, 2 cuốn giảm 58k. Mỗi mã chỉ dùng 1 lần (sẽ bị khóa sau khi khách đặt thành công). Gói Combo không áp dụng voucher.';
+  host.appendChild(desc);
+
+  var addForm = document.createElement('div');
+  addForm.style.cssText = 'background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:20px;';
+  
+  var label = document.createElement('label');
+  label.textContent = 'Dán danh sách mã vào đây (Mỗi mã 1 dòng):';
+  label.style.cssText = 'display:block;font-weight:700;font-size:13px;margin-bottom:8px;';
+  
+  var textarea = document.createElement('textarea');
+  textarea.style.cssText = 'width:100%;height:120px;padding:10px;border:1.5px solid var(--line);border-radius:8px;outline:none;margin-bottom:10px;font-family:monospace;';
+  textarea.placeholder = 'VOUCHER01\nVOUCHER02\n...';
+  
+  var btnWrap = document.createElement('div');
+  btnWrap.style.cssText = 'display:flex;gap:10px;';
+  
+  var btnAdd = document.createElement('button');
+  btnAdd.className = 'btn btn-primary';
+  btnAdd.textContent = '+ Thêm các mã này';
+  
+  var msg = document.createElement('span');
+  msg.style.cssText = 'font-size:13px;color:var(--grey);align-self:center;';
+  
+  btnWrap.appendChild(btnAdd);
+  btnWrap.appendChild(msg);
+  
+  addForm.appendChild(label);
+  addForm.appendChild(textarea);
+  addForm.appendChild(btnWrap);
+  host.appendChild(addForm);
+
+  var listWrap = document.createElement('div');
+  listWrap.className = 'table-wrap';
+  host.appendChild(listWrap);
+
+  function load() {
+    listWrap.innerHTML = '<div class="empty">Đang tải danh sách voucher...</div>';
+    api('/api/vouchers')
+      .then(function(data) {
+        var vouchers = data.vouchers || [];
+        if (!vouchers.length) {
+          listWrap.innerHTML = '<div class="empty">Chưa có voucher nào trong hệ thống.</div>';
+          return;
+        }
+        var table = document.createElement('table');
+        table.innerHTML = '<thead><tr><th>Mã Voucher</th><th>Trạng thái</th><th>Thao tác</th></tr></thead>';
+        var tbody = document.createElement('tbody');
+        var usedCount = 0;
+        vouchers.forEach(function(v) {
+          if (v.is_used) usedCount++;
+          var tr = document.createElement('tr');
+          tr.innerHTML = '<td><b>' + v.code + '</b></td><td>' + (v.is_used ? '<span style="color:var(--orange)">Đã dùng ' + (v.used_at ? new Date(v.used_at).toLocaleString('vi-VN') : '') + '</span>' : '<span style="color:var(--teal-dark)">Chưa dùng</span>') + '</td>';
+          var tdAction = document.createElement('td');
+          var btnDel = document.createElement('button');
+          btnDel.className = 'icon-btn danger';
+          btnDel.textContent = '✕';
+          btnDel.onclick = function() {
+            if (!confirm('Xóa mã ' + v.code + '?')) return;
+            btnDel.disabled = true;
+            api('/api/vouchers', { method: 'DELETE', body: JSON.stringify({ code: v.code }) })
+              .then(load)
+              .catch(function(e) { alert('Lỗi: ' + e.message); btnDel.disabled = false; });
+          };
+          tdAction.appendChild(btnDel);
+          tr.appendChild(tdAction);
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        listWrap.innerHTML = '';
+        listWrap.appendChild(table);
+        
+        var stats = document.createElement('p');
+        stats.className = 'help';
+        stats.style.cssText = 'margin-top:10px;color:var(--grey);font-size:12.5px;padding: 10px;';
+        stats.textContent = 'Tổng: ' + vouchers.length + ' mã (' + usedCount + ' đã dùng, ' + (vouchers.length - usedCount) + ' chưa dùng).';
+        listWrap.appendChild(stats);
+      })
+      .catch(function(err) {
+        listWrap.innerHTML = '<div class="empty">Lỗi tải voucher: ' + err.message + '</div>';
+      });
+  }
+
+  btnAdd.onclick = function() {
+    var text = textarea.value.trim();
+    if (!text) return;
+    var codes = text.split('\n').map(function(s) { return s.trim().toUpperCase(); }).filter(Boolean);
+    if (!codes.length) return;
+    
+    btnAdd.disabled = true;
+    msg.style.color = 'var(--grey)';
+    msg.textContent = 'Đang lưu ' + codes.length + ' mã...';
+    
+    api('/api/vouchers', { method: 'POST', body: JSON.stringify({ codes: codes }) })
+      .then(function() {
+        textarea.value = '';
+        msg.style.color = 'var(--teal-dark)';
+        msg.textContent = 'Đã thêm thành công!';
+        setTimeout(function() { msg.textContent = ''; }, 3000);
+        load();
+      })
+      .catch(function(e) {
+        msg.style.color = 'var(--red)';
+        msg.textContent = 'Lỗi: ' + e.message;
+      })
+      .finally(function() {
+        btnAdd.disabled = false;
+      });
+  };
+
   load();
 }
 

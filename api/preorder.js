@@ -66,12 +66,64 @@ export default async function handler(req, res) {
   let appliedVoucher = '';
 
   // Validate Voucher
-  if (voucherCode && Array.isArray(content.vouchers)) {
-    const vc = content.vouchers.find(v => v.code && v.code.toUpperCase() === String(voucherCode).trim().toUpperCase() && v.active);
-    if (vc && vc.discount) {
-      const discountAmount = Math.floor(serverTotal * Number(vc.discount) / 100);
-      serverTotal = serverTotal - discountAmount;
-      appliedVoucher = vc.code;
+  if (voucherCode) {
+    const vc = String(voucherCode).trim().toUpperCase();
+    if (vc) {
+      if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
+        return res.status(500).json({ ok: false, error: 'Hệ thống voucher chưa được cấu hình' });
+      }
+      
+      if (chosen && chosen.id === 'combo') {
+        return res.status(400).json({ ok: false, error: 'Mã voucher không áp dụng cho Combo' });
+      }
+
+      // Khóa voucher bằng cách UPDATE. Nếu trả về row, tức là update thành công (voucher hợp lệ & chưa dùng).
+      const pLock = await fetch(`${process.env.SUPABASE_URL}/rest/v1/vouchers?code=eq.${encodeURIComponent(vc)}&is_used=eq.false`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: process.env.SUPABASE_SERVICE_KEY,
+          Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+          Prefer: 'return=representation'
+        },
+        body: JSON.stringify({ is_used: true, used_at: new Date().toISOString() })
+      });
+      
+      if (!pLock.ok) {
+        return res.status(500).json({ ok: false, error: 'Lỗi hệ thống khi kiểm tra mã voucher' });
+      }
+      const lockedRows = await pLock.json();
+      if (!lockedRows || lockedRows.length === 0) {
+        return res.status(400).json({ ok: false, error: 'Mã voucher không hợp lệ hoặc đã được sử dụng' });
+      }
+      
+      // Tính tiền
+      let discountAmount = 0;
+      if (chosen && chosen.id === '1') {
+        discountAmount = 44000;
+      } else if (chosen && chosen.id === '2') {
+        discountAmount = 58000;
+      } else if (cleanQty === 1) { // Fallback nếu không có chosen id nhưng qty=1
+        discountAmount = 44000;
+      } else if (cleanQty === 2) {
+        discountAmount = 58000;
+      } else {
+        // Rollback voucher vì không áp dụng được
+        await fetch(`${process.env.SUPABASE_URL}/rest/v1/vouchers?code=eq.${encodeURIComponent(vc)}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: process.env.SUPABASE_SERVICE_KEY,
+            Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+            Prefer: 'return=minimal'
+          },
+          body: JSON.stringify({ is_used: false, used_at: null })
+        });
+        return res.status(400).json({ ok: false, error: 'Mã voucher không áp dụng cho số lượng này' });
+      }
+
+      serverTotal = Math.max(0, serverTotal - discountAmount);
+      appliedVoucher = vc;
     }
   }
 
@@ -161,5 +213,20 @@ export default async function handler(req, res) {
   if (supabaseOk || (!process.env.SUPABASE_URL && scriptUrl)) {
     return res.status(200).json({ ok: true, total: baseRecord.total });
   }
+
+  // Nếu lỗi (không lưu được đơn hàng), trả lại voucher nếu đã dùng
+  if (appliedVoucher && process.env.SUPABASE_URL) {
+    fetch(`${process.env.SUPABASE_URL}/rest/v1/vouchers?code=eq.${encodeURIComponent(appliedVoucher)}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: process.env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({ is_used: false, used_at: null })
+    }).catch(console.error);
+  }
+
   return res.status(502).json({ ok: false, error: 'Không lưu được đơn hàng' });
 }

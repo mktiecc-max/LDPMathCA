@@ -33,3 +33,11 @@ create table if not exists public.site_content (
 -- không thể bị truy cập trực tiếp từ trình duyệt.
 alter table public.preorders    enable row level security;
 alter table public.site_content enable row level security;
+
+-- 3) Quản lý mã Voucher (mỗi mã dùng 1 lần)
+create table if not exists public.vouchers (
+  code        text primary key,
+  is_used     boolean not null default false,
+  used_at     timestamptz
+);
+alter table public.vouchers enable row level security;
