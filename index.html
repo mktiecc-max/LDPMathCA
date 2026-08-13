@@ -920,8 +920,8 @@ function updateTotal() {
   
   var finalPrice = pkg.new;
   if (currentVoucher) {
-    var vDiscount = Math.floor(pkg.new * currentVoucher.discount / 100);
-    finalPrice = pkg.new - vDiscount;
+    var vDiscount = currentVoucher.discountValue;
+    finalPrice = Math.max(0, pkg.new - vDiscount);
     bdVoucherDiscount.textContent = '-' + formatVnd(vDiscount);
     rowVoucher.style.display = 'flex';
   } else {
@@ -938,26 +938,45 @@ var voucherMsg = document.getElementById('voucherMsg');
 
 btnApplyVoucher.addEventListener('click', function() {
   var code = fVoucher.value.trim().toUpperCase();
+  var pkgId = packageSelect.value || "1";
+  
   if (!code) {
     currentVoucher = null;
     voucherMsg.style.display = 'none';
     updateTotal();
     return;
   }
-  var list = window.MATHCA_VOUCHERS || [];
-  var v = list.find(function(x) { return x.code && x.code.toUpperCase() === code && x.active; });
-  if (v) {
-    currentVoucher = v;
-    voucherMsg.textContent = 'Áp dụng mã thành công!';
-    voucherMsg.style.color = 'var(--teal)';
-    voucherMsg.style.display = 'block';
-  } else {
-    currentVoucher = null;
-    voucherMsg.textContent = 'Mã không hợp lệ hoặc đã hết hạn';
-    voucherMsg.style.color = 'var(--red-badge)';
-    voucherMsg.style.display = 'block';
-  }
-  updateTotal();
+
+  btnApplyVoucher.disabled = true;
+  btnApplyVoucher.textContent = 'Đang kiểm tra...';
+  
+  fetch('/api/check-voucher?code=' + encodeURIComponent(code) + '&pkgId=' + encodeURIComponent(pkgId))
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.ok) {
+        currentVoucher = { code: code, discountValue: data.discount };
+        voucherMsg.textContent = 'Áp dụng mã thành công!';
+        voucherMsg.style.color = 'var(--teal)';
+        voucherMsg.style.display = 'block';
+      } else {
+        currentVoucher = null;
+        voucherMsg.textContent = data.error || 'Mã không hợp lệ hoặc đã được sử dụng';
+        voucherMsg.style.color = 'var(--red-badge)';
+        voucherMsg.style.display = 'block';
+      }
+      updateTotal();
+    })
+    .catch(function() {
+      currentVoucher = null;
+      voucherMsg.textContent = 'Lỗi kết nối, vui lòng thử lại sau';
+      voucherMsg.style.color = 'var(--red-badge)';
+      voucherMsg.style.display = 'block';
+      updateTotal();
+    })
+    .finally(function() {
+      btnApplyVoucher.disabled = false;
+      btnApplyVoucher.textContent = 'Áp dụng';
+    });
 });
 
 updateTotal();
@@ -1014,7 +1033,7 @@ form.addEventListener('submit', function (e) {
     package: pkgText,
     voucherCode: currentVoucher ? currentVoucher.code : '',
     qty: pkg ? pkg.qty : 1,
-    total: currentVoucher ? (total - Math.floor(total * currentVoucher.discount / 100)) : total,
+    total: currentVoucher ? (total - currentVoucher.discountValue) : total,
     address: document.getElementById('fAddress').value.trim(),
     note: document.getElementById('fNote').value.trim(),
     source: location.href,
