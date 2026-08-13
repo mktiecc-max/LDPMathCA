@@ -196,11 +196,17 @@ export default async function handler(req, res) {
 
   // ========== 2) GOOGLE SHEET ==========
   if (scriptUrl) {
-    const pGs = fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sheetRecord)
-    }).catch(err => console.error('Google Sheet error:', err));
+    // Tối ưu tốc độ: Google Apps Script thường mất 1-2s để xử lý. 
+    // Ta chỉ đợi tối đa 500ms để đảm bảo request (payload) đã được gửi đi thành công 
+    // trước khi Vercel đóng kết nối, không cần đợi Google phản hồi.
+    const pGs = Promise.race([
+      fetch(scriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sheetRecord)
+      }).catch(err => console.error('Google Sheet error:', err)),
+      new Promise(resolve => setTimeout(resolve, 500))
+    ]);
     
     tasks.push(pGs);
   }
