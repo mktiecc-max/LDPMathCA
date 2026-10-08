@@ -991,11 +991,21 @@ function updateTotal() {
   // Tính phí vận chuyển
   var shippingFee = 0;
   var selProv = fProvince.options[fProvince.selectedIndex];
+  var selDist = fDistrict ? fDistrict.options[fDistrict.selectedIndex] : null;
+  
   var provName = selProv ? selProv.text : '';
+  var distName = selDist ? selDist.text : '';
+  
   var isHanoi = (provName === 'Thành phố Hà Nội' || provName === 'Hà Nội');
+  var isInnerHanoi = isHanoi && distName.toLowerCase().includes('quận');
+  
   var isCombo = pkg.name.toLowerCase().includes('combo') || pkg.qty > 1;
   
-  if (!isHanoi && !isCombo) {
+  if (isCombo) {
+    shippingFee = 0;
+  } else if (isHanoi && isInnerHanoi) {
+    shippingFee = 0;
+  } else {
     shippingFee = 20000;
   }
   
@@ -1024,6 +1034,7 @@ function updateTotal() {
 packageSelect.addEventListener('change', updateTotal);
 var fDistrict = document.getElementById('fDistrict');
 fProvince.addEventListener('change', updateTotal);
+if (fDistrict) fDistrict.addEventListener('change', updateTotal);
 
 // Load danh sách tỉnh thành
 fetch('https://provinces.open-api.vn/api/?depth=3')
@@ -1191,8 +1202,11 @@ form.addEventListener('submit', function (e) {
   
   // Tính lại shipping fee cho an toàn
   var isHanoi = (pSel && (pSel.text === 'Thành phố Hà Nội' || pSel.text === 'Hà Nội'));
+  var isInnerHanoi = isHanoi && dSel && dSel.text.toLowerCase().includes('quận');
   var isCombo = pkgText.toLowerCase().includes('combo') || (pkg && pkg.qty > 1);
-  var shippingFee = (!isHanoi && !isCombo) ? 20000 : 0;
+  var shippingFee = 20000;
+  if (isCombo) shippingFee = 0;
+  else if (isInnerHanoi) shippingFee = 0;
   var finalTotal = total + shippingFee - (currentVoucher ? currentVoucher.discountValue : 0);
 
   var payload = {
