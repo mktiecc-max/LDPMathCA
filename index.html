@@ -357,6 +357,35 @@
     .form-row-inline{gap:14px;}
     .btn-submit{padding:14px;font-size:16px;}
   }
+
+  .floating-fb {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    background: #1877f2;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 100;
+    transition: transform 0.2s;
+  }
+  .floating-fb:hover {
+    transform: scale(1.1);
+  }
+  .floating-fb svg {
+    width: 26px;
+    height: 26px;
+  }
+  @media(min-width: 900px) {
+    .floating-fb {
+      bottom: 24px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -556,6 +585,12 @@
     </div>
     <div class="footer-bottom">
       <p id="ftCopyright">© 2026 MathCA. Nội dung và nhận diện thương hiệu được bảo lưu.</p>
+      <div class="footer-social" style="display:flex;gap:16px;align-items:center;margin:10px 0;">
+         <a href="https://www.facebook.com/mathca" target="_blank" style="color:var(--grey);text-decoration:none;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;">
+           <svg width="20" height="20" viewBox="0 0 512 512" fill="currentColor"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+           Fanpage MathCA
+         </a>
+      </div>
       <div class="footer-links" id="ftLegalLinks">
         <a href="/dieu-khoan">Điều khoản</a>
         <a href="/chinh-sach-bao-mat">Chính sách bảo mật</a>
@@ -577,6 +612,12 @@
   <div><span class="price-now" data-price="unit" style="color:var(--orange-dark);">239.000đ</span> <span class="price-old" data-price="old" style="font-size:12px;">320.000đ</span></div>
   <button class="js-open-form" data-cms="header.ctaText">Đặt Trước Ngay</button>
 </div>
+
+<a href="https://www.facebook.com/mathca" target="_blank" class="floating-fb" aria-label="Fanpage MathCA">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+    <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/>
+  </svg>
+</a>
 
 <!-- ===== POPUP FORM ĐẶT TRƯỚC ===== -->
 <div class="modal-overlay" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
