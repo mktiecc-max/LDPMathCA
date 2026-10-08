@@ -1021,6 +1021,7 @@ fProvince.addEventListener('change', updateTotal);
 fetch('https://provinces.open-api.vn/api/?depth=3')
   .then(function(res) { return res.json(); })
   .then(function(data) {
+    data.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
     var provincesData = data;
     data.forEach(function(p) {
       var opt = document.createElement('option');
@@ -1036,8 +1037,10 @@ fetch('https://provinces.open-api.vn/api/?depth=3')
       if (provCode) {
         var prov = provincesData.find(function(p) { return p.code == provCode; });
         if (prov && prov.districts) {
+          prov.districts.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
           prov.districts.forEach(function(d) {
             if (d.wards) {
+              d.wards.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
               d.wards.forEach(function(w) {
                 var opt = document.createElement('option');
                 opt.value = w.code;
