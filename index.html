@@ -619,9 +619,32 @@
             </div>
 
             <div class="form-group">
-              <label for="fAddress">Địa chỉ nhận hàng <span class="req">*</span></label>
-              <input type="text" id="fAddress" name="address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" autocomplete="street-address" required>
-              <p class="field-error">Vui lòng nhập địa chỉ nhận hàng</p>
+              <label for="fProvince">Tỉnh/Thành phố <span class="req">*</span></label>
+              <select id="fProvince" name="province" required>
+                <option value="">Chọn Tỉnh/Thành phố</option>
+              </select>
+              <p class="field-error">Vui lòng chọn Tỉnh/Thành phố</p>
+            </div>
+            <div class="form-row-inline">
+              <div class="form-group">
+                <label for="fDistrict">Quận/Huyện <span class="req">*</span></label>
+                <select id="fDistrict" name="district" required disabled>
+                  <option value="">Chọn Quận/Huyện</option>
+                </select>
+                <p class="field-error">Vui lòng chọn Quận/Huyện</p>
+              </div>
+              <div class="form-group">
+                <label for="fWard">Phường/Xã <span class="req">*</span></label>
+                <select id="fWard" name="ward" required disabled>
+                  <option value="">Chọn Phường/Xã</option>
+                </select>
+                <p class="field-error">Vui lòng chọn Phường/Xã</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="fAddress">Số nhà, tên đường <span class="req">*</span></label>
+              <input type="text" id="fAddress" name="address" placeholder="VD: Số 12, Ngõ 34, Đường ABC" autocomplete="street-address" required>
+              <p class="field-error">Vui lòng nhập số nhà, tên đường</p>
             </div>
 
             <div class="form-group">
@@ -670,7 +693,7 @@
                 </div>
                 <div class="breakdown-row">
                   <span>Phí vận chuyển</span>
-                  <span><del style="color:#b3adc4;margin-right:6px;">30.000đ</del><strong style="color:var(--teal);">Miễn phí</strong></span>
+                  <span><del style="color:#b3adc4;margin-right:6px;" id="bdShippingFeeOld">30.000đ</del><strong style="color:var(--teal);" id="bdShippingFee">Miễn phí</strong></span>
                 </div>
               </div>
               <div class="order-total-row">
@@ -905,6 +928,12 @@ var PACKAGES = {
 
 var currentVoucher = null;
 
+var fProvince = document.getElementById('fProvince');
+var fDistrict = document.getElementById('fDistrict');
+var fWard = document.getElementById('fWard');
+var bdShippingFee = document.getElementById('bdShippingFee');
+var bdShippingFeeOld = document.getElementById('bdShippingFeeOld');
+
 function updateTotal() {
   var val = packageSelect.value || Object.keys(PACKAGES)[0];
   var pkg = PACKAGES[val] || PACKAGES[Object.keys(PACKAGES)[0]];
@@ -918,10 +947,31 @@ function updateTotal() {
   bdOldPrice.textContent = formatVnd(pkg.old);
   bdDiscount.textContent = '-' + formatVnd(pkg.old - pkg.new);
   
-  var finalPrice = pkg.new;
+  // Tính phí vận chuyển
+  var shippingFee = 0;
+  var selProv = fProvince.options[fProvince.selectedIndex];
+  var provName = selProv ? selProv.text : '';
+  var isHanoi = (provName === 'Thành phố Hà Nội' || provName === 'Hà Nội');
+  var isCombo = pkg.name.toLowerCase().includes('combo') || pkg.qty > 1;
+  
+  if (!isHanoi && !isCombo) {
+    shippingFee = 20000;
+  }
+  
+  if (shippingFee === 0) {
+    bdShippingFee.textContent = 'Miễn phí';
+    bdShippingFee.style.color = 'var(--teal)';
+    if(bdShippingFeeOld) bdShippingFeeOld.style.display = 'inline-block';
+  } else {
+    bdShippingFee.textContent = formatVnd(shippingFee);
+    bdShippingFee.style.color = 'var(--navy)';
+    if(bdShippingFeeOld) bdShippingFeeOld.style.display = 'none';
+  }
+
+  var finalPrice = pkg.new + shippingFee;
   if (currentVoucher) {
     var vDiscount = currentVoucher.discountValue;
-    finalPrice = Math.max(0, pkg.new - vDiscount);
+    finalPrice = Math.max(0, finalPrice - vDiscount);
     bdVoucherDiscount.textContent = '-' + formatVnd(vDiscount);
     rowVoucher.style.display = 'flex';
   } else {
@@ -931,6 +981,63 @@ function updateTotal() {
   bdTotal.textContent = formatVnd(finalPrice);
 }
 packageSelect.addEventListener('change', updateTotal);
+fProvince.addEventListener('change', updateTotal);
+
+// Load danh sách tỉnh thành
+fetch('https://provinces.open-api.vn/api/?depth=3')
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    var provincesData = data;
+    data.forEach(function(p) {
+      var opt = document.createElement('option');
+      opt.value = p.code;
+      opt.text = p.name;
+      fProvince.appendChild(opt);
+    });
+    
+    fProvince.addEventListener('change', function() {
+      fDistrict.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+      fWard.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+      fDistrict.disabled = true;
+      fWard.disabled = true;
+      var provCode = this.value;
+      if (provCode) {
+        var prov = provincesData.find(function(p) { return p.code == provCode; });
+        if (prov && prov.districts) {
+          prov.districts.forEach(function(d) {
+            var opt = document.createElement('option');
+            opt.value = d.code;
+            opt.text = d.name;
+            fDistrict.appendChild(opt);
+          });
+          fDistrict.disabled = false;
+        }
+      }
+    });
+
+    fDistrict.addEventListener('change', function() {
+      fWard.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+      fWard.disabled = true;
+      var distCode = this.value;
+      if (distCode) {
+        var provCode = fProvince.value;
+        var prov = provincesData.find(function(p) { return p.code == provCode; });
+        if (prov) {
+          var dist = prov.districts.find(function(d) { return d.code == distCode; });
+          if (dist && dist.wards) {
+            dist.wards.forEach(function(w) {
+              var opt = document.createElement('option');
+              opt.value = w.code;
+              opt.text = w.name;
+              fWard.appendChild(opt);
+            });
+            fWard.disabled = false;
+          }
+        }
+      }
+    });
+  })
+  .catch(function(err) { console.error('Error loading provinces:', err); });
 
 var btnApplyVoucher = document.getElementById('btnApplyVoucher');
 var fVoucher = document.getElementById('fVoucher');
@@ -998,6 +1105,9 @@ function validate() {
   var phone = document.getElementById('fPhone');
   var email = document.getElementById('fEmail');
   var address = document.getElementById('fAddress');
+  var province = document.getElementById('fProvince');
+  var district = document.getElementById('fDistrict');
+  var ward = document.getElementById('fWard');
 
   if (!name.value.trim()) { setFieldError(name, true); ok = false; } else setFieldError(name, false);
 
@@ -1006,6 +1116,9 @@ function validate() {
 
   if (email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, true); ok = false; } else setFieldError(email, false);
 
+  if (!province.value) { setFieldError(province, true); ok = false; } else setFieldError(province, false);
+  if (!district.value) { setFieldError(district, true); ok = false; } else setFieldError(district, false);
+  if (!ward.value) { setFieldError(ward, true); ok = false; } else setFieldError(ward, false);
   if (!address.value.trim()) { setFieldError(address, true); ok = false; } else setFieldError(address, false);
 
   return ok;
@@ -1025,6 +1138,18 @@ form.addEventListener('submit', function (e) {
   var pkgText = selIdx >= 0 ? packageSelect.options[selIdx].text : (pkg ? pkg.name : "Gói mặc định");
   var total = pkg ? pkg.new : 239000;
 
+  var addr = document.getElementById('fAddress').value.trim();
+  var pSel = fProvince.options[fProvince.selectedIndex];
+  var dSel = fDistrict.options[fDistrict.selectedIndex];
+  var wSel = fWard.options[fWard.selectedIndex];
+  var fullAddress = addr + ', ' + (wSel ? wSel.text : '') + ', ' + (dSel ? dSel.text : '') + ', ' + (pSel ? pSel.text : '');
+  
+  // Tính lại shipping fee cho an toàn
+  var isHanoi = (pSel && (pSel.text === 'Thành phố Hà Nội' || pSel.text === 'Hà Nội'));
+  var isCombo = pkgText.toLowerCase().includes('combo') || (pkg && pkg.qty > 1);
+  var shippingFee = (!isHanoi && !isCombo) ? 20000 : 0;
+  var finalTotal = total + shippingFee - (currentVoucher ? currentVoucher.discountValue : 0);
+
   var payload = {
     name: document.getElementById('fName').value.trim(),
     phone: document.getElementById('fPhone').value.replace(/[\s.\-]/g, ''),
@@ -1033,8 +1158,8 @@ form.addEventListener('submit', function (e) {
     package: pkgText,
     voucherCode: currentVoucher ? currentVoucher.code : '',
     qty: pkg ? pkg.qty : 1,
-    total: currentVoucher ? (total - currentVoucher.discountValue) : total,
-    address: document.getElementById('fAddress').value.trim(),
+    total: Math.max(0, finalTotal),
+    address: fullAddress,
     note: document.getElementById('fNote').value.trim(),
     source: location.href,
     userAgent: navigator.userAgent
