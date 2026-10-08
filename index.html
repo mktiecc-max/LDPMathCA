@@ -659,13 +659,20 @@
               </select>
             </div>
 
+            <div class="form-group">
+              <label for="fProvince">Tỉnh/Thành phố <span class="req">*</span></label>
+              <select id="fProvince" name="province" required>
+                <option value="">Chọn Tỉnh/Thành phố</option>
+              </select>
+              <p class="field-error">Vui lòng chọn Tỉnh/Thành phố</p>
+            </div>
             <div class="form-row-inline">
               <div class="form-group">
-                <label for="fProvince">Tỉnh/Thành phố <span class="req">*</span></label>
-                <select id="fProvince" name="province" required>
-                  <option value="">Chọn Tỉnh/Thành phố</option>
+                <label for="fDistrict">Quận/Huyện <span class="req">*</span></label>
+                <select id="fDistrict" name="district" required disabled>
+                  <option value="">Chọn Quận/Huyện</option>
                 </select>
-                <p class="field-error">Vui lòng chọn Tỉnh/Thành phố</p>
+                <p class="field-error">Vui lòng chọn Quận/Huyện</p>
               </div>
               <div class="form-group">
                 <label for="fWard">Phường/Xã <span class="req">*</span></label>
@@ -679,15 +686,6 @@
               <label for="fAddress">Số nhà, tên đường <span class="req">*</span></label>
               <input type="text" id="fAddress" name="address" placeholder="VD: Số 12, Ngõ 34, Đường ABC" autocomplete="street-address" required>
               <p class="field-error">Vui lòng nhập số nhà, tên đường</p>
-            </div>
-
-            <div class="form-group">
-              <label for="fVoucher">Mã Voucher (Nếu có)</label>
-              <div style="display:flex;gap:8px;">
-                <input type="text" id="fVoucher" name="voucher" placeholder="Nhập mã giảm giá" style="text-transform:uppercase;">
-                <button type="button" id="btnApplyVoucher" style="background:var(--teal);color:#fff;border:none;padding:0 16px;border-radius:8px;font-weight:700;cursor:pointer;flex-shrink:0;">Áp dụng</button>
-              </div>
-              <p class="field-error" id="voucherMsg" style="color:var(--teal);margin-top:4px;display:none;"></p>
             </div>
 
             <div class="form-group">
@@ -733,6 +731,15 @@
               <div class="order-total-row">
                 <span>Tổng tạm tính</span>
                 <span id="bdTotal">239.000đ</span>
+              </div>
+              
+              <div class="form-group" style="margin-top:20px;margin-bottom:20px;">
+                <label for="fVoucher" style="color:#fff;">Mã Voucher (Nếu có)</label>
+                <div style="display:flex;gap:8px;">
+                  <input type="text" id="fVoucher" name="voucher" placeholder="Nhập mã giảm giá" style="text-transform:uppercase;">
+                  <button type="button" id="btnApplyVoucher" style="background:var(--teal);color:#fff;border:none;padding:0 16px;border-radius:8px;font-weight:700;cursor:pointer;flex-shrink:0;">Áp dụng</button>
+                </div>
+                <p class="field-error" id="voucherMsg" style="color:var(--yellow);margin-top:4px;display:none;"></p>
               </div>
               <button type="submit" class="btn-submit" id="submitBtn" data-cms="form.submitText">⚡ Xác Nhận Đặt Trước</button>
             </div>
@@ -1015,6 +1022,7 @@ function updateTotal() {
   bdTotal.textContent = formatVnd(finalPrice);
 }
 packageSelect.addEventListener('change', updateTotal);
+var fDistrict = document.getElementById('fDistrict');
 fProvince.addEventListener('change', updateTotal);
 
 // Load danh sách tỉnh thành
@@ -1031,7 +1039,9 @@ fetch('https://provinces.open-api.vn/api/?depth=3')
     });
     
     fProvince.addEventListener('change', function() {
+      fDistrict.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
       fWard.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+      fDistrict.disabled = true;
       fWard.disabled = true;
       var provCode = this.value;
       if (provCode) {
@@ -1039,17 +1049,35 @@ fetch('https://provinces.open-api.vn/api/?depth=3')
         if (prov && prov.districts) {
           prov.districts.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
           prov.districts.forEach(function(d) {
-            if (d.wards) {
-              d.wards.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
-              d.wards.forEach(function(w) {
-                var opt = document.createElement('option');
-                opt.value = w.code;
-                opt.text = w.name + ' - ' + d.name;
-                fWard.appendChild(opt);
-              });
-            }
+            var opt = document.createElement('option');
+            opt.value = d.code;
+            opt.text = d.name;
+            fDistrict.appendChild(opt);
           });
-          fWard.disabled = false;
+          fDistrict.disabled = false;
+        }
+      }
+    });
+
+    fDistrict.addEventListener('change', function() {
+      fWard.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+      fWard.disabled = true;
+      var distCode = this.value;
+      if (distCode) {
+        var provCode = fProvince.value;
+        var prov = provincesData.find(function(p) { return p.code == provCode; });
+        if (prov) {
+          var dist = prov.districts.find(function(d) { return d.code == distCode; });
+          if (dist && dist.wards) {
+            dist.wards.sort(function(a, b) { return a.name.localeCompare(b.name, 'vi'); });
+            dist.wards.forEach(function(w) {
+              var opt = document.createElement('option');
+              opt.value = w.code;
+              opt.text = w.name;
+              fWard.appendChild(opt);
+            });
+            fWard.disabled = false;
+          }
         }
       }
     });
@@ -1123,6 +1151,7 @@ function validate() {
   var email = document.getElementById('fEmail');
   var address = document.getElementById('fAddress');
   var province = document.getElementById('fProvince');
+  var district = document.getElementById('fDistrict');
   var ward = document.getElementById('fWard');
 
   if (!name.value.trim()) { setFieldError(name, true); ok = false; } else setFieldError(name, false);
@@ -1133,6 +1162,7 @@ function validate() {
   if (email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, true); ok = false; } else setFieldError(email, false);
 
   if (!province.value) { setFieldError(province, true); ok = false; } else setFieldError(province, false);
+  if (!district.value) { setFieldError(district, true); ok = false; } else setFieldError(district, false);
   if (!ward.value) { setFieldError(ward, true); ok = false; } else setFieldError(ward, false);
   if (!address.value.trim()) { setFieldError(address, true); ok = false; } else setFieldError(address, false);
 
@@ -1155,8 +1185,9 @@ form.addEventListener('submit', function (e) {
 
   var addr = document.getElementById('fAddress').value.trim();
   var pSel = fProvince.options[fProvince.selectedIndex];
+  var dSel = fDistrict.options[fDistrict.selectedIndex];
   var wSel = fWard.options[fWard.selectedIndex];
-  var fullAddress = addr + ', ' + (wSel ? wSel.text : '') + ', ' + (pSel ? pSel.text : '');
+  var fullAddress = addr + ', ' + (wSel ? wSel.text : '') + ', ' + (dSel ? dSel.text : '') + ', ' + (pSel ? pSel.text : '');
   
   // Tính lại shipping fee cho an toàn
   var isHanoi = (pSel && (pSel.text === 'Thành phố Hà Nội' || pSel.text === 'Hà Nội'));
