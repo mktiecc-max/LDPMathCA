@@ -1541,7 +1541,7 @@ function applyContent(c) {
   // Chuỗi văn bản (hỗ trợ xuống dòng từ CMS)
   document.querySelectorAll('[data-cms]').forEach(function (node) {
     var val = getPath(c, node.getAttribute('data-cms'));
-    if (val != null && val !== '') node.innerHTML = safeHtml(tpl(val));
+    if (val != null) node.innerHTML = safeHtml(tpl(val));
   });
   // Thuộc tính (src, alt...)
   document.querySelectorAll('[data-cms-attr]').forEach(function (node) {
